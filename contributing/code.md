@@ -5,7 +5,7 @@ Charmed HPC is a open source project and welcomes community contributions. Pleas
 
 ## Report an issue
 
-To report an issue or bug, file an issue in the appropriate repository's issue tracker; the full list of repositories is provided below. If you are unsure which repository the issue should belong to, share the issue in the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151).
+To report an issue or bug, file an issue in the appropriate repository's issue tracker; the full list of repositories can be found by filtering the Canonical GitHub organization by the [`charmed-hpc` topic](https://github.com/search?q=topic%3Acharmed-hpc%20org%3Acanonical&type=repositories). If you are unsure which repository the issue should belong to, share the issue in the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151).
 
 
 When reporting a bug, please:
@@ -90,23 +90,6 @@ Adhering to the following process is the best way to have your contribution acce
    with a clear title and description against the `main` branch. Your pull request should also be focused and not contain commits that are not related to what you are contributing.
 
 9. Conditionally, open a corresponding Pull Request on the [`docs`](https://github.com/canonical/charmed-hpc-docs) repository, following the [canonical/charmed-hpc-docs CONTRIBUTING.md guidelines](https://github.com/canonical/charmed-hpc-docs/blob/main/CONTRIBUTING.md#pull-requests-and-contributing-process), if you are making user-facing changes.
-
-## Charmed HPC GitHub Code Repositories
-
-- [sssd-operator](https://github.com/canonical/sssd-operator)
-- [apptainer-operator](https://github.com/canonical/apptainer-operator)
-- [charmed-hpc-libs](https://github.com/canonical/charmed-hpc-libs)
-- [slurmutils](https://github.com/canonical/slurmutils)
-- [slurm-charms](https://github.com/canonical/slurm-charms)
-- [filesystem-charms](https://github.com/canonical/filesystem-charms)
-- [charmed-hpc-benchmarks](https://github.com/canonical/charmed-hpc-benchmarks)
-- [charmed-hpc-terraform](https://github.com/canonical/charmed-hpc-terraform)
-- [slurm-snap](https://github.com/canonical/slurm-snap)
-- [ondemand-snap](https://github.com/canonical/ondemand-snap)
-- [slurm-mail](https://github.com/canonical/slurm-mail)
-- [mysql-proxy-operator](https://github.com/canonical/mysql-proxy-operator)
-- [ood-portal-generator](https://github.com/canonical/ood-portal-generator)
-- [sysprober](https://github.com/canonical/sysprober)
 
 ## Further resources
 

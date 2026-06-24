@@ -250,6 +250,7 @@ linkcheck_ignore = [
     "https://matrix.to/#/#hpc:ubuntu.com",
     "https://charmhub.io/integrations/*", # Integrations page is very unstable sometimes
     "https://ceph.io", # site works but checker throws Internal Server Error 
+    "https://www.mysql.com", # Forbidden error via github workflow
 ]
 
 
