@@ -1,11 +1,12 @@
 (contributing-to-code)=
 # Contributing to Charmed HPC's code
 
-Charmed HPC is a open source project and welcomes community contributions. Please read through the following guidelines to best prepare yourself for making contributions. If you have questions, feel free to ask them in the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or in [Charmed HPC's GitHub Discussions](https://github.com/orgs/charmed-hpc/discussions). 
+Charmed HPC is a open source project and welcomes community contributions. Please read through the following guidelines to best prepare yourself for making contributions. If you have questions, feel free to ask them in the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151). 
 
 ## Report an issue
 
-To report an issue or bug, file an issue in the appropriate [Charmed HPC GitHub Organization](https://github.com/charmed-hpc) repository's issue tracker. If you are unsure which repository the issue should belong to, share the issue in [Charmed HPC's GitHub Discussions](https://github.com/orgs/charmed-hpc/discussions).
+To report an issue or bug, file an issue in the appropriate repository's issue tracker; the full list of repositories is provided below. If you are unsure which repository the issue should belong to, share the issue in the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151).
+
 
 When reporting a bug, please:
 
@@ -24,7 +25,7 @@ using the latest revision of the repository.
 
 ## Enhancement proposals
 
-While Charmed HPC's maintainers will often already have a plan for upcoming features, we welcome community ideas and potential improvements. [Charmed HPC's GitHub Discussions](https://github.com/orgs/charmed-hpc/discussions) is a good place for discussing open-ended questions, and more focused proposals can be created within a relevant repository's issue tracker.
+While Charmed HPC's maintainers will often already have a plan for upcoming features, we welcome community ideas and potential improvements. The [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151) are good places for discussing open-ended questions, and more focused proposals can be created within a relevant repository's issue tracker.
 
 ## Pull requests
 
@@ -45,7 +46,7 @@ Adhering to the following process is the best way to have your contribution acce
    cd <repository>
 
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/charmed-hpc/<repository>.git
+   git remote add upstream https://github.com/canonical/<repository>.git
    ```
 
 2. If you cloned a while ago, pull the latest changes from the upstream repository:
@@ -88,14 +89,31 @@ Adhering to the following process is the best way to have your contribution acce
 8. [Open a Pull Request](https://help.github.com/articles/about-pull-requests/)
    with a clear title and description against the `main` branch. Your pull request should also be focused and not contain commits that are not related to what you are contributing.
 
-9. Conditionally, open a corresponding Pull Request on the [`docs`](https://github.com/charmed-hpc/docs) repository, following the [charmed-hpc/docs CONTRIBUTING.md guidelines](https://github.com/charmed-hpc/docs/blob/main/CONTRIBUTING.md#pull-requests-and-contributing-process), if you are making user-facing changes.
+9. Conditionally, open a corresponding Pull Request on the [`docs`](https://github.com/canonical/charmed-hpc-docs) repository, following the [canonical/charmed-hpc-docs CONTRIBUTING.md guidelines](https://github.com/canonical/charmed-hpc-docs/blob/main/CONTRIBUTING.md#pull-requests-and-contributing-process), if you are making user-facing changes.
+
+## Charmed HPC GitHub Code Repositories
+
+- [sssd-operator](https://github.com/canonical/sssd-operator)
+- [apptainer-operator](https://github.com/canonical/apptainer-operator)
+- [charmed-hpc-libs](https://github.com/canonical/charmed-hpc-libs)
+- [slurmutils](https://github.com/canonical/slurmutils)
+- [slurm-charms](https://github.com/canonical/slurm-charms)
+- [filesystem-charms](https://github.com/canonical/filesystem-charms)
+- [charmed-hpc-benchmarks](https://github.com/canonical/charmed-hpc-benchmarks)
+- [charmed-hpc-terraform](https://github.com/canonical/charmed-hpc-terraform)
+- [slurm-snap](https://github.com/canonical/slurm-snap)
+- [ondemand-snap](https://github.com/canonical/ondemand-snap)
+- [slurm-mail](https://github.com/canonical/slurm-mail)
+- [mysql-proxy-operator](https://github.com/canonical/mysql-proxy-operator)
+- [ood-portal-generator](https://github.com/canonical/ood-portal-generator)
+- [sysprober](https://github.com/canonical/sysprober)
 
 ## Further resources
 
 See the below resources for further guidance and useful references:
 
-* [Charmed HPC's main GitHub CONTRIBUTING guidelines](https://github.com/charmed-hpc/.github/blob/main/CONTRIBUTING.md)
-* [Charmed HPC's documentation CONTRIBUTING guidelines](https://github.com/charmed-hpc/docs/blob/main/CONTRIBUTING.md)
+* [Charmed HPC's main GitHub CONTRIBUTING guidelines](https://github.com/canonical/hpc-team/blob/main/CONTRIBUTING.md)
+* [Charmed HPC's documentation CONTRIBUTING guidelines](https://github.com/canonical/charmed-hpc-docs/blob/main/CONTRIBUTING.md)
 * [Python code style guide](https://pep8.org/)
 * [Juju documentation](https://documentation.ubuntu.com/juju)
 * [Charmcraft documentation](https://canonical-charmcraft.readthedocs-hosted.com/stable/)

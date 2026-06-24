@@ -145,7 +145,7 @@ Slurm
 Slurm charms
     A set of {term}`charmed operators <Charm>` that deploy and manage {term}`Slurm`.
 
-    Resources: [Slurm charms repository {octicon}`link-external`](https://github.com/charmed-hpc/slurm-charms)
+    Resources: [Slurm charms repository {octicon}`link-external`](https://github.com/canonical/slurm-charms)
 
 `slurmctld`
     Slurm central management/controller daemon. Schedules jobs and monitors other components.
@@ -172,7 +172,7 @@ Slurm charms
 `slurmutils`
     Python library for facilitating edits to Slurm configuration files.
 
-    Resources: [slurmutils GitHub {octicon}`link-external`](https://github.com/charmed-hpc/slurmutils)
+    Resources: [slurmutils GitHub {octicon}`link-external`](https://github.com/canonical/slurmutils)
 
 System Security Services Daemon (`sssd`)
     A daemon that manages the retrieval and caching of user credentials and attributes from remote

@@ -19,13 +19,13 @@ Core projects are projects that are maintained directly as part of Charmed HPC.
 : project, source code, bug report
 :widths: 15, 10, 10
 
-slurm-charms, [Source](https://github.com/charmed-hpc/slurm-charms), [Issue tracker](https://github.com/charmed-hpc/slurm-charms/issues)
-filesystem-charms, [Source](https://github.com/charmed-hpc/filesystem-charms), [Issue tracker](https://github.com/charmed-hpc/filesystem-charms/issues)
+slurm-charms, [Source](https://github.com/canonical/slurm-charms), [Issue tracker](https://github.com/canonical/slurm-charms/issues)
+filesystem-charms, [Source](https://github.com/canonical/filesystem-charms), [Issue tracker](https://github.com/canonical/filesystem-charms/issues)
 sssd-operator, [Source](https://github.com/canonical/sssd-operator), [Issue tracker](https://github.com/canonical/sssd-operator/issues)
-apptainer-operator, [Source](https://github.com/charmed-hpc/apptainer-operator), [Issue tracker](https://github.com/charmed-hpc/apptainer-operator/issues)
-slurmutils, [Source](https://github.com/charmed-hpc/slurmutils), [Issue tracker](https://github.com/charmed-hpc/slurmutils/issues)
-hpc-libs, [Source](https://github.com/charmed-hpc/hpc-libs), [Issue tracker](https://github.com/charmed-hpc/hpc-libs/issues)
-charmed-hpc-terraform, [Source](https://github.com/charmed-hpc/charmed-hpc-terraform), [Issue tracker](https://github.com/charmed-hpc/charmed-hpc-terraform/issues)
+apptainer-operator, [Source](https://github.com/canonical/apptainer-operator), [Issue tracker](https://github.com/canonical/apptainer-operator/issues)
+slurmutils, [Source](https://github.com/canonical/slurmutils), [Issue tracker](https://github.com/canonical/slurmutils/issues)
+charmed-hpc-libs, [Source](https://github.com/canonical/charmed-hpc-libs), [Issue tracker](https://github.com/canonical/charmed-hpc-libs/issues)
+charmed-hpc-terraform, [Source](https://github.com/canonical/charmed-hpc-terraform), [Issue tracker](https://github.com/canonical/charmed-hpc-terraform/issues)
 :::
 
 ### Dependencies
@@ -130,15 +130,15 @@ Charmed HPC uses integrations to dictate how charmed applications communicate wi
 : integration, interface implementation
 :widths: 15, 10
 
-[sackd](https://charmhub.io/integrations/sackd), [Charm library](https://github.com/charmed-hpc/hpc-libs/blob/main/src/hpc_libs/interfaces/slurm/sackd.py)
-slurmctld, [Charm library](https://github.com/charmed-hpc/hpc-libs/blob/main/src/hpc_libs/interfaces/slurm/common.py)
-[slurmd](https://charmhub.io/integrations/slurmd), [Charm library](https://github.com/charmed-hpc/hpc-libs/blob/main/src/hpc_libs/interfaces/slurm/slurmd.py)
-[slurmdbd](https://charmhub.io/integrations/slurmdbd), [Charm library](https://github.com/charmed-hpc/hpc-libs/blob/main/src/hpc_libs/interfaces/slurm/slurmdbd.py)
-[slurmrestd](https://charmhub.io/integrations/slurmrestd), [Charm library](https://github.com/charmed-hpc/hpc-libs/blob/main/src/hpc_libs/interfaces/slurm/slurmrestd.py)
-[slurm-oci-runtime](https://charmhub.io/integrations/slurm-oci-runtime), [Charm library](https://github.com/charmed-hpc/hpc-libs/blob/main/src/hpc_libs/interfaces/slurm/oci_runtime.py)
-[cos_agent](https://charmhub.io/integrations/cos_agent), [Charm library](https://charmhub.io/grafana-agent/libraries/cos_agent)
-[ldap](https://charmhub.io/integrations/ldap/), [Charm library](https://charmhub.io/glauth-k8s/libraries/ldap)
-[mysql_client](https://charmhub.io/integrations/mysql_client), [Charm library](https://charmhub.io/data-platform-libs/libraries/data_interfaces)
-[filesystem_info](https://charmhub.io/integrations/filesystem_info), [Charm library](https://charmhub.io/filesystem-client/libraries/filesystem_info)
-[mount_info](https://charmhub.io/integrations/mount_info), [Charm library](https://charmhub.io/filesystem-client/libraries/mount_info)
+sackd, [Implementation](https://github.com/canonical/slurm-charms/blob/main/internal/sackd-interface/README.md)
+slurmctld, [Implementation](https://github.com/canonical/slurm-charms/blob/main/pkg/slurmctld-interface/README.md)
+slurmd, [Implementation](https://github.com/canonical/slurm-charms/blob/main/internal/slurmd-interface/README.md)
+slurmdbd, [Implementation](https://github.com/canonical/slurm-charms/blob/main/internal/slurmdbd-interface/README.md)
+slurmrestd, [Implementation](https://github.com/canonical/slurm-charms/blob/main/internal/slurmrestd-interface/README.md)
+slurm-oci-runtime, [Implementation](https://github.com/canonical/slurm-charms/blob/main/pkg/slurm-oci-runtime-interface/README.md)
+cos_agent, [Implementation](https://charmhub.io/grafana-agent/libraries/cos_agent)
+ldap, [Implementation](https://charmhub.io/glauth-k8s/libraries/ldap)
+mysql_client, [Implementation](https://charmhub.io/data-platform-libs/libraries/data_interfaces)
+filesystem_info, [Implementation](https://charmhub.io/filesystem-client/libraries/filesystem_info)
+mount_info, [Implementation](https://charmhub.io/filesystem-client/libraries/mount_info)
 :::

@@ -237,7 +237,7 @@ aws sso logout
 To clean up Google Cloud Platform and Google Kubernetes Engine (GKE) resources, it is assumed you have:
 
 
-* [Authenticated into the gcloud CLI](https://cloud.google.com/docs/authentication/gcloud#local)
+* [Authenticated into the gcloud CLI](https://cloud.google.com/docs/authentication/gcloud)
 * Bootstrapped a Juju controller on GCP
 * Added a GKE cluster to the controller
 

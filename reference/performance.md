@@ -7,7 +7,7 @@ myst:
 (reference-performance)=
 # Performance
 
-Performance values for the [Charmed HPC Benchmarks](https://github.com/charmed-hpc/charmed-hpc-benchmarks/) running on Microsoft Azure are provided on this page. Steps for reproducing these results are available in the [benchmarking suite documentation](https://github.com/charmed-hpc/charmed-hpc-benchmarks/blob/main/README.md). These results are intended to provided best-possible marks for performance to help guide tuning and identification of bottlenecks. Real-world performance may fluctuate depending on factors such as varying cluster workloads and resource contention.
+Performance values for the [Charmed HPC Benchmarks](https://github.com/canonical/charmed-hpc-benchmarks/) running on Microsoft Azure are provided on this page. Steps for reproducing these results are available in the [benchmarking suite documentation](https://github.com/canonical/charmed-hpc-benchmarks/blob/main/README.md). These results are intended to provided best-possible marks for performance to help guide tuning and identification of bottlenecks. Real-world performance may fluctuate depending on factors such as varying cluster workloads and resource contention.
 
 ## Metrics
 

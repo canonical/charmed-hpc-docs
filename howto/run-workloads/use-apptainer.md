@@ -176,7 +176,7 @@ cat job.out
 Hello from Python 3.13.3 (main, Aug 14 2025, 11:53:40) [GCC 14.2.0]!
 :::
 
-[//]: # (TODO: Uncomment once https://github.com/charmed-hpc/slurm-charms/issues/143 is fixed.)
+[//]: # (TODO: Uncomment once https://github.com/canonical/slurm-charms/issues/143 is fixed.)
 <!--
 ### Using the `--container` flag with `sbatch`{l=shell}
 

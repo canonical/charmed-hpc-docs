@@ -21,7 +21,7 @@ Charmed HPC uses Slurm's built-in HA support alongside [Juju's horizontal scalin
 
 For `slurmctld` HA to function, all `slurmctld` controllers require mounting of the same shared file system to provide a common [`StateSaveLocation`](https://slurm.schedmd.com/slurm.conf.html#OPT_StateSaveLocation) directory to hold controller state data. This directory governs the responsiveness and throughput of the cluster, so it should be hosted on a file system with low latency. It is therefore recommended that the file system **not be the same as the file system used for the cluster compute nodes** to avoid I/O-intensive user jobs from impacting `slurmctld` responsiveness.
 
-To allow for flexibility in choosing a shared file system for the `StateSaveLocation`, Charmed HPC implements support for the [`filesystem-client` charm](https://github.com/charmed-hpc/filesystem-charms) within the `slurmctld` charm. This enables users to integrate with the file system of their choice, such as their own CephFS deployment, a cloud-specific managed file system, or another that meets latency requirements.
+To allow for flexibility in choosing a shared file system for the `StateSaveLocation`, Charmed HPC implements support for the [`filesystem-client` charm](https://github.com/canonical/filesystem-charms) within the `slurmctld` charm. This enables users to integrate with the file system of their choice, such as their own CephFS deployment, a cloud-specific managed file system, or another that meets latency requirements.
 
 :::{admonition} Appropriate file system
 :class: warning
@@ -50,7 +50,7 @@ In an HA setup, all `slurmctld` instances require matching configuration files. 
 
 Similarly to `StateSaveLocation`, data in `/etc/slurm` is migrated to `/srv/slurmctld-statefs/etc/slurm` on `filesystem-client` integration. The `/etc/slurm` directory is then replaced with a symbolic link to `/srv/slurmctld-statefs/etc/slurm` on all `slurmctld` instances to ensure all access the same configuration files.
 
-To avoid data loss, any existing `/etc/slurm/` is backed up to a date-stamped directory on the unit's local disk, for example `/etc/slurm_20250620_161437` for a backup performed on 2025-06-20 at 16:14:37. To prevent non-leaders from reading partially written configuration files, updates to files are made atomically via [slurmutils](https://github.com/charmed-hpc/slurmutils/).
+To avoid data loss, any existing `/etc/slurm/` is backed up to a date-stamped directory on the unit's local disk, for example `/etc/slurm_20250620_161437` for a backup performed on 2025-06-20 at 16:14:37. To prevent non-leaders from reading partially written configuration files, updates to files are made atomically via [slurmutils](https://github.com/canonical/slurmutils/).
 
 The `slurmctld` charm leader in a Charmed HPC cluster handles all controller configuration operations. The leader generates cluster keys and all configuration files while non-leader units defer until these files appear in the shared storage.
 

@@ -1,15 +1,12 @@
 # Contributing to Charmed HPC's documentation
 
-Do you want to contribute to [Charmed HPC's documentation](https://documentation.ubuntu.com/charmed-hpc/latest/)? You've come to
+Do you want to contribute to [Charmed HPC's documentation](https://ubuntu.com/hpc/docs)? You've come to
 the right place then! __Here is how you can get involved.__
 
 Please take a moment to review this document so that the contribution
-process will be easy and effective for everyone. Following these guidelines helps you communicate that you respect the maintainers
-managing Charmed HPC's documentation. In return, they will reciprocate that respect
-while addressing your issue or assessing your submitted changes and/or features.
+process will be easy and effective for everyone. Following these guidelines helps you communicate that you respect the maintainers managing Charmed HPC's documentation. In return, they will reciprocate that respect while addressing your issue or assessing your submitted changes and/or features.
 
-Have any questions? Feel free to ask them in the [Ubuntu High-Performance Computing
-Matrix chat](https://matrix.to/#/#hpc:ubuntu.com).
+Have any questions? Feel free to ask them in the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151).
 
 ### Table of Contents
 
@@ -19,7 +16,6 @@ Matrix chat](https://matrix.to/#/#hpc:ubuntu.com).
 * [Bug Reports](#bug-reports)
 * [Enhancement Proposals](#enhancement-proposals)
 * [Pull Requests and Contributing Process](#pull-requests-and-contributing-process)
-* [Discussions](#discussions)
 * [Licensing](#licensing)
 
 
@@ -33,7 +29,7 @@ Charmed HPC's documentation is put together.
 The issue tracker is the preferred way for tracking [bug reports](#bug-reports) and [enhancement proposals](#enhancement-proposals), but please follow these guidelines for the issue tracker:
 
 * Please __do not__ use the issue tracker for personal issues and/or support requests.
-The [Discussions](#discussions) page is a better place to get help for personal support requests.
+The [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151) are better places to get help for personal support requests.
 
 * Please __do not__ derail or troll issues. Keep the discussion on track and have respect for the other
 users/contributors.
@@ -63,7 +59,7 @@ Can also be used for pull requests.
 * `good first issue` - Issues that the Charmed HPC documentation maintainers have determined to be suitable for first time contributors. 
 
 For a complete look at Charmed HPC's documentation labels, see the
-[project labels page](https://github.com/charmed-hpc/docs/labels).
+[project labels page](https://github.com/canonical/charmed-hpc-docs/labels).
 
 ## Bug Reports
 
@@ -104,10 +100,7 @@ Please make sure to select `bug` as the issue type.
 
 Enhancement proposals can be posted to the Charmed HPC documentation issue tracker, using the `enhancement` issue type.
 
-The Charmed HPC team may already know what they want to included in the documentation,
-but they are always open to new ideas and potential improvements. GitHub Discussions is
-a good place for discussing open-ended questions that pertain to the entire Charmed HPC
-project, but more focused enhancement proposal discussion can start within the issue
+The Charmed HPC team may already know what they want to included in the documentation, but they are always open to new ideas and potential improvements. The [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151) are good places for discussing open-ended questions that pertain to the entire Charmed HPC project, but more focused enhancement proposal discussions pertaining to documentation can start within the issue
 tracker.
 
 Please note that not all proposals may be incorporated into the documentation. Please
@@ -141,7 +134,7 @@ Charmed HPC's documentation:
    $ cd docs
 
    # Assign the original repo to a remote called "upstream"
-   $ git remote add upstream git@github.com:charmed-hpc/docs.git
+   $ git remote add upstream git@github.com:canonical/charmed-hpc-docs.git
    ```
 
 2. If you cloned the documentation a while ago, pull the latest changes from the
@@ -208,15 +201,7 @@ upstream Charmed HPC documentation repository:
 
 9. [Open a Pull Request](https://help.github.com/articles/about-pull-requests/) against the `main` branch by follow the guidelines and prompts within the Pull Request template that will generate when a pull request is started.
 
-
-## Discussions
-
-GitHub Discussions is a great place to connect with other Charmed HPC users to
-discuss potential enhancements, ask questions, and resolve issues. Charmed HPC users
-should remain respectful of each other. Discussion moderators reserve the right to
-suspend discussions and/or delete posts that do not follow this rule.
-
-
+## CODA
 
 Interested in learning more about how to contribute to open source documentation?
 Check out [Canonical's Open Documentation Academy](https://canonical.com/documentation/open-documentation-academy)
