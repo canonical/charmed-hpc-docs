@@ -1,5 +1,5 @@
 ---
-relatedlinks: "[Apptainer&#32;admin&#32;documentation](https://apptainer.org/docs/admin/latest/), [Apptainer&#32;(Charmhub)](https://charmhub.io/apptainer), [Apptainer&#32;charm&#32;repository](https://github.com/charmed-hpc/apptainer-operator)"
+relatedlinks: "[Apptainer&#32;admin&#32;documentation](https://apptainer.org/docs/admin/latest/), [Apptainer&#32;(Charmhub)](https://charmhub.io/apptainer), [Apptainer&#32;charm&#32;repository](https://github.com/canonical/apptainer-operator)"
 ---
 
 (howto-manage-integrate-with-apptainer)=

@@ -396,7 +396,7 @@ the same GCP project. This may make some processes more complex if you have spec
 To use GCP as the machine cloud for your Charmed HPC cluster, you will need to have:
 
 * [Installed the gcloud CLI](https://cloud.google.com/sdk/docs/install)
-* [Authenticated into the gcloud CLI](https://cloud.google.com/docs/authentication/gcloud#local)
+* [Authenticated into the gcloud CLI](https://cloud.google.com/docs/authentication/gcloud)
 * [Adjusted quotas for suitable Compute Engine machine families](https://cloud.google.com/compute/resource-usage#cpu_quota)
 
 To decide on suitable instance types, it may be useful to refer to GCP's [Machine families resource and comparison guide][machines].
@@ -725,7 +725,7 @@ To use GKE as the Kubernetes cloud for your Charmed HPC cluster, you will need t
 
 * [Initialized a machine cloud](#howto-initialize-machine-cloud)
 * [Installed the `google-cloud-cli-gke-gcloud-auth-plugin` component](https://cloud.google.com/sdk/docs/components#additional_components)
-* [Authenticated into the gcloud CLI](https://cloud.google.com/docs/authentication/gcloud#local)
+* [Authenticated into the gcloud CLI](https://cloud.google.com/docs/authentication/gcloud)
 
 ### Set up default Service Account
 

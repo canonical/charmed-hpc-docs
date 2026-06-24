@@ -13,8 +13,8 @@ cloud managed NFS server on the [`charmed-hpc-terraform`][hpc-tf] repository, wi
 [examples][nfs-tf-examples] on how to deploy the modules.
 :::
 
-[hpc-tf]: https://github.com/charmed-hpc/charmed-hpc-terraform
-[nfs-tf-examples]: https://github.com/charmed-hpc/charmed-hpc-terraform/blob/main/examples
+[hpc-tf]: https://github.com/canonical/charmed-hpc-terraform
+[nfs-tf-examples]: https://github.com/canonical/charmed-hpc-terraform/blob/main/examples
 
 ## Prerequisites
 
@@ -130,7 +130,7 @@ To integrate with an external CephFS share, you will require:
 
 Here, a Ceph cluster will be set up using [MicroCeph][ceph].
 
-[ceph]: https://canonical-microceph.readthedocs-hosted.com/en/v19.2.0-squid
+[ceph]: https://canonical-microceph.readthedocs-hosted.com/v19.2.0-squid
 
 First, launch a virtual machine using [LXD](https://ubuntu.com/lxd):
 

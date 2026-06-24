@@ -1,12 +1,12 @@
 (contributing-to-docs)=
 # Contributing to Charmed HPC's documentation
 
-Contributions to Charmed HPC's documentation are welcomed and encouraged. Please read through the following guidelines to best prepare yourself for contributing. If you have questions, feel free to ask them in the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or in [Charmed HPC's GitHub Discussions](https://github.com/orgs/charmed-hpc/discussions).
+Contributions to Charmed HPC's documentation are welcomed and encouraged. Please read through the following guidelines to best prepare yourself for contributing. If you have questions, feel free to ask them in the the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151).
 
 (doc-structure)=
 ## Documentation structure
 
-The documentation is written in the [MyST](https://mystmd.org/) flavor of the Markdown mark-up language and uses the [Diátaxis](https://diataxis.fr/) framework for content organization. The raw document files all hosted in the [Charmed HPC docs repository](https://github.com/charmed-hpc/docs) on GitHub and use the [Sphinx-based starter pack](https://canonical-starter-pack.readthedocs-hosted.com/stable/) for theming, extensions, and rendering on [ReadtheDocs](https://about.readthedocs.com/). See Canonical's [MyST syntax guide](https://canonical-starter-pack.readthedocs-hosted.com/latest/reference/myst-syntax-reference/) for formatting and preferred usage guidance.
+The documentation is written in the [MyST](https://mystmd.org/) flavor of the Markdown mark-up language and uses the [Diátaxis](https://diataxis.fr/) framework for content organization. The raw document files all hosted in the [Charmed HPC docs repository](https://github.com/canonical/charmed-hpc-docs) on GitHub and use the [Canonical Sphinx Stack](https://documentation.ubuntu.com/sphinx-stack/latest/) for theming, extensions, and rendering on [ReadtheDocs](https://about.readthedocs.com/). See Canonical's [MyST syntax guide](https://documentation.ubuntu.com/sphinx-stack/latest/reference/myst-syntax/) for formatting and preferred usage guidance.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ There are a couple prerequisites to contributing to Charmed HPC's documentation:
 
 ## Report an issue
 
-To report an error in spelling, grammar, content, or documentation code functionality, [file an issue](https://github.com/charmed-hpc/docs/issues) in Charmed HPC's bug tracker on GitHub.
+To report an error in spelling, grammar, content, or documentation code functionality, [file an issue](https://github.com/canonical/charmed-hpc-docs/issues) in Charmed HPC's bug tracker on GitHub.
 
 ## Simple update
 
@@ -62,7 +62,7 @@ To run the tests:
 | `make vale`{l=shell} | Check for style guide compliance |
 | `npx commitlint --from <start-ID> --to <end-ID> --verbose`{l=shell} | Check for commitlint compliance from git commit ID `<start-ID>` to commit ID `<end-ID>`|
 
-For more information on setting up the tests locally, see [Automatic checks](https://canonical-starter-pack.readthedocs-hosted.com/latest/reference/automatic_checks/) within the Canonical Starter Pack documentation.
+For more information on setting up the tests locally, see [Run documentation checks](https://documentation.ubuntu.com/sphinx-stack/latest/how-to/run-documentation-checks/) within the Canonical Sphinx Stack documentation.
 
 ### Test through GitHub
 

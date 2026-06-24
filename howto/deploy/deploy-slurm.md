@@ -2,7 +2,7 @@
 myst:
   html_meta:
     description: Instructions on how to use Juju to deploy Slurm in either a standalone or high-availability configuration as the workload manager of a Charmed HPC cluster.
-relatedlinks: "[Slurm&#32;website](https://slurm.schedmd.com/overview.html), [Slurm&#32;charms&#32;repository](https://github.com/charmed-hpc/slurm-charms)"
+relatedlinks: "[Slurm&#32;website](https://slurm.schedmd.com/overview.html), [Slurm&#32;charms&#32;repository](https://github.com/canonical/slurm-charms)"
 ---
 
 (howto-deploy-deploy-slurm)=

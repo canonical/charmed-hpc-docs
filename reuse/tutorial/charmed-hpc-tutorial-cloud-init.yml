@@ -32,14 +32,14 @@ write_files:
     defer: true
     source:
       uri: |
-        https://raw.githubusercontent.com/charmed-hpc/docs/refs/heads/main/reuse/tutorial/mpi_hello_world.c
+        https://raw.githubusercontent.com/canonical/charmed-hpc-docs/refs/heads/main/reuse/tutorial/mpi_hello_world.c
   - path: /home/ubuntu/submit_hello.sh
     owner: ubuntu:ubuntu
     permissions: !!str "0664"
     defer: true
     source:
       uri: |
-        https://raw.githubusercontent.com/charmed-hpc/docs/refs/heads/main/reuse/tutorial/submit_hello.sh
+        https://raw.githubusercontent.com/canonical/charmed-hpc-docs/refs/heads/main/reuse/tutorial/submit_hello.sh
   # Container workload dependencies.
   - path: /home/ubuntu/generate.py
     owner: ubuntu:ubuntu
@@ -47,25 +47,25 @@ write_files:
     defer: true
     source:
       uri: |
-        https://raw.githubusercontent.com/charmed-hpc/docs/refs/heads/main/reuse/tutorial/generate.py
+        https://raw.githubusercontent.com/canonical/charmed-hpc-docs/refs/heads/main/reuse/tutorial/generate.py
   - path: /home/ubuntu/workload.py
     owner: ubuntu:ubuntu
     permissions: !!str "0664"
     defer: true
     source:
       uri: |
-        https://raw.githubusercontent.com/charmed-hpc/docs/refs/heads/main/reuse/tutorial/workload.py
+        https://raw.githubusercontent.com/canonical/charmed-hpc-docs/refs/heads/main/reuse/tutorial/workload.py
   - path: /home/ubuntu/workload.def
     owner: ubuntu:ubuntu
     permissions: !!str "0664"
     defer: true
     source:
       uri: |
-        https://raw.githubusercontent.com/charmed-hpc/docs/refs/heads/main/reuse/tutorial/workload.def
+        https://raw.githubusercontent.com/canonical/charmed-hpc-docs/refs/heads/main/reuse/tutorial/workload.def
   - path: /home/ubuntu/submit_apptainer_mascot.sh
     owner: ubuntu:ubuntu
     permissions: !!str "0664"
     defer: true
     source:
       uri: |
-       https://raw.githubusercontent.com/charmed-hpc/docs/refs/heads/main/reuse/tutorial/submit_apptainer_mascot.sh
+       https://raw.githubusercontent.com/canonical/charmed-hpc-docs/refs/heads/main/reuse/tutorial/submit_apptainer_mascot.sh

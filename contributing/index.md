@@ -1,6 +1,6 @@
 # Contribute to Charmed HPC
 
-Charmed HPC is an open source project of the [Ubuntu High-Performance Computing community](https://ubuntu.com/community/governance/teams/hpc). Contributions to both the code and documentation are welcome. For questions, reach out on [Matrix](https://matrix.to/#/#hpc:ubuntu.com) or [GitHub Discussions](https://github.com/orgs/charmed-hpc/discussions/).
+Charmed HPC is an open source project of the [Ubuntu High-Performance Computing community](https://ubuntu.com/community/governance/teams/hpc). Contributions to both the code and documentation are welcome. For questions, reach out on the [Ubuntu High-Performance Computing Matrix chat](https://matrix.to/#/#hpc:ubuntu.com) or the [High-Performance Computing category on the Ubuntu Discourse](https://discourse.ubuntu.com/c/project/hpc/151).
 
 ## Contributing to Charmed HPC's documentation
 

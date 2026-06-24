@@ -134,7 +134,7 @@ html_context = {
     #
     # NOTE: If set, links for viewing the documentation source files
     #       and creating GitHub issues are added at the bottom of each page.
-    "github_url": "https://github.com/charmed-hpc/docs",
+    "github_url": "https://github.com/canonical/charmed-hpc-docs",
     # Docs branch in the repo; used in links for viewing the source files
     #
     # TODO: To customise the branch, uncomment and update as needed.
@@ -170,7 +170,7 @@ if os.getenv("OPENAPI", ""):
 # - https://git.launchpad.net/example
 #
 html_theme_options = {
- 'source_edit_link': 'https://github.com/charmed-hpc/docs',
+ 'source_edit_link': 'https://github.com/canonical/charmed-hpc-docs',
 }
 
 # Project slug; see https://meta.discourse.org/t/what-is-category-slug/87897
@@ -249,6 +249,8 @@ linkcheck_ignore = [
     "https://jwt.io",
     "https://matrix.to/#/#hpc:ubuntu.com",
     "https://charmhub.io/integrations/*", # Integrations page is very unstable sometimes
+    "https://ceph.io", # site works but checker throws Internal Server Error 
+    "https://www.mysql.com", # Forbidden error via github workflow
 ]
 
 

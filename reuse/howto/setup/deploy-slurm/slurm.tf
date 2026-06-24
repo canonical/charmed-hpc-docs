@@ -15,27 +15,27 @@ resource "juju_model" "slurm" {
 }
 
 module "sackd" {
-  source      = "git::https://github.com/charmed-hpc/slurm-charms//charms/sackd/terraform"
+  source      = "git::https://github.com/canonical/slurm-charms//charms/sackd/terraform"
   model_uuid  = juju_model.slurm.uuid
 }
 
 module "slurmctld" {
-  source      = "git::https://github.com/charmed-hpc/slurm-charms//charms/slurmctld/terraform"
+  source      = "git::https://github.com/canonical/slurm-charms//charms/slurmctld/terraform"
   model_uuid  = juju_model.slurm.uuid
 }
 
 module "slurmd" {
-  source      = "git::https://github.com/charmed-hpc/slurm-charms//charms/slurmd/terraform"
+  source      = "git::https://github.com/canonical/slurm-charms//charms/slurmd/terraform"
   model_uuid  = juju_model.slurm.uuid
 }
 
 module "slurmdbd" {
-  source      = "git::https://github.com/charmed-hpc/slurm-charms//charms/slurmdbd/terraform"
+  source      = "git::https://github.com/canonical/slurm-charms//charms/slurmdbd/terraform"
   model_uuid  = juju_model.slurm.uuid
 }
 
 module "slurmrestd" {
-  source      = "git::https://github.com/charmed-hpc/slurm-charms//charms/slurmrestd/terraform"
+  source      = "git::https://github.com/canonical/slurm-charms//charms/slurmrestd/terraform"
   model_uuid  = juju_model.slurm.uuid
 }
 
