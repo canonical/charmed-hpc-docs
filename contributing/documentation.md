@@ -6,7 +6,7 @@ Contributions to Charmed HPC's documentation are welcomed and encouraged. Please
 (doc-structure)=
 ## Documentation structure
 
-The documentation is written in the [MyST](https://mystmd.org/) flavor of the Markdown mark-up language and uses the [Diátaxis](https://diataxis.fr/) framework for content organization. The raw document files all hosted in the [Charmed HPC docs repository](https://github.com/canonical/charmed-hpc-docs) on GitHub and use the [Sphinx-based starter pack](https://canonical-starter-pack.readthedocs-hosted.com/stable/) for theming, extensions, and rendering on [ReadtheDocs](https://about.readthedocs.com/). See Canonical's [MyST syntax guide](https://canonical-starter-pack.readthedocs-hosted.com/latest/reference/myst-syntax-reference/) for formatting and preferred usage guidance.
+The documentation is written in the [MyST](https://mystmd.org/) flavor of the Markdown mark-up language and uses the [Diátaxis](https://diataxis.fr/) framework for content organization. The raw document files all hosted in the [Charmed HPC docs repository](https://github.com/canonical/charmed-hpc-docs) on GitHub and use the [Canonical Sphinx Stack](https://documentation.ubuntu.com/sphinx-stack/latest/) for theming, extensions, and rendering on [ReadtheDocs](https://about.readthedocs.com/). See Canonical's [MyST syntax guide](https://documentation.ubuntu.com/sphinx-stack/latest/reference/myst-syntax/) for formatting and preferred usage guidance.
 
 ## Prerequisites
 
