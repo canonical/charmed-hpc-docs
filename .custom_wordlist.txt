@@ -131,10 +131,16 @@ CephFS
 cephfs
 cephx
 fsid
+ldiskfs
+LNet
 MicroCeph
 NFS
 nfs
+OSSes
+OSTs
 userinfo
+vdevs
+zpool
 
 # Words that are oddly not valid to the spelling checker
 autonomizing
