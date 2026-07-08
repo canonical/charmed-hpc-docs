@@ -71,4 +71,4 @@ If all health checks pass while the unit is in a `BlockedStatus`, the unit is re
 
 The `lustre-server` charm implements the `filesystem` endpoint, providing compatibility with the [`filesystem-client`](https://charmhub.io/filesystem-client) charm. Clients mount the Lustre filesystem by integrating a deployed `filesystem-client` with the `lustre-server` via Juju.
 
-TODO: link to how-to.
+For instructions on deploying the `lustre-server` charm and integrating with client nodes, see {ref}`howto-deploy-deploy-lustre`.
