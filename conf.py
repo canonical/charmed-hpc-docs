@@ -199,6 +199,8 @@ llms_txt_description = textwrap.dedent(
 )
 # === END CUSTOM ===
 
+llms_txt_enabled = True
+
 # The base URL for references built by sphinx-markdown-builder.
 if os.environ.get("READTHEDOCS"):
     markdown_http_base = html_baseurl
@@ -285,6 +287,7 @@ exclude_patterns = [
     "CONTRIBUTING.md",
     "README.md",
     ".github/*",
+    "_dev",
 ]
 # === END CUSTOM ===
 
