@@ -11,7 +11,7 @@ Updates the Charmed HPC documentation project from an older version of the Canon
 ## Project context
 
 - **Project name**: Charmed HPC
-- **Repository**: `charmed-hpc/docs`
+- **Repository**: `canonical/charmed-hpc-docs`
 - **Docs URL**: `https://ubuntu.com/hpc/docs/`
 - **Current config source**: `conf.py` is the active configuration. During updates, rename it to `conf.py.tmp` before copying the new Sphinx Stack template over, then merge customizations from `conf.py.tmp` into the new `conf.py`.
 - **Project-specific workflow**: `.github/workflows/pr.yaml` (commitlint checks) — preserve
