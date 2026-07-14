@@ -30,7 +30,8 @@ author = "Charmed HPC Authors"
 # === END CUSTOM ===
 
 # The year in the copyright statement
-copyright = "%s CC-BY-SA, %s" % (datetime.date.today().year, author)
+#copyright = "%s CC-BY-SA, %s" % (datetime.date.today().year, author)
+copyright = f"{datetime.date.today().year}"
 
 # Sidebar documentation title
 # To disable the title, set it to an empty string.
@@ -63,38 +64,37 @@ ogp_image = "https://assets.ubuntu.com/v1/cc828679-docs_illustration.svg"
 # === CHARMED HPC CUSTOM ===
 html_context = {
     # Product page URL; can be different from product docs URL
-    # TODO: Change to your product website URL, dropping the 'https://' prefix (e.g.,
+    #Change to your product website URL, dropping the 'https://' prefix (e.g.,
     #       'ubuntu.com/lxd'). If there's no such website, remove the {{ product_page }}
     #       link from the _templates/header.html file.
     "product_page": "ubuntu.com/hpc",
     # Product tag image; the orange part of your logo, shown in the page header
-    # TODO: To add a tag image, uncomment and update as needed.
+    #
     # 'product_tag': '_static/tag.png',
     # Your Discourse instance URL
-    # TODO: Change your Discourse instance URL or leave empty.
     "discourse": "https://discourse.ubuntu.com/c/project/hpc/151",
     # Your Mattermost channel URL
-    # TODO: Change your Mattermost channel URL or leave empty.
+    #
     "mattermost": "",
     # Your Matrix channel URL
-    # TODO: Change to your Matrix channel URL or leave empty.
+    #
     "matrix": "https://matrix.to/#/#hpc:ubuntu.com",
     # Your documentation GitHub repository URL If set, links for viewing the
     # documentation source files and creating GitHub issues are added at the bottom of
     # each page.
-    # TODO: Change to your documentation GitHub repository URL or leave empty.
+    #Change to your documentation GitHub repository URL or leave empty.
     #
-    # NOTE: If set, links for viewing the documentation source files
+    #If set, links for viewing the documentation source files
     #       and creating GitHub issues are added at the bottom of each page.
     "github_url": "https://github.com/canonical/charmed-hpc-docs",
     # Docs branch in the repo; used in links for viewing the source files
     "repo_default_branch": "main",
     # Docs location in the repo; used in links for viewing the source files
     "repo_folder": "/",
-    # TODO: To enable or disable the Previous / Next buttons at the bottom of pages
+    #To enable or disable the Previous / Next buttons at the bottom of pages
     # Valid options: none, prev, next, both
     "sequential_nav": "both",
-    # TODO: To enable listing contributors on individual pages, set to True
+    #To enable listing contributors on individual pages, set to True
     "display_contributors": True,
     # Required for feedback button
     "github_issues": "enabled",
@@ -102,12 +102,8 @@ html_context = {
     "author": author,
     # Documentation license information
     "license": {
-        # TODO: Specify your project's license.
-        # For the name, we recommend using the standard shorthand identifier from
-        # https://spdx.org/licenses
-        "name": "",
-        # TODO: Link directly to your project's license statement.
-        "url": "",
+        "name": "CC-BY-SA-4.0",
+        "url": "https://github.com/canonical/charmed-hpc-docs/blob/main/LICENSE",
     },
 }
 # === END CUSTOM ===
@@ -130,7 +126,7 @@ html_theme_options = {
 # Project slug
 # TODO: If your documentation is hosted on https://documentation.ubuntu.com/,
 #       uncomment and set to the RTD slug.
-slug = 'hpc/docs'
+#slug = 'hpc/docs'
 # === END CUSTOM ===
 
 #######################
