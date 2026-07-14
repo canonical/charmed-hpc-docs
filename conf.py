@@ -284,7 +284,7 @@ exclude_patterns = [
     "README.md",
     ".github/*",
     "_dev",
-    ".agents/"
+    ".agents/*"
 ]
 # === END CUSTOM ===
 
