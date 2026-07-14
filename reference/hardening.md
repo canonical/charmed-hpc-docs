@@ -65,7 +65,7 @@ For cloud-specific resources, see:
 :header: >
 : cloud, security guide
 
-AWS, "[The Amazon EC2 cloud and Juju](https://documentation.ubuntu.com/juju/latest/reference/cloud/list-of-supported-clouds/the-amazon-ec2-cloud-and-juju/#cloud-ec2), [Juju AWS Permissions](https://discourse.charmhub.io/t/juju-aws-permissions/5307)"
+AWS, "[The Amazon EC2 cloud and Juju](https://canonical.com/juju/docs/juju-cli/latest/reference/cloud/list-of-supported-clouds/amazon-ec2), [Juju AWS Permissions](https://discourse.charmhub.io/t/juju-aws-permissions/5307)"
 Azure, "[The Microsoft Azure cloud and Juju](https://documentation.ubuntu.com/juju/latest/reference/cloud/list-of-supported-clouds/the-microsoft-azure-cloud-and-juju/), [How to use Juju with Microsoft Azure ](https://discourse.charmhub.io/t/how-to-use-juju-with-microsoft-azure/15219)"
 Google Cloud, [The Google GCE cloud and Juju](https://documentation.ubuntu.com/juju/latest/reference/cloud/list-of-supported-clouds/the-google-gce-cloud-and-juju/index.html)
 MAAS, [The MAAS cloud and Juju](https://documentation.ubuntu.com/juju/latest/reference/cloud/list-of-supported-clouds/the-maas-cloud-and-juju/)
