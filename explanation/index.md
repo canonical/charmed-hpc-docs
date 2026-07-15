@@ -9,6 +9,7 @@ Design decisions behind how a Charmed HPC cluster is structured and operated.
 
 - {ref}`explanation-high-availability`
 - {ref}`explanation-job-email-notifications`
+- {ref}`explanation-lustre`
 
 ## Cryptography, authentication, and security
 
@@ -38,4 +39,5 @@ High Availability <high-availability>
 Interconnects <interconnects>
 Instance auto-reboots <reboot-timing.md>
 Key rotation <key-rotation>
+Lustre <lustre>
 ```
