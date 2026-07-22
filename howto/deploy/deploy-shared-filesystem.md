@@ -69,7 +69,7 @@ First, launch a virtual machine using [LXD](https://canonical.com/lxd):
 :::{code-block} shell
 $ snap install lxd
 $ lxd init --auto
-$ lxc launch ubuntu:24.04 nfs-server --vm
+$ lxc launch ubuntu:26.04 nfs-server --vm
 $ lxc shell nfs-server
 :::
 
@@ -110,6 +110,7 @@ expose the externally managed server inside a Juju model.
 
 :::{code-block} shell
 juju deploy nfs-server-proxy \
+  --base "ubuntu@26.04" \
   --channel latest/edge \
   --config hostname=<server hostname> \
   --config path=<exported path> \
@@ -130,14 +131,14 @@ To integrate with an external CephFS share, you will require:
 
 Here, a Ceph cluster will be set up using [MicroCeph][ceph].
 
-[ceph]: https://canonical-microceph.readthedocs-hosted.com/v19.2.0-squid
+[ceph]: https://canonical.com/ceph/docs
 
 First, launch a virtual machine using [LXD](https://ubuntu.com/lxd):
 
 :::{code-block} shell
 snap install lxd
 lxd init --auto
-lxc launch ubuntu:24.04 cephfs-server --vm
+lxc launch ubuntu:26.04 cephfs-server --vm
 lxc shell cephfs-server
 :::
 
@@ -148,7 +149,7 @@ Inside the LXD virtual machine, set up MicroCeph to export a Ceph filesystem.
 ln -s /bin/true /usr/local/bin/udevadm
 apt-get -y update
 apt-get -y install ceph-common jq
-snap install microceph
+snap install microceph --channel tentacle/stable
 
 # Bootstrap Microceph
 microceph cluster bootstrap
@@ -207,6 +208,7 @@ expose the externally managed Ceph filesystem inside a Juju model.
 
 :::{code-block} shell
 juju deploy cephfs-server-proxy \
+  --base "ubuntu@26.04" \
   --channel latest/edge \
   --config fsid=<value of $FSID> \
   --config sharepoint=cephfs:/ \
@@ -225,6 +227,7 @@ To add the `filesystem-client` charm, which mounts a shared filesystem to the cl
 
 :::{code-block} shell
 juju deploy filesystem-client \
+  --base "ubuntu@26.04" \
   --channel latest/edge \
   --config mountpoint='/scratch' \
   --config noexec=true

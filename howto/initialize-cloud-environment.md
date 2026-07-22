@@ -127,6 +127,8 @@ After a few minutes, your LXD cloud controller will become active. The output of
 command should be similar to the following:
 
 :::{terminal}
+:scroll:
+
 juju status -m controller
 
 Model       Controller              Cloud/Region         Version  SLA          Timestamp
@@ -242,6 +244,8 @@ juju bootstrap azure charmed-hpc-controller --constraints "instance-role=auto"
 After a few minutes, your Azure cloud controller will become active. The output of the `juju status`{l=shell} command should be similar to the following:
 
 :::{terminal}
+:scroll:
+
 juju status -m controller
 
 Model       Controller              Cloud/Region  Version  SLA          Timestamp
@@ -364,6 +368,8 @@ After a few minutes, your AWS cloud controller will become active. The output of
 be similar to the following:
 
 :::{terminal}
+:scroll:
+
 juju status -m controller
 
 Model       Controller              Cloud/Region   Version  SLA          Timestamp
@@ -494,6 +500,8 @@ After a few minutes, your GCP cloud controller will become active. The output of
 be similar to the following:
 
 :::{terminal}
+:scroll:
+
 juju status -m controller
 
 Model       Controller              Cloud/Region     Version  SLA          Timestamp

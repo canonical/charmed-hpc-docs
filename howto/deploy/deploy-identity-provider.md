@@ -194,16 +194,16 @@ of `juju status`{l=shell} will be similar to the following:
 juju status
 
 Model     Controller              Cloud/Region         Version  SLA          Timestamp
-identity  charmed-hpc-controller  charmed-hpc/default  3.6.12   unsupported  17:02:01-05:00
+identity  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  12:52:02-06:00
 
 App              Version  Status  Scale  Charm            Channel      Rev  Exposed  Message
-ldap-integrator           active      1  ldap-integrator  latest/edge   35  no
+ldap-integrator           active      1  ldap-integrator  latest/edge   38  no
 
 Unit                Workload  Agent  Machine  Public address  Ports  Message
-ldap-integrator/0*  active    idle   0        10.214.237.205
+ldap-integrator/0*  active    idle   0        10.124.231.240
 
-Machine  State    Address         Inst id        Base          AZ   Message
-0        started  10.214.237.205  juju-dade42-0  ubuntu@22.04       Running
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.124.231.240  juju-be6f35-0  ubuntu@24.04      Running
 :::
 
 You now need to deploy SSSD in your `slurm` model to enroll your cluster's
@@ -337,6 +337,7 @@ example, the LDAP server's TLS certificate is stored in the file _bundle.pem_:
 
 :::{code-block} shell
 juju deploy manual-tls-certificates \
+  --channel 1/stable \
   --model identity \
   --config trusted-certificate-bundle="$(cat bundle.pem)"
 :::
@@ -348,7 +349,7 @@ Next, create an offer from the manual-tls-certificates application in your `iden
 model with `juju offer`{l=shell}:
 
 :::{code-block} shell
-juju offer identity.manual-tls-certificates:send-ca-certs send-ldap-certs
+juju offer identity.manual-tls-certificates:trust_certificate send-ldap-certs
 :::
 
 Now use `juju consume`{l=shell} to consume the offer from your manual-tls-certificates
