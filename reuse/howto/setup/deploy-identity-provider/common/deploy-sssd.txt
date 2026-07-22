@@ -6,7 +6,7 @@
 First, use `juju deploy`{l=shell} to deploy SSSD in your `slurm` model:
 
 :::{code-block} shell
-juju deploy sssd --base "ubuntu@24.04" --channel "edge"
+juju deploy sssd --base "ubuntu@26.04" --channel "edge"
 :::
 
 Now use `juju integrate`{l=shell} to integrate SSSD with the Slurm services
@@ -92,33 +92,41 @@ The output of `juju status`{l=shell} will be similar to the following:
 juju status
 
 Model  Controller              Cloud/Region         Version  SLA          Timestamp
-slurm  charmed-hpc-controller  charmed-hpc/default  3.6.12   unsupported  16:17:13-04:00
+slurm  charmed-hpc-controller  localhost/localhost  3.6.27   unsupported  17:20:24-06:00
 
-App         Version          Status   Scale  Charm       Channel      Rev  Exposed  Message
-mysql       8.0.39-0ubun...  active       1  mysql       8.0/stable   313  no
-sackd       23.11.4-1.2u...  active       1  sackd       latest/edge   13  no
-slurmctld   23.11.4-1.2u...  active       1  slurmctld   latest/edge   95  no
-slurmd      23.11.4-1.2u...  active       1  slurmd      latest/edge  116  no
-slurmdbd    23.11.4-1.2u...  active       1  slurmdbd    latest/edge   87  no
-slurmrestd  23.11.4-1.2u...  active       1  slurmrestd  latest/edge   89  no
-sssd        2.9.4-1.1ubu...  waiting      3  sssd        latest/edge    6  no       Waiting for integrations: [`ldap`]
+App        Version          Status   Scale  Charm              Channel       Rev  Exposed  Message
+apptainer  1.5.3            active       3  apptainer          latest/edge    22  no
+ceph-fs    19.2.3           active       1  ceph-fs            squid/stable  300  no       Unit is ready
+microceph                   active       1  microceph          squid/stable  296  no       (workload) charm is ready
+sackd      25.11.2-1ubu...  active       1  sackd                              0  no
+scratch                     active       3  filesystem-client  latest/edge    28  no       Integrated with `cephfs` provider
+slurmctld  25.11.2-1ubu...  active       1  slurmctld                          0  no       primary - UP
+slurmd     25.11.2-1ubu...  active       2  slurmd                             0  no
+sssd       2.12.0-1ubun...  waiting      4  sssd               latest/edge    20  no       Waiting for integrations: [`ldap`]
 
-Unit           Workload  Agent  Machine  Public address  Ports           Message
-mysql/0*       active    idle   3        10.175.90.111   3306,33060/tcp  Primary
-sackd/0*       active    idle   0        10.175.90.64
-  sssd/1       waiting   idle            10.175.90.64                    Waiting for integrations: [`ldap`]
-slurmctld/0*   active    idle   4        10.175.90.100
-  sssd/2       waiting   idle            10.175.90.100                   Waiting for integrations: [`ldap`]
-slurmd/0*      active    idle   5        10.175.90.107
-  sssd/0*      waiting   idle            10.175.90.107                   Waiting for integrations: [`ldap`]
-slurmdbd/0*    active    idle   2        10.175.90.105
-slurmrestd/0*  active    idle   1        10.175.90.215
+Unit            Workload  Agent  Machine  Public address  Ports          Message
+ceph-fs/0*      active    idle   5        10.2.171.6                     Unit is ready
+microceph/0*    active    idle   4        10.2.171.220                   (workload) charm is ready
+sackd/0*        active    idle   3        10.2.171.238    6818/tcp
+  apptainer/0*  active    idle            10.2.171.238
+  scratch/2     active    idle            10.2.171.238                   Mounted filesystem at `/scratch`
+  sssd/0*       waiting   idle            10.2.171.238                   Waiting for integrations: [`ldap`]
+slurmctld/0*    active    idle   0        10.2.171.197    6817,9092/tcp  primary - UP
+  sssd/3        waiting   idle            10.2.171.197                   Waiting for integrations: [`ldap`]
+slurmd/0*       active    idle   1        10.2.171.79     6818/tcp
+  apptainer/1   active    idle            10.2.171.79
+  scratch/1     active    idle            10.2.171.79                    Mounted filesystem at `/scratch`
+  sssd/1        waiting   idle            10.2.171.79                    Waiting for integrations: [`ldap`]
+slurmd/1        active    idle   2        10.2.171.120    6818/tcp
+  apptainer/2   active    idle            10.2.171.120
+  scratch/0*    active    idle            10.2.171.120                   Mounted filesystem at `/scratch`
+  sssd/2        waiting   idle            10.2.171.120                   Waiting for integrations: [`ldap`]
 
-Machine  State    Address        Inst id        Base          AZ  Message
-0        started  10.175.90.64   juju-0f356d-0  ubuntu@24.04      Running
-1        started  10.175.90.215  juju-0f356d-1  ubuntu@24.04      Running
-2        started  10.175.90.105  juju-0f356d-2  ubuntu@24.04      Running
-3        started  10.175.90.111  juju-0f356d-3  ubuntu@22.04      Running
-4        started  10.175.90.100  juju-0f356d-4  ubuntu@24.04      Running
-5        started  10.175.90.107  juju-0f356d-5  ubuntu@24.04      Running
+Machine  State    Address       Inst id        Base          AZ                    Message
+0        started  10.2.171.197  juju-9890c4-0  ubuntu@26.04  charmed-hpc-tutorial  Running
+1        started  10.2.171.79   juju-9890c4-1  ubuntu@26.04  charmed-hpc-tutorial  Running
+2        started  10.2.171.120  juju-9890c4-2  ubuntu@26.04  charmed-hpc-tutorial  Running
+3        started  10.2.171.238  juju-9890c4-3  ubuntu@26.04  charmed-hpc-tutorial  Running
+4        started  10.2.171.220  juju-9890c4-4  ubuntu@24.04  charmed-hpc-tutorial  Running
+5        started  10.2.171.6    juju-9890c4-5  ubuntu@24.04  charmed-hpc-tutorial  Running
 :::

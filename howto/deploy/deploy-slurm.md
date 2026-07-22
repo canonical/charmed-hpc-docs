@@ -54,11 +54,11 @@ the storage database for slurmdbd:
 :::
 
 :::{code-block} shell
-juju deploy sackd --base "ubuntu@24.04" --channel "edge"
-juju deploy slurmctld --base "ubuntu@24.04" --channel "edge"
-juju deploy slurmd --base "ubuntu@24.04" --channel "edge"
-juju deploy slurmdbd --base "ubuntu@24.04" --channel "edge"
-juju deploy slurmrestd --base "ubuntu@24.04" --channel "edge"
+juju deploy sackd --base "ubuntu@26.04" --channel "edge"
+juju deploy slurmctld --base "ubuntu@26.04" --channel "edge"
+juju deploy slurmd --base "ubuntu@26.04" --channel "edge"
+juju deploy slurmdbd --base "ubuntu@26.04" --channel "edge"
+juju deploy slurmrestd --base "ubuntu@26.04" --channel "edge"
 juju deploy mysql --channel "8.0/stable"
 :::
 
@@ -151,32 +151,32 @@ Your Slurm deployment will become active within a few minutes. The output of the
 :::{terminal}
 juju status
 
-Model  Controller   Cloud/Region         Version  SLA          Timestamp
-slurm  charmed-hpc  charmed-hpc/default  3.6.0    unsupported  17:16:37Z
+Model  Controller              Cloud/Region         Version  SLA          Timestamp
+slurm  charmed-hpc-controller  localhost/localhost  3.6.27   unsupported  17:34:28-06:00
 
-App         Version          Status  Scale  Charm       Channel      Rev  Exposed  Message
-mysql       8.0.39-0ubun...  active      1  mysql       8.0/stable   313  no
-sackd       23.11.4-1.2u...  active      1  sackd       latest/edge    4  no
-slurmctld   23.11.4-1.2u...  active      1  slurmctld   latest/edge   86  no       primary - UP
-slurmd      23.11.4-1.2u...  active      1  slurmd      latest/edge  107  no
-slurmdbd    23.11.4-1.2u...  active      1  slurmdbd    latest/edge   78  no
-slurmrestd  23.11.4-1.2u...  active      1  slurmrestd  latest/edge   80  no
+App         Version          Status  Scale  Charm       Channel     Rev  Exposed  Message
+mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable  444  no
+sackd       25.11.2-1ubu...  active      1  sackd                    67  no
+slurmctld   25.11.2-1ubu...  active      1  slurmctld               144  no       primary - UP
+slurmd      25.11.2-1ubu...  active      1  slurmd                  165  no
+slurmdbd    25.11.2-1ubu...  active      1  slurmdbd                150  no
+slurmrestd  25.11.2-1ubu...  active      1  slurmrestd              151  no
 
-Unit           Workload  Agent      Machine  Public address  Ports           Message
-mysql/0*       active    idle       5        10.32.18.127    3306,33060/tcp  Primary
-sackd/0*       active    idle       4        10.32.18.203
-slurmctld/0*   active    idle       0        10.32.18.15                     primary - UP
-slurmd/0*      active    idle       1        10.32.18.207
-slurmdbd/0*    active    idle       2        10.32.18.102
-slurmrestd/0*  active    idle       3        10.32.18.9
+Unit           Workload  Agent  Machine  Public address  Ports           Message
+mysql/0*       active    idle   4        10.2.171.104    3306,33060/tcp  Primary
+sackd/0*       active    idle   0        10.2.171.132    6818/tcp
+slurmctld/0*   active    idle   1        10.2.171.16     6817,9092/tcp   primary - UP
+slurmd/0*      active    idle   3        10.2.171.246    6818/tcp
+slurmdbd/0*    active    idle   2        10.2.171.26     6819/tcp
+slurmrestd/0*  active    idle   5        10.2.171.147    6820/tcp
 
-Machine  State    Address       Inst id        Base          AZ  Message
-0        started  10.32.18.15   juju-d566c2-0  ubuntu@24.04      Running
-1        started  10.32.18.207  juju-d566c2-1  ubuntu@24.04      Running
-2        started  10.32.18.102  juju-d566c2-2  ubuntu@24.04      Running
-3        started  10.32.18.9    juju-d566c2-3  ubuntu@24.04      Running
-4        started  10.32.18.203  juju-d566c2-4  ubuntu@24.04      Running
-5        started  10.32.18.127  juju-d566c2-5  ubuntu@22.04      Running
+Machine  State    Address       Inst id        Base          AZ                    Message
+0        started  10.2.171.132  juju-7c7460-0  ubuntu@26.04  charmed-hpc-tutorial  Running
+1        started  10.2.171.16   juju-7c7460-1  ubuntu@26.04  charmed-hpc-tutorial  Running
+2        started  10.2.171.26   juju-7c7460-2  ubuntu@26.04  charmed-hpc-tutorial  Running
+3        started  10.2.171.246  juju-7c7460-3  ubuntu@26.04  charmed-hpc-tutorial  Running
+4        started  10.2.171.104  juju-7c7460-4  ubuntu@22.04  charmed-hpc-tutorial  Running
+5        started  10.2.171.147  juju-7c7460-5  ubuntu@26.04  charmed-hpc-tutorial  Running
 :::
 
 (deploy-slurmctld-high-availability)=
@@ -214,7 +214,7 @@ acts as the primary Slurm controller, and the other unit serves as the backup co
 juju deploy filesystem-client --channel latest/edge
 juju integrate filesystem-client:filesystem [filesystem-provider]:filesystem
 
-juju deploy slurmctld --base "ubuntu@24.04" --channel "edge" --num-units 2
+juju deploy slurmctld --base "ubuntu@26.04" --channel "edge" --num-units 2
 juju integrate slurmctld:mount filesystem-client:mount
 :::
 
@@ -290,27 +290,27 @@ Slurm on virtual machines instead of system containers:
 
 :::{code-block} shell
 juju deploy sackd \
-  --base "ubuntu@24.04" \
+  --base "ubuntu@26.04" \
   --channel "edge" \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmctld \
-  --base "ubuntu@24.04" \
+  --base "ubuntu@26.04" \
   --channel "edge" \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmd \
-  --base "ubuntu@24.04" \
+  --base "ubuntu@26.04" \
   --channel "edge" \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmdbd \
-  --base "ubuntu@24.04" \
+  --base "ubuntu@26.04" \
   --channel "edge" \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmrestd \
-  --base "ubuntu@24.04" \
+  --base "ubuntu@26.04" \
   --channel "edge" \
   --constraints="virt-type=virtual-machine"
 

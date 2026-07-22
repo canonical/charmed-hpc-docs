@@ -6,8 +6,8 @@ will be similar to the following:
 
 juju status
 
-Model  Controller              Cloud/Region         Version  SLA          Timestamp
-slurm  charmed-hpc-controller  charmed-hpc/default  3.6.12   unsupported  16:17:13-04:00
+Model  Controller              Cloud/Region         Version   SLA          Timestamp
+slurm  charmed-hpc-controller  charmed-hpc/default  3.6.26.1  unsupported  16:17:13-04:00
 
 SAAS              Status  Store  URL
 ldap              active  local  admin/identity.ldap
@@ -34,10 +34,10 @@ slurmdbd/0*    active    idle   2        10.175.90.105
 slurmrestd/0*  active    idle   1        10.175.90.215
 
 Machine  State    Address        Inst id        Base          AZ  Message
-0        started  10.175.90.64   juju-0f356d-0  ubuntu@24.04      Running
-1        started  10.175.90.215  juju-0f356d-1  ubuntu@24.04      Running
-2        started  10.175.90.105  juju-0f356d-2  ubuntu@24.04      Running
+0        started  10.175.90.64   juju-0f356d-0  ubuntu@26.04      Running
+1        started  10.175.90.215  juju-0f356d-1  ubuntu@26.04      Running
+2        started  10.175.90.105  juju-0f356d-2  ubuntu@26.04      Running
 3        started  10.175.90.111  juju-0f356d-3  ubuntu@22.04      Running
-4        started  10.175.90.100  juju-0f356d-4  ubuntu@24.04      Running
-5        started  10.175.90.107  juju-0f356d-5  ubuntu@24.04      Running
+4        started  10.175.90.100  juju-0f356d-4  ubuntu@26.04      Running
+5        started  10.175.90.107  juju-0f356d-5  ubuntu@26.04      Running
 :::
