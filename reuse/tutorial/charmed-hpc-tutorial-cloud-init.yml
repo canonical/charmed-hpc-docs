@@ -10,7 +10,7 @@ package_upgrade: true
 # Install prerequisites
 snap:
   commands:
-    00: snap install juju --channel=3/stable
+    00: snap install juju --channel=3.6/candidate
     01: snap install lxd --channel=5.21/stable
 
 # Configure and initialize prerequisites

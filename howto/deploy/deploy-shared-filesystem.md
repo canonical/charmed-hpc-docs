@@ -69,7 +69,7 @@ First, launch a virtual machine using [LXD](https://canonical.com/lxd):
 :::{code-block} shell
 $ snap install lxd
 $ lxd init --auto
-$ lxc launch ubuntu:24.04 nfs-server --vm
+$ lxc launch ubuntu:26.04 nfs-server --vm
 $ lxc shell nfs-server
 :::
 
@@ -137,7 +137,7 @@ First, launch a virtual machine using [LXD](https://ubuntu.com/lxd):
 :::{code-block} shell
 snap install lxd
 lxd init --auto
-lxc launch ubuntu:24.04 cephfs-server --vm
+lxc launch ubuntu:26.04 cephfs-server --vm
 lxc shell cephfs-server
 :::
 

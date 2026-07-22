@@ -143,8 +143,8 @@ Once `slurmctld` is scaled up, the output of the `juju status`{l=shell} command 
 :::{terminal}
 juju status
 
-Model  Controller   Cloud/Region         Version  SLA          Timestamp
-slurm  charmed-hpc  localhost/localhost  3.6.0    unsupported  17:16:37Z
+Model  Controller   Cloud/Region         Version   SLA          Timestamp
+slurm  charmed-hpc  localhost/localhost  3.6.26.1  unsupported  17:16:37Z
 
 App                 Version          Status  Scale  Charm                Channel      Rev  Exposed  Message
 cephfs-server-proxy                  active      1  cephfs-server-proxy  latest/edge   25  no

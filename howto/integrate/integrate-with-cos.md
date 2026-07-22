@@ -57,7 +57,7 @@ model on your `charmed-hpc` machine cloud:
 :::{code-block} shell
 juju deploy opentelemetry-collector \
   --channel 2/stable \
-  --base "ubuntu@24.04"
+  --base "ubuntu@26.04"
 :::
 
 :::{include} /reuse/common/tip-determine-current-juju-model.txt
