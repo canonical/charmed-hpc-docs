@@ -49,15 +49,15 @@ Follow the instructions below to initialize the `charmed-hpc` machine cloud.
 
 To use LXD as the machine cloud for your Charmed HPC cluster, you will need to have:
 
-* [Installed LXD](https://documentation.ubuntu.com/lxd/en/stable-5.21/installing/)
-* [Initialized LXD](https://documentation.ubuntu.com/lxd/en/stable-5.21/howto/initialize/)
-* [Exposed LXD to the network](https://documentation.ubuntu.com/lxd/en/stable-5.21/howto/server_expose/)
-* [Configured a server trust password](https://documentation.ubuntu.com/lxd/en/stable-5.21/server/#server-core:core.trust_password)
+* [Installed LXD](https://canonical.com/lxd/docs/v5.21/installing/)
+* [Initialized LXD](https://canonical.com/lxd/docs/v5.21/howto/initialize/)
+* [Exposed LXD to the network](https://canonical.com/lxd/docs/v5.21/howto/server_expose/)
+* [Configured a server trust password](https://canonical.com/lxd/docs/v5.21/server/#server-core:core.trust_password)
 
 :::{admonition} New to LXD?
 :class: note
 
-If you're unfamiliar with operating an LXD server, see the [First steps with LXD](https://documentation.ubuntu.com/lxd/en/latest/tutorial/first_steps/)
+If you're unfamiliar with operating an LXD server, see the [First steps with LXD](https://canonical.com/lxd/docs/latest/tutorial/first_steps/)
 tutorial for a high-level introduction to LXD.
 :::
 
