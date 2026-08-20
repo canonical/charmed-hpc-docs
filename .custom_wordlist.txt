@@ -139,6 +139,7 @@ nfs
 OSSes
 OSTs
 userinfo
+vdev
 vdevs
 zpool
 

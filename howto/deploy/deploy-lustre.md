@@ -20,40 +20,47 @@ The `lustre-server` charm is in an experimental state and is not ready for produ
 
 ## Prerequisites
 
-- A [Slurm cluster](#howto-deploy-deploy-slurm).
 - The [Juju CLI client](https://documentation.ubuntu.com/juju/latest/user/howto/manage-juju/) installed on your machine.
 - Secure boot **disabled** on target machines, as the charm builds DKMS kernel modules.
 
+(howto-deploy-deploy-lustre-server)=
 ## Deploy the `lustre-server` charm
 
-To deploy the `lustre-server` charm:
+To deploy a default configuration, where the initial leader unit is a combined MGS+MDS and all remaining units are OSSes, run the following:
 
 :::{code-block} shell
 juju deploy lustre-server \
   --channel latest/edge \
-  -n 2
+  -n <number of units>
 :::
 
-At least two units are required; a single unit deployment is not supported.
+A minimum of two units is required; a single unit deployment is not supported.
 
-The Juju application leader at deployment time becomes a combined MGS+MDS unit. All additional units become OSSes, each providing one OST.
+## Deploy the `lustre-server` charm with custom LNet configuration
 
-Wait for all units in the deployment to become active:
+To override LNet auto-detection and deploy with a custom configuration, deploy as described in {ref}`howto-deploy-deploy-lustre-server` but include the `lnet-networks` configuration option following format: `<name>=<iface>[,<iface>...]`.
+
+For example, to configure LNet with a net name of `tcp` using the `eth0` interface, and a net name of `o2ib0` using the `ib0` and `ib1` interfaces, run the following:
 
 :::{code-block} shell
-juju status
+juju deploy lustre-server \
+  --channel latest/edge \
+  --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1" \
+  -n <number of units>
 :::
 
 ## Deploy the `filesystem-client` charm
 
-To mount the Lustre filesystem on client nodes, deploy the `filesystem-client` subordinate charm
-charm with `mountpoint` configuration set to the path Lustre should be mounted at on each client.
-Then integrate with the `lustre-server` application on the `filesystem` endpoint:
+To mount the Lustre filesystem on client nodes, deploy the `filesystem-client` subordinate charm,
+with the `mountpoint` configuration set to the path Lustre should be mounted at on each client and
+the `enable-lustre` configuration set to `true`. Then integrate with the `lustre-server` application
+on the `filesystem` endpoint:
 
 :::{code-block} shell
 juju deploy filesystem-client \
   --channel latest/edge \
-  --config mountpoint="/mnt/lustre"
+  --config mountpoint="/mnt/lustre" \
+  --config enable-lustre=true
 
 juju integrate filesystem-client:filesystem lustre-server:filesystem
 :::
