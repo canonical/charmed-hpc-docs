@@ -35,15 +35,23 @@ The `lustre-server` charm is in an experimental state and is not yet ready for p
 
 ### Package installation
 
-TODO
+The Lustre server packages are installed from a PPA maintained by the Ubuntu HPC team located at [`ppa:ubuntu-hpc/lustre-2.17`](https://launchpad.net/~ubuntu-hpc/+archive/ubuntu/lustre-2.17) and containing the latest stable release supported by the charm. Setup of the PPA and package install are handled automatically by the charm during its `install` hook.
 
 ### LNet configuration
 
-TODO
+LNet is Lustre's network layer, responsible for communication between clients and server components. The `lustre-server` charm can automatically detect network interfaces and configure LNet or a custom configuration can be provided using the `lnet-networks` option.
+
+Both the `lustre-server` and `filesystem-client` charms perform network auto-detection by default, during the charm `install` hook. LNet is automatically configured with a network name of `tcp` using the default route Ethernet interface and, if RDMA hardware such as InfiniBand is detected, another network name of `o2ib` using every RDMA device, in a multi-rail setup if multiple devices are detected.
+
+Auto-detection can be overridden by setting the `lnet-networks` configuration value. The format for `lnet-networks` is `<name>=<iface>[,<iface>...]`, where `<name>` is the LNet network name and `<iface>` is the network interface. For example, to configure LNet with a net name of `tcp` using the `eth0` interface, and a net name of `o2ib0` using the `ib0` and `ib1` interfaces, the following flag would be used:
+
+```shell
+--config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
+```
 
 ### Service placement
 
-TODO
+The charm automatically places the MGS and MDS on the initial leader unit, with all subsequent units becoming OSSes. A minimum of two units is required in a deployment.
 
 ### Storage
 
