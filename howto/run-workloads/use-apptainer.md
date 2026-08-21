@@ -1,5 +1,8 @@
 ---
 relatedlinks: "[Apptainer&#32;user&#32;documenation](https://apptainer.org/docs/user/latest/index.html)"
+myst:
+  html_meta:
+    description: Use Apptainer as a container runtime on Charmed HPC to run containerized jobs, create container images, and provide job runtime environments.
 ---
 
 (howto-use-apptainer)=
