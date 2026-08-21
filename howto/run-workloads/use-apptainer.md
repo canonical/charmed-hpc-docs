@@ -176,22 +176,23 @@ cat job.out
 Hello from Python 3.13.3 (main, Aug 14 2025, 11:53:40) [GCC 14.2.0]!
 :::
 
-[//]: # (TODO: Uncomment once https://github.com/canonical/slurm-charms/issues/143 is fixed.)
-<!--
 ### Using the `--container` flag with `sbatch`{l=shell}
 
-Declare in your batch script's front matter both the partition you want your workload to run within
-and the container that will provide the runtime environment of your workload. For example, to create
-a batch script with `compute ` selected as the partition your workload will run
-within, and use a container with Python 3.13 pre-installed as the runtime environment:
+Jobs submitted to Slurm with `sbatch`{l=shell} can be run inside a container instance 
+using Apptainer.
+
+For example, to run some Java code using a containerized OpenJDK 25 runtime, create
+the job script _job.batch_. In this job script, the Java container you pull from Dockerhub
+will provide the runtime environment for your job when you submit the job to the 
+partition `compute`:
 
 :::{code-block} shell
 #!/usr/bin/env bash
 #SBATCH --partition compute
-#SBATCH --container docker://ubuntu/python:3.13-25.04
+#SBATCH --container docker://ubuntu/jdk:25-26.04_stable
 #SBATCH --output stdout-%j.log
 
-python3 --version
+java --version
 :::
 
 Now submit your batch script using the `sbatch`{l=shell} command:
@@ -202,7 +203,25 @@ Now submit your batch script using the `sbatch`{l=shell} command:
 
 sbatch my-job.batch
 :::
--->
+
+Then, use `cat`{l=shell} to view the results of your job after it completes:
+
+:::{code-block} shell
+cat job.out
+:::
+
+The output of `cat job.out`{l=shell} will be similar to the following:
+
+:::{terminal}
+:copy:
+:host: login
+
+cat job.out
+
+openjdk 25.0.3 2026-04-21
+OpenJDK Runtime Environment (build 25.0.3+9-2-26.04.2-Ubuntu)
+OpenJDK 64-Bit Server VM (build 25.0.3+9-2-26.04.2-Ubuntu, mixed mode)
+:::
 
 ### Use the `--container` flag with `srun`{l=shell}
 
