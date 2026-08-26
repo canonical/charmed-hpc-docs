@@ -31,14 +31,11 @@ Connect your cluster to observability platforms and workload tools.
 (howto-manage)=
 ## Manage your cluster
 
-- {ref}`howto-manage-customize-job-email-name`
+Operate your cluster after deployment, including node-level tasks and cluster-wide maintenance.
+
+- {ref}`Manage compute nodes and partitions <howto-manage-compute-nodes>`
+- {ref}`Rotate authentication keys <howto-manage-rotate-slurm-keys>`
 - {ref}`howto-manage-single-slurmctld-to-high-availability`
-- {ref}`howto-manage-rotate-auth-key`
-- {ref}`howto-manage-rotate-jwt-key`
-- {ref}`howto-manage-custom-node-config`
-- {ref}`howto-manage-default-node-state`
-- {ref}`howto-manage-node-state`
-- {ref}`howto-manage-scale-partitions`
 
 ## Run workloads
 

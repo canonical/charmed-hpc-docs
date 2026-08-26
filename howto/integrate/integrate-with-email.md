@@ -81,11 +81,45 @@ Once integrated, users can include the [`--mail-type`](https://slurm.schedmd.com
 and [`--mail-user`](https://slurm.schedmd.com/sbatch.html#OPT_mail-user) SBATCH directives in their
 job submissions and receive email notifications.
 
+(howto-manage-customize-job-email-name)=
+## Customize job notification sender name
+
+This section requires that the Slurm cluster has been integrated with a mail server to enable job
+notifications.
+
+To customize the name that appears in the sign-off of email notifications sent by Slurm, set the
+`slurmctld` configuration value `email-from-name`:
+
+:::::{tab-set}
+
+::::{tab-item} CLI
+:sync: cli
+
+:::{code-block} shell
+juju config slurmctld email-from-name="The my-cluster-name Admin Team"
+:::
+
+::::
+
+::::{tab-item} Terraform
+:sync: terraform
+
+:::{code-block} terraform
+:caption: `main.tf`
+module "slurmctld" {
+  source      = "git::https://github.com/canonical/slurm-charms//charms/slurmctld/terraform"
+  model_uuid  = juju_model.slurm.uuid
+  config = {
+    email-from-name = "The my-cluster-name Admin Team"
+  }
+}
+:::
+
+::::
+
+:::::
+
 ## Related topics
-
-How-to guides:
-
-* {ref}`howto-manage-customize-job-email-name`
 
 Explanation:
 

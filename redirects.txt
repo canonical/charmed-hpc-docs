@@ -22,3 +22,5 @@ howto/setup/deploy-identity-provider/ howto/deploy/deploy-identity-provider/
 
 howto/use/index/ howto/run-workloads/index/
 howto/use/use-apptainer/ howto/run-workloads/use-apptainer/
+
+howto/manage/manage-slurm/ howto/manage/manage-compute-nodes/
