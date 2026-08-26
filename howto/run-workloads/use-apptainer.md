@@ -190,10 +190,12 @@ will provide the runtime environment for your job when you submit the job to the
 partition `compute`:
 
 :::{code-block} shell
+:caption: job.batch
+
 #!/usr/bin/env bash
 #SBATCH --partition compute
 #SBATCH --container docker://ubuntu/jdk:25-26.04_stable
-#SBATCH --output stdout-%j.log
+#SBATCH --output job.out
 
 java --version
 :::
@@ -204,7 +206,7 @@ Now submit your batch script using the `sbatch`{l=shell} command:
 :copy:
 :host: login
 
-sbatch my-job.batch
+sbatch job.batch
 :::
 
 Then, use `cat`{l=shell} to view the results of your job after it completes:
