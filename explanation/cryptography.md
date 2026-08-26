@@ -19,7 +19,7 @@ This subsystem is used by the following Charmed HPC Slurm charms:
 
 SACK requires sharing a cryptographically secure key between all the Slurm nodes in a cluster. To generate this key, the charms
 use the [`secrets`](https://docs.python.org/3/library/secrets.html) library from the Python Standard Library, which uses either
-[`getrandom(2)`](https://man7.org/linux/man-pages/man2/getrandom.2.html) if available, and
+[`getrandom(2)`](https://manpages.ubuntu.com/manpages/resolute/man2/getrandom.2.html) if available, and
 [`/dev/urandom`](https://en.wikipedia.org/wiki//dev/random) otherwise.
 
 
