@@ -26,7 +26,7 @@ The `lustre-server` charm is in an experimental state and is not ready for produ
 (howto-deploy-deploy-lustre-server)=
 ## Deploy the `lustre-server` charm
 
-To deploy a default configuration, where the initial leader unit is a combined MGS+MDS and all remaining units are OSSes, run the following:
+To deploy with the default configuration, where the initial leader unit is a combined MGS+MDS and all remaining units are OSSes, run the following:
 
 :::{code-block} shell
 juju deploy lustre-server \
