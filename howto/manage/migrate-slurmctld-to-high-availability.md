@@ -91,7 +91,7 @@ resource "juju_integration" "filesystem-to-slurmctld" {
 
 :::::
 
-Once `slurmctld` is scaled up, the output of the `juju status`{l=shell} command should be similar to the following, varying by choice of shared file system - here CephFS:
+Once an additional `slurmctld` unit is added, the output of the `juju status`{l=shell} command should be similar to the following, varying by choice of shared file system - here CephFS:
 
 :::{terminal}
 juju status
