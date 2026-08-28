@@ -12,11 +12,7 @@ This how-to guide shows you how to deploy the Lustre parallel filesystem in your
 cluster using the `lustre-server` charm, and integrate it with compute nodes via the
 `filesystem-client` charm.
 
-:::{admonition} Experimental
-:class: warning
-
-The `lustre-server` charm is in an experimental state and is not ready for production use.
-:::
+For an explanation of Lustre and related terminology, see the {ref}`Lustre explanation page <explanation-lustre>`.
 
 ## Prerequisites
 
@@ -26,7 +22,7 @@ The `lustre-server` charm is in an experimental state and is not ready for produ
 (howto-deploy-deploy-lustre-server)=
 ## Deploy the `lustre-server` charm
 
-To deploy with the default configuration, where the initial leader unit is a combined MGS+MDS and all remaining units are OSSes, run the following:
+To deploy with the default configuration, where the initial leader unit is a combined MGS+MDS (Management Server + Metadata Server) and all remaining units are OSSes (Object Storage Servers), run the following:
 
 :::{code-block} shell
 juju deploy lustre-server \
@@ -34,11 +30,11 @@ juju deploy lustre-server \
   -n <number of units>
 :::
 
-A minimum of two units is required; a single unit deployment is not supported.
+A minimum of two units is required; one combined MGS+MDS and one OSS unit. A single unit deployment is not supported.
 
-## Deploy the `lustre-server` charm with custom LNet configuration
+### Deploy with custom LNet configuration
 
-To override LNet auto-detection and deploy with a custom configuration, deploy as described in {ref}`howto-deploy-deploy-lustre-server` but include the `lnet-networks` configuration option following format: `<name>=<iface>[,<iface>...]`.
+If the {ref}`default LNet auto-detection of a "tcp" Network Identifier (NID) on the default route interface and a multi-rail "o2ib" NID on all detected RDMA devices <explanation-lustre-lnet-configuration>` is not suitable for your deployment (for example, you wish to exclude the "tcp" network or wish to disable multi-rail), override by deploying as described in {ref}`howto-deploy-deploy-lustre-server` but include the `lnet-networks` configuration option following format: `<name>=<iface>[,<iface>...]`.
 
 For example, to configure LNet with a net name of `tcp` using the `eth0` interface, and a net name of `o2ib0` using the `ib0` and `ib1` interfaces, run the following:
 
