@@ -132,6 +132,7 @@ cephfs
 cephx
 fsid
 ldiskfs
+LNDs
 LNet
 MicroCeph
 NFS
