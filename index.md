@@ -6,11 +6,105 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 
 ## In this documentation
 
-- __Learn more about Charmed HPC:__ [Getting Started tutorial](tutorial-getting-started-with-charmed-hpc), [Underlying projects](reference/underlying-projects-and-dependencies.md)
-- __Workload management:__ [Deploy Slurm](howto/deploy/deploy-slurm.md), [Manage compute nodes and partitions](howto/manage/manage-compute-nodes.md), [Rotate authentication keys](howto/manage/rotate-authentication-keys.md), [Migrate Slurm controller to high availability](howto/manage/migrate-slurmctld-to-high-availability.md), [Clean up Slurm](howto/cleanup/cleanup-slurm.md), [Grafana Dashboards](reference/monitoring/grafana-dashboards.md)
-- __Storage and Resources:__ [Deploy shared filesystem](howto/deploy/deploy-shared-filesystem.md), [GPUs](explanation/gpus.md), [GRES](reference/gpus.md), [Interconnects](explanation/interconnects.md)
-- __Security and Identity:__ [Deploy identity provider](howto/deploy/deploy-identity-provider.md), [Hardening guidelines](reference/hardening.md), [Cryptography](explanation/cryptography.md)
-- __Performance:__ [High availability](explanation/high-availability.md), [Benchmarks](reference/performance.md)
+### Getting started
+
+::::{domain}
+:::{slice} Tutorial
+{doc}`Getting started with Charmed HPC <getting-started>`
+:::
+
+:::{slice} Installation
+{doc}`Initialize cloud environment <howto/initialize-cloud-environment>`
+{doc}`Deploy Slurm <howto/deploy/deploy-slurm>`
+{doc}`Deploy a shared filesystem <howto/deploy/deploy-shared-filesystem>`
+:::
+::::
+
+### Hardware and architecture
+
+::::{domain}
+:::{slice} Hardware
+{doc}`GPUs <explanation/gpus>`
+{doc}`GPU resource scheduling <reference/gpus>`
+{doc}`Interconnects <explanation/interconnects>`
+{doc}`Public cloud interconnects <reference/interconnects>`
+:::
+
+:::{slice} Architecture and foundations
+{doc}`Underlying projects and dependencies <reference/underlying-projects-and-dependencies>`
+:::
+::::
+
+### Purpose-built capabilities
+
+::::{domain}
+:::{slice} Running workloads
+{doc}`Integrate with Apptainer <howto/integrate/integrate-with-apptainer>`
+{doc}`Use Apptainer <howto/run-workloads/use-apptainer>`
+:::
+
+:::{slice} Configuration and tuning
+{doc}`Manage compute nodes and partitions <howto/manage/manage-compute-nodes>`
+:::
+
+:::{slice} Observability and monitoring
+{doc}`Integrate with COS <howto/integrate/integrate-with-cos>`
+{doc}`Integrate with InfluxDB <howto/integrate/integrate-with-influxdb>`
+{doc}`Integrate with a mail server <howto/integrate/integrate-with-email>`
+{doc}`Email notifications for jobs <explanation/job-email-notifications>`
+{doc}`Grafana dashboards <reference/monitoring/grafana-dashboards>`
+{doc}`Prometheus alerts <reference/monitoring/prometheus-alerts>`
+{doc}`Prometheus metrics <reference/monitoring/prometheus-metrics>`
+{doc}`Loki logs <reference/monitoring/loki-logs>`
+:::
+
+:::{slice} Reliability and availability
+{doc}`High availability <explanation/high-availability>`
+{doc}`Migrate Slurm controller to high availability <howto/manage/migrate-slurmctld-to-high-availability>`
+{doc}`Instance auto-reboots <explanation/reboot-timing>`
+:::
+::::
+
+### Performance, identity, and security
+
+::::{domain}
+:::{slice} Performance
+{doc}`Benchmark results <reference/performance>` slice
+:::
+
+:::{slice} Identity and access
+{doc}`Deploy an identity provider <howto/deploy/deploy-identity-provider>`
+:::
+
+:::{slice} Security and cryptography
+{doc}`Security hardening guidelines <reference/hardening>`
+{doc}`Cryptography and authentication <explanation/cryptography>`
+{doc}`Key rotation <explanation/key-rotation>`
+{doc}`Rotate authentication keys <howto/manage/rotate-authentication-keys>`
+:::
+::::
+
+### Lifecycle
+
+::::{domain}
+:::{slice} Decommission and clean up
+{doc}`Clean up Slurm <howto/cleanup/cleanup-slurm>`
+{doc}`Clean up cloud resources <howto/cleanup/cleanup-cloud-resources>`
+:::
+::::
+
+### Reference and community
+
+::::{domain}
+:::{slice} Reference
+{doc}`Glossary <reference/glossary>`
+:::
+
+:::{slice} Contribute
+{doc}`Contributing to documentation <contributing/documentation>`
+{doc}`Contributing to code <contributing/code>`
+:::
+::::
 
 ## How this documentation is organized
 
