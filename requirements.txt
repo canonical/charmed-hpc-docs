@@ -40,4 +40,5 @@ GitPython
 linkify-it-py
 sphinxcontrib-mermaid
 sphinxext-rediraffe
+sphinx-structured-toc
 # End project-specific dependencies
