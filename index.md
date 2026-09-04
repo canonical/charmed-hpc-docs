@@ -20,14 +20,14 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 :::
 ::::
 
-### Architecture and supported hardware
+### Architecture and hardware support
 
 ::::{domain}
 :::{slice} Architecture and foundations
 {doc}`Underlying projects and dependencies <reference/underlying-projects-and-dependencies>`
 :::
 
-:::{slice} Supported hardware
+:::{slice} Hardware support
 {doc}`GPUs <explanation/gpus>`
 {doc}`GPU resource scheduling <reference/gpus>`
 {doc}`Interconnects <explanation/interconnects>`
@@ -41,6 +41,8 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 :::{slice} Running workloads
 {doc}`Integrate with Apptainer <howto/integrate/integrate-with-apptainer>`
 {doc}`Use Apptainer <howto/run-workloads/use-apptainer>`
+{doc}`Integrate with a mail server <howto/integrate/integrate-with-email>`
+{doc}`Email notifications for jobs <explanation/job-email-notifications>`
 :::
 
 :::{slice} Configuration and tuning
@@ -50,8 +52,6 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 :::{slice} Observability and monitoring
 {doc}`Integrate with COS <howto/integrate/integrate-with-cos>`
 {doc}`Integrate with InfluxDB <howto/integrate/integrate-with-influxdb>`
-{doc}`Integrate with a mail server <howto/integrate/integrate-with-email>`
-{doc}`Email notifications for jobs <explanation/job-email-notifications>`
 {doc}`Grafana dashboards <reference/monitoring/grafana-dashboards>`
 {doc}`Prometheus alerts <reference/monitoring/prometheus-alerts>`
 {doc}`Prometheus metrics <reference/monitoring/prometheus-metrics>`
