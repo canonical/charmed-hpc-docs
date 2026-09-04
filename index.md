@@ -20,21 +20,6 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 :::
 ::::
 
-### Architecture and hardware support
-
-::::{domain}
-:::{slice} Architecture and foundations
-{doc}`Underlying projects and dependencies <reference/underlying-projects-and-dependencies>`
-:::
-
-:::{slice} Hardware support
-{doc}`GPUs <explanation/gpus>`
-{doc}`GPU resource scheduling <reference/gpus>`
-{doc}`Interconnects <explanation/interconnects>`
-{doc}`Public cloud interconnects <reference/interconnects>`
-:::
-::::
-
 ### Capabilities and integrations
 
 ::::{domain}
@@ -81,6 +66,21 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 {doc}`Cryptography and authentication <explanation/cryptography>`
 {doc}`Key rotation <explanation/key-rotation>`
 {doc}`Rotate authentication keys <howto/manage/rotate-authentication-keys>`
+:::
+::::
+
+### Architecture and hardware support
+
+::::{domain}
+:::{slice} Architecture and foundations
+{doc}`Underlying projects and dependencies <reference/underlying-projects-and-dependencies>`
+:::
+
+:::{slice} Hardware support
+{doc}`GPUs <explanation/gpus>`
+{doc}`GPU resource scheduling <reference/gpus>`
+{doc}`Interconnects <explanation/interconnects>`
+{doc}`Public cloud interconnects <reference/interconnects>`
 :::
 ::::
 
