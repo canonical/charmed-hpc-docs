@@ -2,7 +2,7 @@
 myst:
   html_meta:
     description: Instructions on how to deploy the Lustre parallel filesystem in a Charmed HPC cluster using the lustre-server charm.
-relatedlinks: "[Lustre&#32;website](https://wiki.lustre.org/), [filesystem-charms&#32;repository](https://github.com/canonical/filesystem-charms)"
+relatedlinks: "[Lustre&#32;wiki](https://wiki.lustre.org/), [Lustre&#32;manual](https://doc.lustre.org/lustre_manual.xhtml), [filesystem-charms&#32;repository](https://github.com/canonical/filesystem-charms)"
 ---
 
 (howto-deploy-deploy-lustre)=
@@ -22,42 +22,75 @@ For an explanation of Lustre and related terminology, see the {ref}`Lustre expla
 (howto-deploy-deploy-lustre-server)=
 ## Deploy the `lustre-server` charm
 
-To deploy with the default configuration, where the initial leader unit is a combined MGS+MDS (Management Server + Metadata Server) and all remaining units are OSSes (Object Storage Servers), run the following:
+A Lustre deployment requires at least two `lustre-server` units:
+
+- One combined Management Server and Metadata Server (MGS+MDS).
+- One or more Object Storage Servers (OSSes).
+
+Deploy the required units:
 
 :::{code-block} shell
 juju deploy lustre-server \
   --channel latest/edge \
-  -n <number of units>
+  -n <number-of-units>
 :::
 
-A minimum of two units is required; one combined MGS+MDS and one OSS unit. A single unit deployment is not supported.
+Assign the unit roles by attaching storage. To configure `lustre-server/0` as the combined MGS+MDS, attach storage to its `mgt-mdt` endpoint:
 
+:::{code-block} shell
+juju add-storage lustre-server/0 mgt-mdt=loop,2,1G
+:::
+
+creating two 1GB volumes for `mgt-mdt`.
+
+To configure `lustre-server/1` as an OSS, attach storage to its `ost` endpoint:
+
+:::{code-block} shell
+juju add-storage lustre-server/1 ost=loop,4,1G
+:::
+
+creating four 1GB volumes for `ost`.
+
+Repeat the `juju add-storage` command for each additional unit that should act as an OSS.
+
+The `loop` storage pool is suitable for testing only. For a production deployment, replace it with an [appropriate Juju storage pool](https://canonical.com/juju/docs/juju-cli/latest/reference/storage/#storage-pool) and choose capacities suitable for the filesystem workload.
+
+(howto-deploy-deploy-lustre-custom-lnet)=
 ### Deploy with custom LNet configuration
 
-If the {ref}`default LNet auto-detection of a "tcp" Network Identifier (NID) on the default route interface and a multi-rail "o2ib" NID on all detected RDMA devices <explanation-lustre-lnet-configuration>` is not suitable for your deployment (for example, you wish to exclude the "tcp" network or wish to disable multi-rail), override by deploying as described in {ref}`howto-deploy-deploy-lustre-server` but include the `lnet-networks` configuration option following format: `<name>=<iface>[,<iface>...]`.
+By default, the charm configures a `tcp` LNet network on the interface that provides the default route. If it detects RDMA interfaces, it also configures them as a multi-rail `o2ib` network.
 
-For example, to configure LNet with a net name of `tcp` using the `eth0` interface, and a net name of `o2ib0` using the `ib0` and `ib1` interfaces, run the following:
+Deploy `lustre-server` with the `lnet-networks` configuration option set when you need to override the default. For example, to select specific interfaces or exclude an automatically detected interface. For help planning the network configuration, see {ref}`LNet configuration <explanation-lustre-lnet-configuration>` and the [Lustre Operations Manual](https://doc.lustre.org/lustre_manual.xhtml#understandinglustrenetworking).
+
+Set this option only during the initial deployment. Changes to `lnet-networks` after deployment are not applied.
+
+The option accepts semicolon-separated network definitions in the format `<name>=<iface>[,<iface>...]`. For example, the following command configures `tcp` on `eth0` and a multi-rail `o2ib0` network on `ib0` and `ib1`:
 
 :::{code-block} shell
 juju deploy lustre-server \
   --channel latest/edge \
   --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1" \
-  -n <number of units>
+  -n <number-of-units>
 :::
 
 ## Deploy the `filesystem-client` charm
 
 To mount the Lustre filesystem on client nodes, deploy the `filesystem-client` subordinate charm,
 with the `mountpoint` configuration set to the path Lustre should be mounted at on each client and
-the `enable-lustre` configuration set to `true`. Then integrate with the `lustre-server` application
-on the `filesystem` endpoint:
+the `enable-lustre` configuration set to `true`. Note, if you deployed `lustre-server` with a
+{ref}`custom LNet configuration <howto-deploy-deploy-lustre-custom-lnet>`, you must also include a
+compatible `lnet-networks` configuration in the following command:
 
 :::{code-block} shell
 juju deploy filesystem-client \
   --channel latest/edge \
   --config mountpoint="/mnt/lustre" \
   --config enable-lustre=true
+:::
 
+Then integrate with the `lustre-server` application on the `filesystem` endpoint:
+
+:::{code-block} shell
 juju integrate filesystem-client:filesystem lustre-server:filesystem
 :::
 
@@ -102,7 +135,7 @@ Confirm the Lustre filesystem is usable by creating a test file:
 juju exec --unit slurmd/0 -- sudo touch /mnt/lustre/afile
 :::
 
-then viewing the file stripe layout:
+then view the file stripe layout:
 
 :::{terminal}
 juju exec --unit slurmd/0 -- sudo lfs getstripe /mnt/lustre
