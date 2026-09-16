@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: Instructions on how to deploy the Lustre parallel filesystem in a Charmed HPC cluster using the lustre-server charm.
+    description: Learn how to deploy Lustre storage in a Charmed HPC cluster with the lustre-server and filesystem-client charms, configure LNet and storage, and mount it on compute nodes.
 relatedlinks: "[Lustre&#32;wiki](https://wiki.lustre.org/), [Lustre&#32;manual](https://doc.lustre.org/lustre_manual.xhtml), [filesystem-charms&#32;repository](https://github.com/canonical/filesystem-charms)"
 ---
 
@@ -12,7 +12,7 @@ This how-to guide shows you how to deploy the Lustre parallel filesystem in your
 cluster using the `lustre-server` charm, and integrate it with compute nodes via the
 `filesystem-client` charm.
 
-For an explanation of Lustre and related terminology, see the {ref}`Lustre explanation page <explanation-lustre>`.
+For an explanation on Lustre, how it's provided by the `lustre-server` charm in Charmed HPC, and related terminology, see the {ref}`Lustre explanation page <explanation-lustre>`.
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ For an explanation of Lustre and related terminology, see the {ref}`Lustre expla
 A Lustre deployment requires at least two `lustre-server` units:
 
 - One combined Management Server and Metadata Server (MGS+MDS).
-- One or more Object Storage Servers (OSSes).
+- One or more Object Storage Servers (OSS).
 
 Deploy `lustre-server` with the total number of units (MGS+MDS and OSS):
 
@@ -35,25 +35,25 @@ juju deploy lustre-server \
   -n <number-of-units>
 :::
 
-Assign the unit roles by attaching storage. To configure unit `lustre-server/0` as the combined MGS+MDS, attach storage to its `mgt-mdt` endpoint:
+Assign the unit roles by attaching storage. The following example commands use the `loop` storage pool, which is suitable for testing only. For a production deployment, replace it with an [appropriate Juju storage pool](https://canonical.com/juju/docs/juju-cli/latest/reference/storage/#storage-pool) and choose capacities suitable for the filesystem workload.
+
+For the MGS+MDS role, storage is arranged in a mirror configuration. An even number of volumes is required (such as 2, 4, or 6) and available capacity is approximately half the total volume capacity (four 1GB volumes provide ~2GB of usable capacity). To configure unit `lustre-server/0` as the combined MGS+MDS, attach storage to its `mgt-mdt` endpoint:
 
 :::{code-block} shell
-juju add-storage lustre-server/0 mgt-mdt=loop,2,1G
+juju add-storage lustre-server/0 mgt-mdt=loop,4,1G
 :::
 
-creating two 1GB volumes for `mgt-mdt`.
+creating four 1GB volumes for `mgt-mdt`.
 
-To configure `lustre-server/1` as an OSS, attach storage to its `ost` endpoint:
+For the OSS role, storage is arranged in a RAIDZ2 configuration. A minimum of three volumes is required and available capacity is approximately the total volume capacity minus the capacity of two volumes (six 1GB volumes provide ~4GB of usable capacity). To configure `lustre-server/1` as an OSS, attach storage to its `ost` endpoint:
 
 :::{code-block} shell
-juju add-storage lustre-server/1 ost=loop,4,1G
+juju add-storage lustre-server/1 ost=loop,6,1G
 :::
 
-creating four 1GB volumes for `ost`.
+creating six 1GB volumes for `ost`.
 
 Repeat the `juju add-storage` command for each additional unit that should act as an OSS.
-
-The `loop` storage pool is suitable for testing only. For a production deployment, replace it with an [appropriate Juju storage pool](https://canonical.com/juju/docs/juju-cli/latest/reference/storage/#storage-pool) and choose capacities suitable for the filesystem workload.
 
 (howto-deploy-deploy-lustre-custom-lnet)=
 ### Deploy with custom LNet configuration
@@ -76,10 +76,10 @@ juju deploy lustre-server \
 ## Deploy the `filesystem-client` charm
 
 To mount the Lustre filesystem on client nodes, deploy the `filesystem-client` subordinate charm,
-with the `mountpoint` configuration set to the path Lustre should be mounted at on each client and
-the `enable-lustre` configuration set to `true`. Note, if you deployed `lustre-server` with a
-{ref}`custom LNet configuration <howto-deploy-deploy-lustre-custom-lnet>`, you must also include a
-compatible `lnet-networks` configuration in the following command:
+setting `mountpoint` to the desired Lustre mount path on each client and the `enable-lustre` configuration set to `true`.
+
+Note, if you deployed `lustre-server` with a
+{ref}`custom LNet configuration <howto-deploy-deploy-lustre-custom-lnet>`, you must also provide a `lnet-networks` configuration that defines a common network between client and server, in the following command:
 
 :::{code-block} shell
 juju deploy filesystem-client \
@@ -101,7 +101,7 @@ mount Lustre. For example, to mount on all `slurmd` compute nodes of a Slurm clu
 juju integrate filesystem-client:juju-info slurmd:juju-info
 :::
 
-Lustre will then be mounted at `/mnt/lustre` on each compute node. Confirm this by running `juju status`{l=shell} and confirming the output is similar to the following:
+Lustre will then be mounted at the path defined in the `mountpoint` configuration, here `/mnt/lustre`, on each compute node. Confirm this by running `juju status`{l=shell} and confirming the output is similar to the following:
 
 :::{terminal}
 :scroll:
@@ -137,7 +137,7 @@ Confirm the Lustre filesystem is usable by creating a test file:
 juju exec --unit slurmd/0 -- sudo touch /mnt/lustre/afile
 :::
 
-then view the file stripe layout:
+then verify the file stripe layout can be queried successfully using the [`lfs getstripe`](https://doc.lustre.org/lustre_manual.xhtml#file_striping.lfs_getstripe) command:
 
 :::{terminal}
 juju exec --unit slurmd/0 -- sudo lfs getstripe /mnt/lustre
@@ -154,3 +154,5 @@ lmm_stripe_offset: 1
 	obdidx		 objid		 objid		 group
 	     1	             2	          0x2	   0x240000400
 :::
+
+Confirm the output resembles the example above, indicating that the client can access the Lustre filesystem and communicate with its metadata and storage services. For further Lustre administration commands, refer to the [Lustre Operations Manual - Part III. Administering Lustre](https://doc.lustre.org/lustre_manual.xhtml#part3).

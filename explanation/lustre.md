@@ -1,16 +1,16 @@
 ---
 myst:
   html_meta:
-    description: Discover how Charmed HPC deploys Lustre, the open source parallel distributed filesystem for HPC, using the lustre-server charm for scalable cluster storage.
+    description: Discover Lustre architecture and how Charmed HPC provides scalable parallel storage with the lustre-server charm, including LNet, service placement, ZFS, and health checks.
 relatedlinks: "[Lustre&#32;wiki](https://wiki.lustre.org/), [Lustre&#32;manual](https://doc.lustre.org/lustre_manual.xhtml)"
 ---
 
 (explanation-lustre)=
 # Lustre
 
-## Architecture
-
 [Lustre](https://wiki.lustre.org/) is an open source parallel distributed filesystem designed for high-performance computing. It is the most widely used filesystem on the TOP500 list of HPC systems, providing high-throughput, scalable storage.
+
+## Architecture
 
 [The Lustre architecture](https://wiki.lustre.org/Lustre_Architecture_for_Admins) consists of "servers" that provide filesystem services and storage "targets" that hold their data:
 
@@ -21,7 +21,7 @@ relatedlinks: "[Lustre&#32;wiki](https://wiki.lustre.org/), [Lustre&#32;manual](
 - **Object Storage Server (OSS)**: Manages the file data. Handles I/O from Lustre clients.
 - **Object Storage Target (OST)**: Stores file data managed by an OSS. OSTs are Lustre's unit of data-storage parallelism: files can be striped across multiple OSTs and accessed in parallel. High bandwidth storage required.
 
-Lustre relies on a [backend filesystem](https://wiki.lustre.org/Lustre_Architecture_for_Admins#Backend_Filesystems) to perform data storage and handle low-level storage operations on targets. Two backend filesystems are supported: ldiskfs, a modification of the ext4 filesystem by the Lustre developers, and [ZFS](https://openzfs.org), a scalable filesystem supporting features that protect against data corruption. Lustre is overlaid on top of block storage devices formatted with one of these backend filesystems.
+Lustre relies on a [backend filesystem](https://wiki.lustre.org/Lustre_Architecture_for_Admins#Backend_Filesystems) to perform data storage and handle low-level storage operations on targets. Lustre supports two backend filesystems: ldiskfs, a modification of the ext4 filesystem by the Lustre developers, and [ZFS](https://openzfs.org), a scalable filesystem supporting features that protect against data corruption. Lustre is overlaid on top of block storage devices formatted with one of these backend filesystems.
 
 Clients access the filesystem by communicating with the MGS for configuration information, the MDS for metadata operations, and the OSSes directly for bulk data transfer. Communication occurs over [LNet](https://wiki.lustre.org/Lustre_Architecture_for_Admins#LNet_(Lustre_Networking)), Lustre's network layer, which supports TCP and high-speed interconnects such as InfiniBand.
 
@@ -49,7 +49,7 @@ LNet is Lustre's network layer, responsible for communication between clients an
 
 See the [Lustre Networking (LNET) Overview](https://wiki.lustre.org/Lustre_Networking_(LNET)_Overview) for further information.
 
-By default, the `lustre-server` and `filesystem-client` charms perform network auto-detection, configuring a `tcp` network on the Ethernet interface that provides the default route. If RDMA interfaces are detected, the charms also configure them as a multi-rail `o2ib` network.
+By default, the `lustre-server` and `filesystem-client` charms perform network auto-detection, configuring a `tcp` network on the Ethernet interface that provides the default route. If RDMA interfaces are detected, the charms also configure them as a multi-rail `o2ib` network. InfiniBand networks are fully supported by the charm. RoCE and other RDMA implementations may function but have not been fully validated.
 
 Auto-detection can be overridden by setting the `lnet-networks` charm configuration value. Set this option when Lustre traffic must use specific interfaces or when an automatically detected interface must be excluded. The option uses format:
 
@@ -63,7 +63,7 @@ where `<name>` is the LNet network name and `<iface>` is the network interface. 
 --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
 ```
 
-configures LNet with a net name of `tcp` using the `eth0` interface, and a net name of `o2ib0` using the `ib0` and `ib1` interfaces.
+configures LNet with a network name of `tcp` using the `eth0` interface, and a network name of `o2ib0` using the `ib0` and `ib1` interfaces.
 
 Note, the `lustre-server` and `filesystem-client` charms must share LNet configurations (compatible `lnet-networks` values) otherwise they will not be able to communicate and the Lustre filesystem will not mount.
 
@@ -92,7 +92,7 @@ Storage is attached to charm units through two Juju storage endpoints:
 
 The charm combines the storage attached to each unit into a ZFS pool, with the pool layout determined by the unit's role.
 
-On the combined MGS+MDS unit, the charm groups the disks attached to `mgt-mdt` into a zpool of mirrored vdevs. This layout prioritizes the reliability and random-I/O performance required for filesystem metadata. As each disk is mirrored, an even number of disks is required and usable capacity is approximately half of the total raw capacity.
+On the combined MGS+MDS unit, the charm groups the disks attached to `mgt-mdt` into a zpool of mirrored vdevs. This layout prioritizes the reliability and random-I/O performance required for filesystem metadata. Because each disk is mirrored, an even number of disks is required and usable capacity is approximately half of the total raw capacity.
 
 On each OSS unit, the charm combines all disks attached to `ost` into a single RAIDZ2 vdev. The resulting zpool provides one OST per OSS. RAIDZ2 uses the equivalent capacity of two disks for parity and can tolerate the failure of any two disks in the vdev. A minimum of three disks is required and the approximate usable capacity of an OSS is the combined capacity of all its disks minus two disks.
 
@@ -102,6 +102,6 @@ The charm runs health checks during its `update-status` event that verify:
 
 - Peer relation data is present and consistent.
 - Required kernel modules are loaded.
-- Lustre service mounts are active.
+- Lustre MGS+MDS and OSS service mount points are present under `/mnt` and currently mounted.
 
 If all health checks pass while the unit is in a `BlockedStatus`, the unit is restored to `ActiveStatus`.
