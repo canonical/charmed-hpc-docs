@@ -27,7 +27,7 @@ A Lustre deployment requires at least two `lustre-server` units:
 - One combined Management Server and Metadata Server (MGS+MDS).
 - One or more Object Storage Servers (OSSes).
 
-Deploy the required units:
+Deploy `lustre-server` with the total number of units (MGS+MDS and OSS):
 
 :::{code-block} shell
 juju deploy lustre-server \
