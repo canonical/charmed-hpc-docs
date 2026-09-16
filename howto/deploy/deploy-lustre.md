@@ -104,6 +104,8 @@ juju integrate filesystem-client:juju-info slurmd:juju-info
 Lustre will then be mounted at `/mnt/lustre` on each compute node. Confirm this by running `juju status`{l=shell} and confirming the output is similar to the following:
 
 :::{terminal}
+:scroll:
+
 juju status
 
 Model   Controller    Cloud/Region         Version  SLA          Timestamp
