@@ -35,7 +35,7 @@ juju deploy lustre-server \
   -n <number-of-units>
 :::
 
-Assign the unit roles by attaching storage. To configure `lustre-server/0` as the combined MGS+MDS, attach storage to its `mgt-mdt` endpoint:
+Assign the unit roles by attaching storage. To configure unit `lustre-server/0` as the combined MGS+MDS, attach storage to its `mgt-mdt` endpoint:
 
 :::{code-block} shell
 juju add-storage lustre-server/0 mgt-mdt=loop,2,1G
