@@ -16,6 +16,7 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 :::{slice} Installation
 {doc}`Initialize cloud environment <howto/initialize-cloud-environment>`
 {doc}`Deploy Slurm <howto/deploy/deploy-slurm>`
+{doc}`Deploy Lustre <howto/deploy/deploy-lustre>`
 {doc}`Deploy a shared filesystem <howto/deploy/deploy-shared-filesystem>`
 :::
 ::::
@@ -80,6 +81,7 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 {doc}`GPUs <explanation/gpus>`
 {doc}`GPU resource scheduling <reference/gpus>`
 {doc}`Interconnects <explanation/interconnects>`
+{doc}`Lustre <explanation/lustre>`
 {doc}`Public cloud interconnects <reference/interconnects>`
 :::
 ::::
