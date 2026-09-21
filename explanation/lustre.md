@@ -23,7 +23,7 @@ relatedlinks: "[Lustre&#32;wiki](https://wiki.lustre.org/), [Lustre&#32;manual](
 
 Lustre relies on a [backend filesystem](https://wiki.lustre.org/Lustre_Architecture_for_Admins#Backend_Filesystems) to perform data storage and handle low-level storage operations on targets. Lustre supports two backend filesystems: ldiskfs, a modification of the ext4 filesystem by the Lustre developers, and [ZFS](https://openzfs.org), a scalable filesystem supporting features that protect against data corruption. Lustre is overlaid on top of block storage devices formatted with one of these backend filesystems.
 
-Clients access the filesystem by communicating with the MGS for configuration information, the MDS for metadata operations, and the OSSes directly for bulk data transfer. Communication occurs over [LNet](https://wiki.lustre.org/Lustre_Architecture_for_Admins#LNet_(Lustre_Networking)), Lustre's network layer, which supports TCP and high-speed interconnects such as InfiniBand.
+Clients access the filesystem by communicating with the MGS for configuration information, the MDS for metadata operations, and the OSS units directly for bulk data transfer. Communication occurs over [LNet](https://wiki.lustre.org/Lustre_Architecture_for_Admins#LNet_(Lustre_Networking)), Lustre's network layer, which supports TCP and high-speed interconnects such as InfiniBand.
 
 ## `lustre-server` charm
 
