@@ -213,8 +213,11 @@ linkcheck_ignore = [
     "https://jwt.io",
     "https://matrix.to/#/#hpc:ubuntu.com",
     "https://charmhub.io/integrations/*", # Integrations page is very unstable sometimes
-    "https://ceph.io", # site works but checker throws Internal Server Error 
+    "https://ceph.io", # site works but checker throws Internal Server Error
     "https://www.mysql.com", # Forbidden error via github workflow
+    "https://wiki.lustre.org", # Forbidden error via github workflow
+    "https://doc.lustre.org", # Forbidden error via github workflow
+    "https://openzfs.org", # site works but github workflow gives "Anchor not found"
 ]
 # === END CUSTOM ===
 
