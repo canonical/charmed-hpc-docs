@@ -78,8 +78,8 @@ juju deploy lustre-server \
 To mount the Lustre filesystem on client nodes, deploy the `filesystem-client` subordinate charm,
 setting `mountpoint` to the desired Lustre mount path on each client and the `enable-lustre` configuration set to `true`.
 
-Note, if you deployed `lustre-server` with a
-{ref}`custom LNet configuration <howto-deploy-deploy-lustre-custom-lnet>`, you must also provide a `lnet-networks` configuration that defines a common network between client and server, in the following command:
+Note, if `lustre-server` was deployed with a
+{ref}`custom LNet configuration <howto-deploy-deploy-lustre-custom-lnet>`, a compatible `--config lnet-networks` flag must also be provided when deploying the `filesystem-client`. Refer to the {ref}`LNet configuration explanation <explanation-lustre-lnet-configuration>` for how to determine a compatible configuration.
 
 :::{code-block} shell
 juju deploy filesystem-client \

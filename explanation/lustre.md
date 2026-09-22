@@ -21,7 +21,7 @@ relatedlinks: "[Lustre&#32;wiki](https://wiki.lustre.org/), [Lustre&#32;manual](
 - **Object Storage Server (OSS)**: Manages the file data. Handles I/O from Lustre clients.
 - **Object Storage Target (OST)**: Stores file data managed by an OSS. OSTs are Lustre's unit of data-storage parallelism: files can be striped across multiple OSTs and accessed in parallel. High bandwidth storage required.
 
-Lustre relies on a [backend filesystem](https://wiki.lustre.org/Lustre_Architecture_for_Admins#Backend_Filesystems) to perform data storage and handle low-level storage operations on targets. Lustre supports two backend filesystems: ldiskfs, a modification of the ext4 filesystem by the Lustre developers, and [ZFS](https://openzfs.org), a scalable filesystem supporting features that protect against data corruption. Lustre is overlaid on top of block storage devices formatted with one of these backend filesystems.
+Lustre relies on a [backend filesystem](https://wiki.lustre.org/Lustre_Architecture_for_Admins#Backend_Filesystems) to perform data storage and handle low-level storage operations on targets. Lustre supports two backend filesystems: ldiskfs, a modification of the ext4 filesystem by the Lustre developers, and [ZFS](https://openzfs.org), a scalable filesystem supporting features that protect against data corruption. Block storage devices are formatted with one of these backend filesystems with Lustre overlaid on top.
 
 Clients access the filesystem by communicating with the MGS for configuration information, the MDS for metadata operations, and the OSS units directly for bulk data transfer. Communication occurs over [LNet](https://wiki.lustre.org/Lustre_Architecture_for_Admins#LNet_(Lustre_Networking)), Lustre's network layer, which supports TCP and high-speed interconnects such as InfiniBand.
 
@@ -65,7 +65,19 @@ where `<name>` is the LNet network name and `<iface>` is the network interface. 
 
 configures LNet with a network name of `tcp` using the `eth0` interface, and a network name of `o2ib0` using the `ib0` and `ib1` interfaces.
 
-Note, the `lustre-server` and `filesystem-client` charms must share LNet configurations (compatible `lnet-networks` values) otherwise they will not be able to communicate and the Lustre filesystem will not mount.
+The `lustre-server` and `filesystem-client` charms must share LNet configurations (compatible `lnet-networks` values) otherwise they will not be able to communicate and the Lustre filesystem will not mount. A compatible configuration defines a common network between client and server. For example, if networking is identical on client and server, the following configuration is compatible:
+
+```shell
+juju deploy lustre-server --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
+juju deploy filesystem-client --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
+```
+
+If `eth1` is the client node’s only network interface and provides connectivity to the server nodes, the following configuration is compatible:
+
+```
+juju deploy lustre-server --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
+juju deploy filesystem-client --config lnet-networks="tcp=eth1"
+```
 
 ### Service placement
 
