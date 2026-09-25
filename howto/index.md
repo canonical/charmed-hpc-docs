@@ -15,6 +15,7 @@ Install dependencies and initialize the backing cloud for your cluster.
 Deploy and configure the core components of your cluster.
 
 - {ref}`Deploy Slurm <howto-deploy-deploy-slurm>`
+- {ref}`Deploy Lustre <howto-deploy-deploy-lustre>`
 - {ref}`Deploy a shared filesystem <howto-deploy-deploy-shared-filesystem>`
 - {ref}`Deploy an identity provider <howto-deploy-deploy-identity-provider>`
 
