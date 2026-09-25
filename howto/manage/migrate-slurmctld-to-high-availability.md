@@ -32,7 +32,7 @@ This is a one-time cluster downtime. Once the data migration is complete, no fur
 :sync: cli
 
 :::{code-block} shell
-juju deploy filesystem-client --channel latest/edge
+juju deploy filesystem-client --base "ubuntu@26.04" --channel latest/edge
 juju integrate filesystem-client:filesystem [filesystem-provider]:filesystem
 
 juju integrate slurmctld:mount filesystem-client:mount
@@ -49,6 +49,7 @@ juju add-unit -n 1 slurmctld
 module "filesystem-client" {
   source      = "git::https://github.com/canonical/filesystem-charms//charms/filesystem-client/terraform"
   model_uuid  = juju_model.slurm.uuid
+  base        = "ubuntu@26.04"
 }
 
 resource "juju_integration" "provider_to_filesystem" {
@@ -94,40 +95,44 @@ resource "juju_integration" "filesystem-to-slurmctld" {
 Once an additional `slurmctld` unit is added, the output of the `juju status`{l=shell} command should be similar to the following, varying by choice of shared file system - here CephFS:
 
 :::{terminal}
+:scroll:
+
 juju status
 
-Model  Controller   Cloud/Region         Version  SLA          Timestamp
-slurm  charmed-hpc  localhost/localhost  3.6.0    unsupported  17:16:37Z
+Model  Controller              Cloud/Region         Version  SLA          Timestamp
+slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  17:35:38-06:00
 
-App                 Version          Status  Scale  Charm                Channel      Rev  Exposed  Message
-cephfs-server-proxy                  active      1  cephfs-server-proxy  latest/edge   25  no
-filesystem-client                    active      1  filesystem-client    latest/edge   20  no       Integrated with `cephfs` provider
-mysql               8.0.39-0ubun...  active      1  mysql                8.0/stable   313  no
-sackd               23.11.4-1.2u...  active      1  sackd                latest/edge    4  no
-slurmctld           23.11.4-1.2u...  active      1  slurmctld            latest/edge   86  no       primary - UP
-slurmd              23.11.4-1.2u...  active      1  slurmd               latest/edge  107  no
-slurmdbd            23.11.4-1.2u...  active      1  slurmdbd             latest/edge   78  no
-slurmrestd          23.11.4-1.2u...  active      1  slurmrestd           latest/edge   80  no
+App                  Version          Status  Scale  Charm                Channel          Rev  Exposed  Message
+cephfs-server-proxy                   active      1  cephfs-server-proxy  latest/edge       44  no
+filesystem-client                     active      2  filesystem-client    latest/edge       37  no       Integrated with `cephfs` provider
+mysql                8.0.44-0ubun...  active      1  mysql                8.0/stable       444  no
+sackd                25.11.2          active      1  sackd                latest/edge       89  no
+slurmctld            25.11.2          active      2  slurmctld            latest/edge      167  no       primary - UP
+slurmd               25.11.2          active      1  slurmd               latest/edge      184  no
+slurmdbd             25.11.2          active      1  slurmdbd             latest/edge      161  no
+slurmrestd           25.11.2          active      1  slurmrestd           latest/edge      161  no
 
-Unit                    Workload  Agent      Machine  Public address  Ports           Message
-mysql/0*                active    idle       5        10.32.18.127    3306,33060/tcp  Primary
-sackd/0*                active    idle       4        10.32.18.203
-slurmctld/0*            active    idle       0        10.32.18.15                     primary - UP
-  filesystem-client/0*  active    idle                10.32.18.15                     Mounted filesystem at `/srv/slurmctld-statefs`
-slurmctld/1             active    idle       6        10.32.18.204                    backup - UP
-  filesystem-client/1   active    idle                10.32.18.204                    Mounted filesystem at `/srv/slurmctld-statefs`
-slurmd/0*               active    idle       1        10.32.18.207
-slurmdbd/0*             active    idle       2        10.32.18.102
-slurmrestd/0*           active    idle       3        10.32.18.9
+Unit                    Workload  Agent  Machine  Public address  Ports           Message
+cephfs-server-proxy/0*  active    idle   6        10.124.231.117
+mysql/0*                active    idle   5        10.124.231.202  3306,33060/tcp  Primary
+sackd/0*                active    idle   0        10.124.231.214  6818/tcp
+slurmctld/0*            active    idle   1        10.124.231.134  6817,9092/tcp   primary - UP
+  filesystem-client/0*  active    idle            10.124.231.134                  Mounted filesystem at `/srv/slurmctld-statefs`
+slurmctld/1             active    idle   7        10.124.231.183  6817,9092/tcp   backup - UP
+  filesystem-client/1   active    idle            10.124.231.183                  Mounted filesystem at `/srv/slurmctld-statefs`
+slurmd/0*               active    idle   2        10.124.231.113  6818/tcp
+slurmdbd/0*             active    idle   3        10.124.231.7    6819/tcp
+slurmrestd/0*           active    idle   4        10.124.231.225  6820/tcp
 
-Machine  State    Address       Inst id        Base          AZ  Message
-0        started  10.32.18.15   juju-d566c2-0  ubuntu@24.04      Running
-1        started  10.32.18.207  juju-d566c2-1  ubuntu@24.04      Running
-2        started  10.32.18.102  juju-d566c2-2  ubuntu@24.04      Running
-3        started  10.32.18.9    juju-d566c2-3  ubuntu@24.04      Running
-4        started  10.32.18.203  juju-d566c2-4  ubuntu@24.04      Running
-5        started  10.32.18.127  juju-d566c2-5  ubuntu@22.04      Running
-6        started  10.32.18.204  juju-d566c2-6  ubuntu@24.04      Running
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.124.231.214  juju-fcea50-0  ubuntu@26.04      Running
+1        started  10.124.231.134  juju-fcea50-1  ubuntu@26.04      Running
+2        started  10.124.231.113  juju-fcea50-2  ubuntu@26.04      Running
+3        started  10.124.231.7    juju-fcea50-3  ubuntu@26.04      Running
+4        started  10.124.231.225  juju-fcea50-4  ubuntu@26.04      Running
+5        started  10.124.231.202  juju-fcea50-5  ubuntu@22.04      Running
+6        started  10.124.231.117  juju-fcea50-6  ubuntu@26.04      Running
+7        started  10.124.231.183  juju-fcea50-7  ubuntu@26.04      Running
 :::
 
 ## Related topics

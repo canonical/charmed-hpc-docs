@@ -42,6 +42,8 @@ After the command returns, progress of the rotation can be monitored by viewing 
 `slurmctld` leader unit:
 
 :::{terminal}
+:scroll:
+
 juju status
 
 [...]

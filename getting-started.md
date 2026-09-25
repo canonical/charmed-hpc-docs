@@ -72,7 +72,7 @@ Now, from the local directory holding the cloud-init file, launch a virtual mach
 [charmed-hpc-tutorial-cloud-init.yml]: /reuse/tutorial/charmed-hpc-tutorial-cloud-init.yml
 
 :::{code-block} shell
-multipass launch 24.04 \
+multipass launch 26.04 \
   --name charmed-hpc-tutorial \
   --cloud-init charmed-hpc-tutorial-cloud-init.yml \
   --memory 16G --disk 40G --cpus 8 --timeout 1000
@@ -135,20 +135,20 @@ Then, use `juju deploy`{l=shell} to deploy `sackd`, `slurmctld`, and `slurmd`:
 
 :::{code-block} shell
 juju deploy slurmctld \
-  --base "ubuntu@24.04" \
-  --channel "edge" \
+  --base "ubuntu@26.04" \
+  --channel "latest/edge" \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmd tutorial-partition \
   --num-units 2 \
-  --base "ubuntu@24.04" \
-  --channel "edge" \
+  --base "ubuntu@26.04" \
+  --channel "latest/edge" \
   --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 
 juju deploy sackd \
-  --base "ubuntu@24.04" \
-  --channel "edge" \
+  --base "ubuntu@26.04" \
+  --channel "latest/edge" \
   --constraints="virt-type=virtual-machine"
 :::
 
@@ -164,18 +164,21 @@ juju integrate slurmctld tutorial-partition
 Next, use `juju deploy`{l=shell} to deploy the filesystem pieces, which are:
 
 - `microceph`, the distributed storage system
-- `ceph-fs` to expose the MicroCeph cluster as a shared filesystem using [CephFS](https://docs.ceph.com/en/reef/cephfs/)
+- `ceph-fs` to expose the MicroCeph cluster as a shared filesystem using [CephFS](https://docs.ceph.com/en/tentacle/cephfs/)
 - `filesystem-client` to mount the filesystem, named `scratch`
 
 :::{code-block} shell
 juju deploy microceph \
-  --channel squid/stable \
+  --base "ubuntu@26.04" \
+  --channel tentacle/stable \
   --constraints="virt-type=virtual-machine mem=4G root-disk=20G"
 
 juju deploy ceph-fs \
-  --channel squid/stable
+  --base "ubuntu@26.04" \
+  --channel tentacle/candidate
 
 juju deploy filesystem-client scratch \
+  --base "ubuntu@26.04" \
   --channel latest/edge \
   --config mountpoint=/scratch
 :::
@@ -203,38 +206,39 @@ Your Charmed HPC cluster will become active within a few minutes. The output of 
 :user: ubuntu
 :host: charmed-hpc-tutorial
 :copy:
+:scroll:
 
 juju status
 
 Model  Controller              Cloud/Region         Version  SLA          Timestamp
-slurm  charmed-hpc-controller  localhost/localhost  3.6.9    unsupported  10:53:50-04:00
+slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  20:28:33-06:00
 
-App                 Version          Status  Scale  Charm              Channel        Rev  Exposed  Message
-ceph-fs             19.2.1           active      1  ceph-fs            squid/stable   300  no       Unit is ready
-scratch                              active      3  filesystem-client  latest/edge     20  no       Integrated with `cephfs` provider
-microceph                            active      1  microceph          squid/stable   242  no       (workload) charm is ready
-sackd               23.11.4-1.2u...  active      1  sackd              latest/edge     38  no
-slurmctld           23.11.4-1.2u...  active      1  slurmctld          latest/edge    120  no       primary - UP
-tutorial-partition  23.11.4-1.2u...  active      2  slurmd             latest/edge    141  no
+App                 Version  Status  Scale  Charm              Channel             Rev  Exposed  Message
+ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  449  no       Unit is ready
+microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
+sackd               25.11.2  active      1  sackd              latest/edge          89  no
+scratch                      active      3  filesystem-client  latest/edge          37  no       Integrated with `cephfs` provider
+slurmctld           25.11.2  active      1  slurmctld          latest/edge         167  no       primary - UP
+tutorial-partition  25.11.2  active      2  slurmd             latest/edge         184  no
 
 Unit                   Workload  Agent  Machine  Public address  Ports          Message
-ceph-fs/0*             active    idle   5        10.248.240.129                 Unit is ready
-microceph/0*           active    idle   4        10.248.240.102                 (workload) charm is ready
-sackd/0*               active    idle   3        10.248.240.49   6818/tcp
-  scratch/0*           active    idle            10.248.240.49                  Mounted filesystem at `/scratch`
-slurmctld/0*           active    idle   0        10.248.240.162  6817,9092/tcp  primary - UP
-tutorial-partition/0   active    idle   1        10.248.240.218  6818/tcp
-  scratch/2            active    idle            10.248.240.218                 Mounted filesystem at `/scratch`
-tutorial-partition/1*  active    idle   2        10.248.240.130  6818/tcp
-  scratch/1            active    idle            10.248.240.130                 Mounted filesystem at `/scratch`
+ceph-fs/0*             active    idle   5        10.124.231.80                  Unit is ready
+microceph/0*           active    idle   4        10.124.231.83                  (workload) charm is ready
+sackd/0*               active    idle   3        10.124.231.58   6818/tcp
+  scratch/0*           active    idle            10.124.231.58                  Mounted filesystem at `/scratch`
+slurmctld/0*           active    idle   0        10.124.231.221  6817,9092/tcp  primary - UP
+tutorial-partition/0   active    idle   1        10.124.231.12   6818/tcp
+  scratch/1            active    idle            10.124.231.12                  Mounted filesystem at `/scratch`
+tutorial-partition/1*  active    idle   2        10.124.231.224  6818/tcp
+  scratch/2            active    idle            10.124.231.224                 Mounted filesystem at `/scratch`
 
-Machine  State    Address         Inst id        Base          AZ                       Message
-0        started  10.248.240.162  juju-2586ad-0  ubuntu@24.04  charmed-hpc-tutorial  Running
-1        started  10.248.240.218  juju-2586ad-1  ubuntu@24.04  charmed-hpc-tutorial  Running
-2        started  10.248.240.130  juju-2586ad-2  ubuntu@24.04  charmed-hpc-tutorial  Running
-3        started  10.248.240.49   juju-2586ad-3  ubuntu@24.04  charmed-hpc-tutorial  Running
-4        started  10.248.240.102  juju-2586ad-4  ubuntu@24.04  charmed-hpc-tutorial  Running
-5        started  10.248.240.129  juju-2586ad-5  ubuntu@24.04  charmed-hpc-tutorial  Running
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.124.231.221  juju-49e051-0  ubuntu@26.04      Running
+1        started  10.124.231.12   juju-49e051-1  ubuntu@26.04      Running
+2        started  10.124.231.224  juju-49e051-2  ubuntu@26.04      Running
+3        started  10.124.231.58   juju-49e051-3  ubuntu@26.04      Running
+4        started  10.124.231.83   juju-49e051-4  ubuntu@26.04      Running
+5        started  10.124.231.80   juju-49e051-5  ubuntu@26.04      Running
 :::
 
 
@@ -347,7 +351,7 @@ return to that environment from within `sackd/0`, use the `exit`{l=shell} comman
 First, use `juju deploy`{l=shell} to deploy Apptainer:
 
 :::{code-block} shell
-juju deploy apptainer --channel latest/edge
+juju deploy apptainer --base "ubuntu@26.04" --channel "latest/edge"
 :::
 
 Next, use `juju integrate`{l=shell} to integrate Apptainer with Slurm:
@@ -364,42 +368,43 @@ After a few minutes, the output `juju status` will look similar to the following
 :user: ubuntu
 :host: charmed-hpc-tutorial
 :copy:
+:scroll:
 
 juju status
 
 Model  Controller              Cloud/Region         Version  SLA          Timestamp
-slurm  charmed-hpc-controller  localhost/localhost  3.6.9    unsupported  17:34:46-04:00
+slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  21:13:47-06:00
 
-App                 Version          Status  Scale  Charm              Channel        Rev  Exposed  Message
-apptainer           1.4.2            active      3  apptainer          latest/stable    6  no
-ceph-fs             19.2.1           active      1  ceph-fs            squid/stable   300  no       Unit is ready
-scratch                              active      3  filesystem-client  latest/edge     20  no       Integrated with `cephfs` provider
-microceph                            active      1  microceph          squid/stable   242  no       (workload) charm is ready
-sackd               23.11.4-1.2u...  active      1  sackd              latest/edge     38  no
-slurmctld           23.11.4-1.2u...  active      1  slurmctld          latest/edge    120  no       primary - UP
-tutorial-partition  23.11.4-1.2u...  active      2  slurmd             latest/edge    141  no
+App                 Version  Status  Scale  Charm              Channel             Rev  Exposed  Message
+apptainer           1.4.5    active      3  apptainer          latest/edge          32  no
+ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  449  no       Unit is ready
+microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
+sackd               25.11.2  active      1  sackd              latest/edge          89  no
+scratch                      active      3  filesystem-client  latest/edge          37  no       Integrated with `cephfs` provider
+slurmctld           25.11.2  active      1  slurmctld          latest/edge         167  no       primary - UP
+tutorial-partition  25.11.2  active      2  slurmd             latest/edge         184  no
 
 Unit                   Workload  Agent  Machine  Public address  Ports          Message
-ceph-fs/0*             active    idle   5        10.196.78.232                  Unit is ready
-microceph/1*           active    idle   6        10.196.78.238                  (workload) charm is ready
-sackd/0*               active    idle   3        10.196.78.117   6818/tcp
-  apptainer/2          active    idle            10.196.78.117
-  scratch/2            active    idle            10.196.78.117                  Mounted filesystem at `/scratch`
-slurmctld/0*           active    idle   0        10.196.78.49    6817,9092/tcp  primary - UP
-tutorial-partition/0   active    idle   1        10.196.78.244   6818/tcp
-  apptainer/0          active    idle            10.196.78.244
-  scratch/0*           active    idle            10.196.78.244                  Mounted filesystem at `/scratch`
-tutorial-partition/1*  active    idle   2        10.196.78.26    6818/tcp
-  apptainer/1*         active    idle            10.196.78.26
-  scratch/1            active    idle            10.196.78.26                   Mounted filesystem at `/scratch`
+ceph-fs/0*             active    idle   5        10.124.231.80                  Unit is ready
+microceph/0*           active    idle   4        10.124.231.83                  (workload) charm is ready
+sackd/0*               active    idle   3        10.124.231.58   6818/tcp
+  apptainer/0          active    idle            10.124.231.58
+  scratch/0*           active    idle            10.124.231.58                  Mounted filesystem at `/scratch`
+slurmctld/0*           active    idle   0        10.124.231.221  6817,9092/tcp  primary - UP
+tutorial-partition/0   active    idle   1        10.124.231.12   6818/tcp
+  apptainer/1          active    idle            10.124.231.12
+  scratch/1            active    idle            10.124.231.12                  Mounted filesystem at `/scratch`
+tutorial-partition/1*  active    idle   2        10.124.231.224  6818/tcp
+  apptainer/2*         active    idle            10.124.231.224
+  scratch/2            active    idle            10.124.231.224                 Mounted filesystem at `/scratch`
 
-Machine  State    Address        Inst id        Base          AZ                       Message
-0        started  10.196.78.49   juju-808105-0  ubuntu@24.04  charmed-hpc-tutorial  Running
-1        started  10.196.78.244  juju-808105-1  ubuntu@24.04  charmed-hpc-tutorial  Running
-2        started  10.196.78.26   juju-808105-2  ubuntu@24.04  charmed-hpc-tutorial  Running
-3        started  10.196.78.117  juju-808105-3  ubuntu@24.04  charmed-hpc-tutorial  Running
-5        started  10.196.78.232  juju-808105-5  ubuntu@24.04  charmed-hpc-tutorial  Running
-6        started  10.196.78.238  juju-808105-6  ubuntu@24.04  charmed-hpc-tutorial  Running
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.124.231.221  juju-49e051-0  ubuntu@26.04      Running
+1        started  10.124.231.12   juju-49e051-1  ubuntu@26.04      Running
+2        started  10.124.231.224  juju-49e051-2  ubuntu@26.04      Running
+3        started  10.124.231.58   juju-49e051-3  ubuntu@26.04      Running
+4        started  10.124.231.83   juju-49e051-4  ubuntu@26.04      Running
+5        started  10.124.231.80   juju-49e051-5  ubuntu@26.04      Running
 :::
 
 ### Build the container image using `apptainer`

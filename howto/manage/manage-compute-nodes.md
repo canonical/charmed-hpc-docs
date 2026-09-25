@@ -107,7 +107,7 @@ juju config slurmd default-node-state=idle
 To deploy a new partition where all compute nodes will start in the `idle` state, run:
 
 :::{code-block} shell
-juju deploy slurmd <partition> --config default-node-state=idle
+juju deploy slurmd <partition> --base "ubuntu@26.04" --config default-node-state=idle
 :::
 
 The `default-node-reason` configuration option can be used to provide a reason for
