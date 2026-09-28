@@ -81,7 +81,7 @@ juju deploy filesystem-client --config lnet-networks="tcp=eth1"
 
 ### Service placement
 
-Storage attachments determine the role of each `lustre-server` unit. Attaching storage to `mgt-mdt` configures the unit as a combined MGS+MDS, while attaching storage to `ost` configures the unit as an OSS.
+Storage attachments determine the role of each `lustre-server` unit. Attaching storage to `mgt-mdt` configures the unit as a combined MGS+MDS, while attaching storage to `ost` configures the unit as an OSS. For example commands to attach storage, see {ref}`howto-deploy-deploy-lustre-server`.
 
 A deployment requires one combined MGS+MDS unit and at least one OSS unit. Additional OSS units can be added to increase the filesystem's capacity and aggregate I/O bandwidth.
 
