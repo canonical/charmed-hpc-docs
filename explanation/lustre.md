@@ -110,7 +110,7 @@ On each OSS unit, the charm combines all disks attached to `ost` into a single R
 
 ### Health checks
 
-The charm runs health checks during its `update-status` event that verify:
+The charm runs health checks during its [`update-status`](https://canonical.com/juju/docs/juju-cli/3.6/reference/hook/#update-status) event that verify:
 
 - Peer relation data is present and consistent.
 - Required kernel modules are loaded.
