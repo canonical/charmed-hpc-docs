@@ -23,8 +23,9 @@ column shows the corresponding query to list the exported metrics in Prometheus 
 slurmctld, [Documentation](https://slurm.schedmd.com/metrics.html), `{juju_charm="slurmctld"}`{l=javascript}
 mysql, [Documentation](https://charmhub.io/mysql), `{juju_charm="mysql"}`{l=javascript}
 postgresql-k8s, [Documentation](https://charmhub.io/postgresql-k8s), `{juju_charm="postgresql-k8s"}`{l=javascript}
-glauth-k8s, [Documentation](https://charmhub.io/glauth-k8s), `{juju_charm="glauth-k8s"}`{l=javascript}
 traefik-k8s, [Documentation](https://charmhub.io/traefik-k8s), `{juju_charm="traefik-k8s"}`{l=javascript}
+
+<!-- TODO: Update to include metrics collected from Authentik -->
 :::
 
 ## Slurmctld

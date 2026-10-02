@@ -25,8 +25,7 @@ postgresql-k8s, `{juju_charm="postgresql-k8s"}`{l=shell}
 <!-- TODO: enable when traefik exposes logs to Loki (https://github.com/canonical/traefik-k8s-operator/pull/363) -->
 <!-- traefik-k8s, `{juju_charm="traefik-k8s"}`{l=shell} -->
 
-<!-- TODO: change to `juju_charm` when https://github.com/canonical/loki-k8s-operator/issues/466 gets fixed. -->
-glauth-k8s, `{charm="glauth-k8s"}`{l=shell}
+<!-- TODO: Update with links to logs collected from Authentik -->
 :::
 
 ## Ignoring log files

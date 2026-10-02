@@ -11,7 +11,12 @@ Adjust the configuration and state of individual compute nodes, and change parti
 - {ref}`howto-manage-node-state`
 - {ref}`howto-manage-scale-partitions`
 
-## Maintain security
+## Manage identity and security
+
+Control user and group permissions, and manage how users are able to access the cluster.
+
+- {ref}`howto-manage-users-and-groups`
+- {ref}`howto-manage-user-authentication`
 
 Replace the keys that secure internal cluster communication and REST API access.
 
@@ -28,6 +33,8 @@ Replace the keys that secure internal cluster communication and REST API access.
 :hidden:
 
 Manage compute nodes and partitions <manage-compute-nodes>
+Manage users and groups <manage-users-and-groups>
+Manage user authentication <manage-user-authentication>
 Rotate authentication keys <rotate-authentication-keys>
 Migrate Slurm controller to high availability <migrate-slurmctld-to-high-availability>
 :::
