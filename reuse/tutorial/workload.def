@@ -1,5 +1,5 @@
 bootstrap: docker
-from: ubuntu:24.04
+from: ubuntu:26.04
 
 %files
     generate.py /usr/bin/generate
@@ -20,7 +20,6 @@ from: ubuntu:24.04
 
     pip install -U faker
     pip install -U pandas
-    pip install -U plotext
 
     chmod 755 /usr/bin/generate
     chmod 755 /usr/bin/workload
