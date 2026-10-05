@@ -116,8 +116,8 @@ Juju will use your LXD server's configured trust password to automatically retri
 
 ### Bootstrap LXD cloud controller
 
-With both your LXD server's endpoint and credentials added to Juju, use `juju bootstrap`{l=shell} to deploy
-the cloud controller:
+With both your LXD server's endpoint and credentials added to Juju, use the [`juju bootstrap`{l=shell}][juju-bootstrap]
+command to deploy the cloud controller:
 
 :::{code-block} shell
 juju bootstrap charmed-hpc charmed-hpc-controller
