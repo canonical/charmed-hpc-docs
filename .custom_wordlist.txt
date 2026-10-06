@@ -9,6 +9,7 @@ hpc
 HPC's
 InfiniBand
 init
+journald
 Juju's
 MPI
 mpi
