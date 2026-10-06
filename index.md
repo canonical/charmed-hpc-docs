@@ -131,7 +131,7 @@ Charmed HPC is an Ubuntu community project. It's an open source project that war
 
 Thinking about using Charmed HPC for your next project? [Get in touch!](https://matrix.to/#/#hpc:ubuntu.com)
 
-```{filtered-toctree}
+:::{filtered-toctree}
 :hidden:
 :titlesonly:
 
@@ -140,11 +140,11 @@ Getting started <getting-started>
 howto/index
 explanation/index
 reference/index
-```
+:::
 
-```{filtered-toctree}
+:::{filtered-toctree}
 :hidden:
 :titlesonly:
 
 contributing/index
-```
+:::

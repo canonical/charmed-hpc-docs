@@ -3,7 +3,7 @@
 
 Detailed steps for key operations and common tasks when working with Charmed HPC.
 
-## Environment Initialization
+## Environment initialization
 
 - {ref}`Initialize cloud environment <howto-initialize-cloud-environment>`
 
