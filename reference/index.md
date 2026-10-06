@@ -12,16 +12,6 @@ Technical specifications and data for Charmed HPC, covering configurations, supp
 - {ref}`GPU resource scheduling in Slurm <gres>`
 - {ref}`reference-interconnects`
 
-## Security
-
-Security configurations, recommendations, and reference data for the components of a Charmed HPC cluster.
-
-- {ref}`Slurm hardening <reference-hardening-slurm>`
-- {ref}`Cloud hardening <reference-hardening-cloud>`
-- {ref}`Juju hardening <reference-hardening-juju>`
-- {ref}`Monitoring and auditing <reference-hardening-monitoring>`
-- {ref}`Operating system hardening <reference-hardening-os>`
-
 ## Monitoring
 
 Dashboards, metrics, and log queries available when COS is integrated with a Charmed HPC cluster.
@@ -47,6 +37,5 @@ gpus
 interconnects
 monitoring/index
 Performance <performance>
-hardening
 
 ```

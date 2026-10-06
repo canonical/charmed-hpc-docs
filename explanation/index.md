@@ -13,11 +13,12 @@ Design decisions behind how a Charmed HPC cluster is structured and operated.
 
 ## Cryptography, authentication, and security
 
-Security protocols and authentication mechanisms that protect communication between cluster components.
+Security protocols, authentication mechanisms, and hardening measures that protect your cluster and communication between its components.
 
 - {ref}`sack`
 - {ref}`jwt`
 - {ref}`explanation-key-rotation`
+- {ref}`explanation-hardening`
 
 ## Hardware
 
@@ -40,4 +41,5 @@ Interconnects <interconnects>
 Instance auto-reboots <reboot-timing.md>
 Key rotation <key-rotation>
 Lustre <lustre>
+Security hardening guidelines <hardening>
 ```

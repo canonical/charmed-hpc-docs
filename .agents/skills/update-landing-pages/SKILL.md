@@ -12,8 +12,8 @@ Updates directory-level `index.md` landing pages to follow a consistent structur
 
 1. **Read the landing page and its sibling content** — Understand the current structure of the `index.md` and read all content pages in the same directory (and subdirectorys).
 2. **Assess whether changes are needed** — If the existing categories are functional and cover all relevant pages, do not restructure them. Only update descriptions, phrasing, or links as needed. Proceed to step 5.
-3. **Assess content pages for break-up** — Before determining categories, decide which pages should be broken into individual section links on the landing page (see break-up rules below). The resulting individual section links are treated as distinct items for the purposes of categorisation.
-4. **Determine categories** — Only if restructuring is necessary: group all items — whole pages and individual broken-out sections alike — by topic, technical domain, or function. Section links from a single page may be distributed across different categories if they belong to different logical groupings. For how-to pages, use action/verb titles (e.g. "Set up and deploy" not "Setup"). Avoid single-page categories unless the grouping is the best logical organisation. If a new page is being added, first check whether it fits an existing category before proposing restructuring. **Name categories to accommodate likely future content**, not just the current pages — choose titles that would still make sense if related pages were added later (e.g. "System architecture" rather than "Cluster components and architecture" to allow for architecture diagrams and descriptions). **Do not use a page's own title as its category heading** — if a category would contain only a glossary page, use a distinct label like "Terminology" instead of "Glossary".
+3. **Ensure each page has a page-level anchor** — Each content page is linked exactly once on the landing page via the anchor above its `#` title (see one link per page below). Add the anchor if it is missing, following the section-prefix naming convention (`howto-`, `reference-`, `explanation-`).
+4. **Determine categories** — Only if restructuring is necessary: group pages by topic, technical domain, or function. For how-to pages, use action/verb titles (e.g. "Set up and deploy" not "Setup"). Avoid single-page categories unless the grouping is the best logical organisation. If a new page is being added, first check whether it fits an existing category before proposing restructuring. **Name categories to accommodate likely future content**, not just the current pages — choose titles that would still make sense if related pages were added later (e.g. "System architecture" rather than "Cluster components and architecture" to allow for architecture diagrams and descriptions). **Do not use a page's own title as its category heading** — if a category would contain only a glossary page, use a distinct label like "Terminology" instead of "Glossary".
 5. **Write descriptions** — Follow the description guidelines below for the top-level page description and any category descriptions.
 6. **Update `{ref}` links** — Use custom labels to control displayed text (see ref link rules below).
 7. **Update the toctree** — Ensure toctree labels match the category headings where applicable.
@@ -67,7 +67,7 @@ If a landing page has only one logical category (e.g. `reference/monitoring/inde
 
 ### Category descriptions
 
-- Only add a category description if the category heading and page titles together do not convey enough information.
+- Category descriptions are optional. Do not add one when the category is obvious or self-explanatory from its heading and page titles — only add a description if the heading and page titles together do not convey enough information.
 - Keep descriptions to 1–2 sentences.
 - Provide useful insights and context about what the pages in the category cover — highlight possibilities or nuance that the titles alone don't reveal — without going into low-level technical detail.
 - **Do not** relist or enumerate the pages below the description.
@@ -93,26 +93,12 @@ If a landing page has only one logical category (e.g. `reference/monitoring/inde
 - If a content page title does not include "How to", a bare `{ref}` (without custom label) is acceptable.
 - If a page title is not descriptive enough in the landing page context (e.g. a title like "Performance" gives little information about the content), use a custom label that summarises the page's actual scope: `{ref}`Benchmark results on Microsoft Azure <reference-performance>``
 
-## Break-up rules for long pages
+## One link per page
 
-Decide whether to list a page's internal sections as separate items on the landing page based on **content coupling**, not page length or section count.
+List each content page exactly once on the landing page, linking to its page-level anchor — never to individual sections within the page. The landing page provides an overview; readers navigate to specific sections from within the page itself.
 
-### Break up: discrete independent sections
-
-If a page's `##` (or `###`) sections are **discrete, independent processes** grouped by similarity — where each section can be consulted on its own — list them as individual items on the landing page.
-
-- Each item links to a specific section anchor within the page.
-- If the page lacks explicit anchors for those sections, add them (e.g. `(howto-manage-scale-partitions)=`).
-- Break at `##` level by default. Use `###` level only when `##` sections themselves contain multiple discrete sub-tasks.
-- Section links from a broken-up page do **not** all need to appear in the same category on the landing page. If sections from a single page belong to different logical groupings, distribute the links across the appropriate categories.
-
-**Examples of discrete sections**: individual management tasks (rotate keys, scale partitions), independent security domains (Slurm hardening, OS hardening), separate reference listings (projects, charms, integrations).
-
-### Do not break up: sequential steps
-
-If a page's sections are **sequential steps in a single process** — where they must be followed in order — list the page as a single item on the landing page.
-
-**Examples of sequential sections**: prerequisites → deploy → verify, prerequisites → create image → run workload, metrics → method → results.
+- If a page lacks a page-level anchor, add one above its `#` title (e.g. `(howto-manage-compute-nodes)=`), following the section-prefix naming convention (`howto-`, `reference-`, `explanation-`).
+- If an existing landing page lists multiple section links for the same page, collapse them into a single page-level link.
 
 ## Toctree conventions
 
@@ -123,5 +109,5 @@ If a page's sections are **sequential steps in a single process** — where they
 ## Constraints
 
 - Do **not** modify the root `index.md` (site home page) — it has a different purpose and structure.
-- Do **not** modify content pages beyond adding section anchors where needed for break-up links.
+- Do **not** modify content pages beyond adding a page-level anchor where needed.
 - Do **not** modify files in the `reuse/` directory — these are internal includes, not published pages.

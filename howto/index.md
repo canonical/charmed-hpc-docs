@@ -3,16 +3,12 @@
 
 Detailed steps for key operations and common tasks when working with Charmed HPC.
 
-## Initialize your environment
-
-Install dependencies and initialize the backing cloud for your cluster.
+## Environment Initialization
 
 - {ref}`Initialize cloud environment <howto-initialize-cloud-environment>`
 
 (howto-deploy)=
-## Deploy
-
-Deploy and configure the core components of your cluster.
+## Deployment
 
 - {ref}`Deploy Slurm <howto-deploy-deploy-slurm>`
 - {ref}`Deploy Lustre <howto-deploy-deploy-lustre>`
@@ -20,31 +16,27 @@ Deploy and configure the core components of your cluster.
 - {ref}`Deploy an identity provider <howto-deploy-deploy-identity-provider>`
 
 (howto-integrate)=
-## Integrate with other tools
+## Integration with other tools
 
 Connect your cluster to observability platforms and workload tools.
 
-- {ref}`howto-manage-integrate-with-apptainer`
 - {ref}`howto-manage-integrate-with-cos`
 - {ref}`howto-manage-integrate-with-influxdb`
 - {ref}`howto-integrate-email-notifications`
+- {ref}`howto-manage-integrate-with-apptainer`
 
 (howto-manage)=
-## Manage your cluster
-
-Operate your cluster after deployment, including node-level tasks and cluster-wide maintenance.
+## Cluster management
 
 - {ref}`Manage compute nodes and partitions <howto-manage-compute-nodes>`
 - {ref}`Rotate authentication keys <howto-manage-rotate-slurm-keys>`
 - {ref}`howto-manage-single-slurmctld-to-high-availability`
 
-## Run workloads
-
-Submit jobs and run containerized workloads on your cluster.
+## Running workloads
 
 - {ref}`howto-use-apptainer`
 
-## Clean up resources
+## Resource clean up
 
 Remove previously deployed components and free cloud resources when they are no longer needed.
 

@@ -301,6 +301,8 @@ toc_filter_exclude = ['draft']
 # Adds custom CSS files, located remotely or in 'html_static_path'.
 html_css_files = [
      "https://assets.ubuntu.com/v1/d86746ef-cookie_banner.css",
+     "domain-list-override.css",
+     "link-colors.css"
 ]
 
 # Adds custom JavaScript files, located remotely or in 'html_static_path'.
