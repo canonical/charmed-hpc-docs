@@ -1,0 +1,14 @@
+/* Override sphinx-structured-toc separator colour to Ubuntu orange */
+.domain-list > ul > li > ul > li {
+    border-left: 1px solid #E95420;
+}
+
+/* Remove bullets from the outer slice list */
+.domain-list > ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.domain-list > ul > li > ul > li:first-child {
+    border-left: none;
+}
