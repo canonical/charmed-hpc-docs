@@ -23,7 +23,7 @@ Dashboards, metrics, and log queries available when COS is integrated with a Cha
 
 ## Troubleshooting
 
-Log locations and commands for inspecting a cluster directly, without COS.
+Log locations, read commands, verbosity, and retention for inspecting a cluster directly, without COS.
 
 - {ref}`reference-log-locations`
 
@@ -42,7 +42,7 @@ Underlying projects and dependencies <underlying-projects-and-dependencies>
 gpus
 interconnects
 monitoring/index
-Log locations <log-locations>
+logging
 Performance <performance>
 
 ```
