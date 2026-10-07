@@ -23,7 +23,7 @@ Dashboards, metrics, and log queries available when COS is integrated with a Cha
 
 ## Troubleshooting
 
-Log locations, read commands, verbosity, and retention for inspecting a cluster directly, without COS.
+Where logs are located, how to read them, and how to control verbosity and retention when inspecting a cluster directly rather than through COS.
 
 - {ref}`reference-log-locations`
 

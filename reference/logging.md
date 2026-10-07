@@ -8,45 +8,27 @@ myst:
 
 This page lists the on-disk log locations and journald units for every service deployed as part
 of Charmed HPC, along with the command needed to read each one. Use it when troubleshooting a
-cluster directly over SSH. To query the same logs centrally once COS is integrated, see
-{ref}`reference-monitoring-loki-logs`.
+cluster directly over SSH. Some of these logs are also sent to {term}`Loki` when COS is
+integrated. For how to query them, see {ref}`reference-monitoring-loki-logs`.
 
 Log locations are grouped by the repository that provides the charm.
 
 (reference-log-locations-accessing)=
 ## Accessing logs
 
-Every path on this page is on the machine running the unit, not on your workstation. Open a shell
-on the machine with `juju ssh`{l=shell}:
+Read logs over SSH with `juju ssh`{l=shell} from the controller node. Unit names throughout this page, such as
+`slurmctld/0`{l=shell}, are the default application name and unit number. Substitute your own
+where your deployment differs:
 
-:::{code-block} shell
-juju ssh <unit>
+:::{csv-table}
+:header: >
+: task, command, notes
+
+Open a shell on a unit, `juju ssh <unit>`{l=shell}, "For example, `juju ssh slurmctld/0`{l=shell} opens a shell on the first `slurmctld` unit. Read logs from it with `cat`{l=shell} or `tail`{l=shell}."
+Read a log file without a shell, `juju ssh slurmctld/0 sudo cat /var/log/slurm/slurmctld.log`{l=shell}, Passes the read command to `juju ssh`{l=shell} rather than opening a shell.
+Follow a log live, `juju ssh slurmctld/0 sudo tail -f /var/log/slurm/slurmctld.log`{l=shell}, Streams new lines as they are written.
+List a unit's log directories, `juju ssh slurmctld/0 sudo ls -la /var/log/slurm /var/log/juju`{l=shell}, "Which directories exist depends on the services the unit runs, for example `/var/log/sssd` on an `sssd` unit or `/var/log/mysql` on a `mysql` unit. The sections below list them per service."
 :::
-
-For example, `juju ssh slurmctld/0`{l=shell} opens a shell on the first `slurmctld` unit.
-
-You can also pass a command to `juju ssh`{l=shell} instead of opening a shell. To read a log
-file:
-
-:::{code-block} shell
-juju ssh slurmctld/0 sudo cat /var/log/slurm/slurmctld.log
-:::
-
-To follow a log live:
-
-:::{code-block} shell
-juju ssh slurmctld/0 sudo tail -f /var/log/slurm/slurmctld.log
-:::
-
-Which log directories exist on a unit depends on the services it runs. On a `slurmctld` unit,
-those are `/var/log/slurm` and `/var/log/juju`:
-
-:::{code-block} shell
-juju ssh slurmctld/0 sudo ls -la /var/log/slurm /var/log/juju
-:::
-
-Other units log elsewhere, for example `/var/log/sssd` on an `sssd` unit or `/var/log/mysql` on a
-`mysql` unit. The sections below list the directories for each service.
 
 :::{note}
 Unless stated otherwise, every charm also writes a Juju unit log. See
@@ -152,13 +134,18 @@ charms:
 Deployed on `slurmctld` only when an `smtp` integration is present. For how to set up the
 integration, see {ref}`howto-integrate-email-notifications`.
 
+Slurm-Mail sends job emails in two steps. When a job needs a notification, `slurmctld` runs
+`slurm-spool-mail`, which writes a spool file under `/var/spool/slurm-mail` instead of sending the
+email directly, so `slurmctld` does not block on mail delivery. A cron job from the `slurm-mail`
+package runs `slurm-send-mail` once a minute to send the spooled emails over SMTP.
+
 :::{csv-table}
 :header: >
-: source, location or command
+: source, location or command, notes
 
-`slurm-spool-mail`, `sudo cat /var/log/slurm-mail/slurm-spool-mail.log`{l=shell}
-`slurm-send-mail`, `sudo cat /var/log/slurm-mail/slurm-send-mail.log`{l=shell}
-Configuration in effect, `sudo cat /etc/slurm-mail/slurm-mail.conf`{l=shell}
+`slurm-spool-mail`, `sudo cat /var/log/slurm-mail/slurm-spool-mail.log`{l=shell}, One entry per spooled job notification.
+`slurm-send-mail`, `sudo cat /var/log/slurm-mail/slurm-send-mail.log`{l=shell}, "SMTP delivery attempts and errors, including rejected or invalid addresses."
+Configuration in effect, `sudo cat /etc/slurm-mail/slurm-mail.conf`{l=shell}, The file both commands read. The charm writes the SMTP settings from the `smtp` integration into it.
 :::
 
 Both log paths are defined in the charm's default Slurm-Mail configuration. For debug output, set
@@ -329,7 +316,13 @@ Installed version, `apptainer --version`{l=shell}, Confirms the charm installed 
 (reference-log-locations-juju)=
 ## Juju logs
 
-Every charm on this page is a Juju machine charm, so the following applies throughout.
+Every charm on this page also writes a Juju unit log, in addition to the workload logs above.
+These record what the charm did: which handlers ran, the configuration it rendered, and the
+status each unit last reported. When a unit is in `error` or `blocked`, they usually hold the
+explanation. Each machine holds one file per unit and per agent under `/var/log/juju`{l=shell},
+and the controller retains the same logs for the whole model. For more, including how to
+forward these logs to an external syslog server, see the
+[upstream Juju documentation](https://canonical.com/juju/docs/juju-cli/latest/howto/manage-logs/).
 
 ### On each machine
 
@@ -422,10 +415,10 @@ juju debug-log --replay --include slurmctld --level DEBUG | grep '"type": "secur
 (reference-log-locations-retention)=
 ## Log retention
 
-Juju rotates unit and machine logs on each machine automatically. The controller retains model
-logs subject to the `max-logs-size` and `max-logs-age` controller configuration values, so
-`juju debug-log --replay` may not reach as far back as the on-disk logs on a given machine. Check
-the current limits with:
+Juju rotates its own unit and machine agent logs on each machine automatically. The controller
+retains model logs subject to the `max-logs-size` and `max-logs-age` controller configuration
+values, so `juju debug-log --replay` may not reach as far back as the on-disk logs on a given
+machine. Check the current limits with:
 
 :::{code-block} shell
 juju controller-config | grep -i max-logs
