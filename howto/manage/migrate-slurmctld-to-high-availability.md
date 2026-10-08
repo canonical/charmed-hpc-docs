@@ -36,7 +36,7 @@ juju deploy filesystem-client --base ubuntu@26.04 --channel latest/edge
 juju integrate filesystem-client:filesystem [filesystem-provider]:filesystem
 
 juju integrate slurmctld:mount filesystem-client:mount
-juju add-unit -n 1 slurmctld
+juju add-unit --num-units 1 slurmctld
 :::
 
 ::::
