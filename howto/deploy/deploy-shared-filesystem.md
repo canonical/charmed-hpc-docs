@@ -131,8 +131,8 @@ To integrate with an external CephFS share, you will require:
  - The username with permissions to access the filesystem.
  - The cephx key for the username.
 
-Here, a Ceph cluster will be set up using [MicroCeph](https://canonical.com/ceph/docs/stable/), 
-a tool that simplifies deployment and management of Ceph storage, 
+Here, a Ceph cluster will be set up using [MicroCeph](https://canonical.com/ceph/docs/stable/),
+a tool that simplifies deployment and management of Ceph storage,
 in both standalone and charmed environments, using Juju.
 
 First, launch a virtual machine using [LXD](https://canonical.com/lxd):
@@ -231,7 +231,7 @@ To add the `filesystem-client` charm, which mounts a shared filesystem to the cl
 juju deploy filesystem-client \
   --base ubuntu@26.04 \
   --channel latest/edge \
-  --config mountpoint='/scratch' \
+  --config mountpoint=/scratch \
   --config noexec=true
 :::
 
