@@ -52,7 +52,7 @@ Use `juju exec`{l=text} to submit a test job.
 For example, to submit a test job where the runtime environment is Ubuntu 22.04, run:
 
 :::{code-block} shell
-juju exec -u sackd/0 -- \
+juju exec --unit sackd/0 -- \
   srun --partition slurmd --container=docker://ubuntu:22.04 \
   cat /etc/os-release | grep ^VERSION
 :::
@@ -62,7 +62,7 @@ will be similar to the following:
 
 :::{terminal}
 :copy:
-juju exec -u sackd/0 -- srun --partition slurmd --container=docker://ubuntu:22.04 cat /etc/os-release | grep ^VERSION
+juju exec --unit sackd/0 -- srun --partition slurmd --container=docker://ubuntu:22.04 cat /etc/os-release | grep ^VERSION
 
 INFO:    Converting OCI blobs to SIF format
 INFO:    Starting build...
