@@ -110,7 +110,7 @@ expose the externally managed server inside a Juju model.
 
 :::{code-block} shell
 juju deploy nfs-server-proxy \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel latest/edge \
   --config hostname=<server hostname> \
   --config path=<exported path> \
@@ -210,7 +210,7 @@ expose the externally managed Ceph filesystem inside a Juju model.
 
 :::{code-block} shell
 juju deploy cephfs-server-proxy \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel latest/edge \
   --config fsid=<value of $FSID> \
   --config sharepoint=cephfs:/ \
@@ -229,7 +229,7 @@ To add the `filesystem-client` charm, which mounts a shared filesystem to the cl
 
 :::{code-block} shell
 juju deploy filesystem-client \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel latest/edge \
   --config mountpoint='/scratch' \
   --config noexec=true

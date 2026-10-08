@@ -136,19 +136,20 @@ Then, use `juju deploy`{l=shell} to deploy `sackd`, `slurmctld`, and `slurmd`:
 :::{code-block} shell
 juju deploy slurmctld \
   --base ubuntu@26.04 \
-  --channel "latest/edge" \
+  --channel latest/edge \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmd compute \
   --num-units 2 \
   --base ubuntu@26.04 \
-  --channel "latest/edge" \
+  --channel latest/edge \
   --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 
 juju deploy sackd login \
   --base ubuntu@26.04 \
-  --channel "latest/edge" \
+  --channel latest/edge \
+  --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 :::
 

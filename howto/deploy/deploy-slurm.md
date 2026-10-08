@@ -54,12 +54,12 @@ the storage database for slurmdbd:
 :::
 
 :::{code-block} shell
-juju deploy sackd --base "ubuntu@26.04" --channel "latest/edge"
-juju deploy slurmctld --base "ubuntu@26.04" --channel "latest/edge"
-juju deploy slurmd --base "ubuntu@26.04" --channel "latest/edge"
-juju deploy slurmdbd --base "ubuntu@26.04" --channel "latest/edge"
-juju deploy slurmrestd --base "ubuntu@26.04" --channel "latest/edge"
-juju deploy mysql --channel "8.0/stable"
+juju deploy sackd --base ubuntu@26.04 --channel latest/edge
+juju deploy slurmctld --base ubuntu@26.04 --channel latest/edge
+juju deploy slurmd --base ubuntu@26.04 --channel latest/edge
+juju deploy slurmdbd --base ubuntu@26.04 --channel latest/edge
+juju deploy slurmrestd --base ubuntu@26.04 --channel latest/edge
+juju deploy mysql --channel 8.0/stable
 :::
 
 After that, use `juju integrate`{l=shell} to integrate all of Slurm's services together,
@@ -213,10 +213,10 @@ acts as the primary Slurm controller, and the other unit serves as the backup co
 :sync: cli
 
 :::{code-block} shell
-juju deploy filesystem-client --base "ubuntu@26.04" --channel latest/edge
+juju deploy filesystem-client --base ubuntu@26.04 --channel latest/edge
 juju integrate filesystem-client:filesystem [filesystem-provider]:filesystem
 
-juju deploy slurmctld --base "ubuntu@26.04" --channel "latest/edge" --num-units 2
+juju deploy slurmctld --base ubuntu@26.04 --channel latest/edge --num-units 2
 juju integrate slurmctld:mount filesystem-client:mount
 :::
 
@@ -296,32 +296,32 @@ Slurm on virtual machines instead of system containers:
 
 :::{code-block} shell
 juju deploy sackd \
-  --base "ubuntu@26.04" \
-  --channel "latest/edge" \
+  --base ubuntu@26.04 \
+  --channel latest/edge \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmctld \
-  --base "ubuntu@26.04" \
-  --channel "latest/edge" \
+  --base ubuntu@26.04 \
+  --channel latest/edge \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmd \
-  --base "ubuntu@26.04" \
-  --channel "latest/edge" \
+  --base ubuntu@26.04 \
+  --channel latest/edge \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmdbd \
-  --base "ubuntu@26.04" \
-  --channel "latest/edge" \
+  --base ubuntu@26.04 \
+  --channel latest/edge \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmrestd \
-  --base "ubuntu@26.04" \
-  --channel "latest/edge" \
+  --base ubuntu@26.04 \
+  --channel latest/edge \
   --constraints="virt-type=virtual-machine"
 
 juju deploy mysql \
-  --channel "8.0/stable" \
+  --channel 8.0/stable \
   --constraints="virt-type=virtual-machine"
 :::
 
