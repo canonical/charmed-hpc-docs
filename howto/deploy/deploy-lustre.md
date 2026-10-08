@@ -32,7 +32,7 @@ Deploy `lustre-server` with the total number of units (MGS+MDS and OSS):
 :::{code-block} shell
 juju deploy lustre-server \
   --channel latest/edge \
-  -n <number-of-units>
+  --num-units <number-of-units>
 :::
 
 Assign the unit roles by attaching storage. The following example commands use the `loop` storage pool, which is suitable for testing only. For a production deployment, replace it with an [appropriate Juju storage pool](https://canonical.com/juju/docs/juju-cli/latest/reference/storage/#storage-pool) and choose capacities suitable for the filesystem workload.
@@ -70,7 +70,7 @@ The option accepts semicolon-separated network definitions in the format `<name>
 juju deploy lustre-server \
   --channel latest/edge \
   --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1" \
-  -n <number-of-units>
+  --num-units <number-of-units>
 :::
 
 ## Deploy the `filesystem-client` charm
