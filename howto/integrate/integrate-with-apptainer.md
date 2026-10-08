@@ -26,7 +26,7 @@ First, use `juju deploy`{l=shell} to deploy Apptainer in the `slurm` model on
 your `charmed-hpc` machine cloud:
 
 :::{code-block} shell
-juju deploy apptainer --base "ubuntu@26.04"
+juju deploy apptainer --base ubuntu@26.04
 :::
 
 :::{include} /reuse/common/tip-determine-current-juju-model.txt

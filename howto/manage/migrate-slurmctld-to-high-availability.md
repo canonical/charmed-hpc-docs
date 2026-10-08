@@ -32,7 +32,7 @@ This is a one-time cluster downtime. Once the data migration is complete, no fur
 :sync: cli
 
 :::{code-block} shell
-juju deploy filesystem-client --base "ubuntu@26.04" --channel latest/edge
+juju deploy filesystem-client --base ubuntu@26.04 --channel latest/edge
 juju integrate filesystem-client:filesystem [filesystem-provider]:filesystem
 
 juju integrate slurmctld:mount filesystem-client:mount

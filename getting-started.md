@@ -135,20 +135,20 @@ Then, use `juju deploy`{l=shell} to deploy `sackd`, `slurmctld`, and `slurmd`:
 
 :::{code-block} shell
 juju deploy slurmctld \
-  --base "ubuntu@26.04" \
-  --channel "latest/edge" \
+  --base ubuntu@26.04 \
+  --channel latest/edge \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmd tutorial-partition \
   --num-units 2 \
-  --base "ubuntu@26.04" \
-  --channel "latest/edge" \
+  --base ubuntu@26.04 \
+  --channel latest/edge \
   --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 
 juju deploy sackd \
-  --base "ubuntu@26.04" \
-  --channel "latest/edge" \
+  --base ubuntu@26.04 \
+  --channel latest/edge \
   --constraints="virt-type=virtual-machine"
 :::
 
@@ -169,16 +169,16 @@ Next, use `juju deploy`{l=shell} to deploy the filesystem pieces, which are:
 
 :::{code-block} shell
 juju deploy microceph \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel tentacle/stable \
   --constraints="virt-type=virtual-machine mem=4G root-disk=20G"
 
 juju deploy ceph-fs \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel tentacle/candidate
 
 juju deploy filesystem-client scratch \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel latest/edge \
   --config mountpoint=/scratch
 :::
@@ -351,7 +351,7 @@ return to that environment from within `sackd/0`, use the `exit`{l=shell} comman
 First, use `juju deploy`{l=shell} to deploy Apptainer:
 
 :::{code-block} shell
-juju deploy apptainer --base "ubuntu@26.04" --channel "latest/edge"
+juju deploy apptainer --base ubuntu@26.04 --channel latest/edge
 :::
 
 Next, use `juju integrate`{l=shell} to integrate Apptainer with Slurm:

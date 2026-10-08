@@ -78,7 +78,7 @@ example, the external LDAP server's:
 For further customization, see [the full list of ldap-integrator's available configuration options](https://charmhub.io/ldap-integrator/configurations).
 
 :::{code-block} shell
-juju deploy ldap-integrator --channel "edge" \
+juju deploy ldap-integrator --channel edge \
   --config base_dn="cn=testing,cn=ubuntu,cn=com" \
   --config bind_dn="cn=admin,dc=test,dc=ubuntu,dc=com" \
   --config bind_password="${secret_id}" \
@@ -561,10 +561,10 @@ Now use `juju deploy`{l=shell} to deploy GLAuth with:
 - self-signed-certificates as GLAuth's X.509 certificates provider.
 
 :::{code-block} shell
-juju deploy glauth-k8s --channel "edge" \
+juju deploy glauth-k8s --channel edge \
   --config anonymousdse_enabled=true \
   --trust
-juju deploy postgresql-k8s --channel "14/stable" --trust
+juju deploy postgresql-k8s --channel 14/stable --trust
 juju deploy self-signed-certificates
 juju deploy traefik-k8s --trust
 :::
