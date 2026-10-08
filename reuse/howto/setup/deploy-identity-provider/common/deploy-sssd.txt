@@ -6,7 +6,7 @@
 First, use `juju deploy`{l=shell} to deploy SSSD in your `slurm` model:
 
 :::{code-block} shell
-juju deploy sssd --base "ubuntu@26.04" --channel "latest/edge"
+juju deploy sssd --base ubuntu@26.04 --channel latest/edge
 :::
 
 Now use `juju integrate`{l=shell} to integrate SSSD with the Slurm services
