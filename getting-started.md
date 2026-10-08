@@ -253,10 +253,10 @@ You will use `juju exec`{l=shell} and `juju scp`{l=shell} to make the new
 example directories, set appropriate permissions, and then finally copy the files over:
 
 :::{code-block} shell
-juju exec -u sackd/0 -- \
+juju exec --unit sackd/0 -- \
   sudo mkdir /scratch/mpi_example /scratch/apptainer_example
 
-juju exec -u sackd/0 -- \
+juju exec --unit sackd/0 -- \
   sudo chown $USER: /scratch/*
 
 juju scp submit_hello.sh mpi_hello_world.c \
