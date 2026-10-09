@@ -122,8 +122,8 @@ Next, you will deploy Slurm and the filesystem. The Slurm components of your dep
 will be composed of:
 
 - The Slurm management daemon: `slurmctld`
-- Two Slurm compute daemons: `slurmd`, grouped in a partition named `tutorial-partition`
-- The authentication and credential kiosk daemon: `sackd` to provide the login node
+- Two Slurm compute daemons: `slurmd`, grouped in a partition named `compute`
+- The authentication and credential kiosk daemon: `sackd`, aliased as `login` to provide the login node
 
 First, use `juju add-model`{l=shell} to create the `slurm` model on your cloud `localhost`:
 
@@ -135,19 +135,19 @@ Then, use `juju deploy`{l=shell} to deploy `sackd`, `slurmctld`, and `slurmd`:
 
 :::{code-block} shell
 juju deploy slurmctld \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel "latest/edge" \
   --constraints="virt-type=virtual-machine"
 
-juju deploy slurmd tutorial-partition \
+juju deploy slurmd compute \
   --num-units 2 \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel "latest/edge" \
   --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 
-juju deploy sackd \
-  --base "ubuntu@26.04" \
+juju deploy sackd login \
+  --base ubuntu@26.04 \
   --channel "latest/edge" \
   --constraints="virt-type=virtual-machine"
 :::
@@ -155,8 +155,8 @@ juju deploy sackd \
 After that, use `juju integrate`{l=shell} to integrate the Slurm services together:
 
 :::{code-block} shell
-juju integrate slurmctld sackd
-juju integrate slurmctld tutorial-partition
+juju integrate slurmctld login
+juju integrate slurmctld compute
 :::
 
 <!-- Note about use of --constraints="virt-type=virtual-machine" ? -->
@@ -169,16 +169,16 @@ Next, use `juju deploy`{l=shell} to deploy the filesystem pieces, which are:
 
 :::{code-block} shell
 juju deploy microceph \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel tentacle/stable \
   --constraints="virt-type=virtual-machine mem=4G root-disk=20G"
 
 juju deploy ceph-fs \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel tentacle/candidate
 
 juju deploy filesystem-client scratch \
-  --base "ubuntu@26.04" \
+  --base ubuntu@26.04 \
   --channel latest/edge \
   --config mountpoint=/scratch
 :::
@@ -195,11 +195,11 @@ together aqnd with Slurm:
 :::{code-block} shell
 juju integrate scratch ceph-fs
 juju integrate ceph-fs microceph
-juju integrate scratch tutorial-partition
-juju integrate scratch sackd
+juju integrate scratch login
+juju integrate scratch compute
 :::
 
-Your Charmed HPC cluster will become active within a few minutes. The output of the
+Your Charmed HPC cluster will become active in about ten minutes, but exact timing will be dependent on your specific hardware. The output of the
 `juju status`{l=shell} will be similar to the following:
 
 :::{terminal}
@@ -216,20 +216,20 @@ slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  20:28:
 App                 Version  Status  Scale  Charm              Channel             Rev  Exposed  Message
 ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  449  no       Unit is ready
 microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
-sackd               25.11.2  active      1  sackd              latest/edge          89  no
+login               25.11.2  active      1  sackd              latest/edge          89  no
 scratch                      active      3  filesystem-client  latest/edge          37  no       Integrated with `cephfs` provider
 slurmctld           25.11.2  active      1  slurmctld          latest/edge         167  no       primary - UP
-tutorial-partition  25.11.2  active      2  slurmd             latest/edge         184  no
+compute             25.11.2  active      2  slurmd             latest/edge         184  no
 
 Unit                   Workload  Agent  Machine  Public address  Ports          Message
 ceph-fs/0*             active    idle   5        10.124.231.80                  Unit is ready
 microceph/0*           active    idle   4        10.124.231.83                  (workload) charm is ready
-sackd/0*               active    idle   3        10.124.231.58   6818/tcp
+login/0*               active    idle   3        10.124.231.58   6818/tcp
   scratch/0*           active    idle            10.124.231.58                  Mounted filesystem at `/scratch`
 slurmctld/0*           active    idle   0        10.124.231.221  6817,9092/tcp  primary - UP
-tutorial-partition/0   active    idle   1        10.124.231.12   6818/tcp
+compute/0              active    idle   1        10.124.231.12   6818/tcp
   scratch/1            active    idle            10.124.231.12                  Mounted filesystem at `/scratch`
-tutorial-partition/1*  active    idle   2        10.124.231.224  6818/tcp
+compute/1*             active    idle   2        10.124.231.224  6818/tcp
   scratch/2            active    idle            10.124.231.224                 Mounted filesystem at `/scratch`
 
 Machine  State    Address         Inst id        Base          AZ  Message
@@ -253,17 +253,17 @@ You will use `juju exec`{l=shell} and `juju scp`{l=shell} to make the new
 example directories, set appropriate permissions, and then finally copy the files over:
 
 :::{code-block} shell
-juju exec -u sackd/0 -- \
-  sudo mkdir /scratch/mpi_example /scratch/apptainer_example
+juju exec -u login/0 -- \
+  sudo mkdir /scratch/mpi_example /scratch/apptainer_example /home/ubuntu/apptainer_cache /home/ubuntu/apptainer_tmp
 
-juju exec -u sackd/0 -- \
-  sudo chown $USER: /scratch/*
+juju exec -u login/0 -- \
+  sudo chown $USER: /scratch/* /home/ubuntu/apptainer_*
 
 juju scp submit_hello.sh mpi_hello_world.c \
-  sackd/0:/scratch/mpi_example
+  login/0:/scratch/mpi_example
 
 juju scp submit_apptainer_mascot.sh generate.py workload.py workload.def \
-  sackd/0:/scratch/apptainer_example
+  login/0:/scratch/apptainer_example
 :::
 
 The `/scratch` directory is mounted on the compute nodes and will be used to read
@@ -276,10 +276,10 @@ by submitting a batch job to Slurm.
 
 ### Compile
 
-First, SSH into the login node, `sackd/0`:
+First, SSH into the login node, `login/0`:
 
 :::{code-block} shell
-juju ssh sackd/0
+juju ssh login/0
 :::
 
 This will place you in your home directory `/home/ubuntu`. Next, you will need to move
@@ -346,20 +346,20 @@ you will use Apptainer to build a container job and run the job on the cluster.
 
 Apptainer must be deployed and integrated with the existing Slurm deployment using Juju
 and these steps need to be completed from the `charmed-hpc-tutorial` environment; to
-return to that environment from within `sackd/0`, use the `exit`{l=shell} command.
+return to that environment from within `login/0`, use the `exit`{l=shell} command.
 
 First, use `juju deploy`{l=shell} to deploy Apptainer:
 
 :::{code-block} shell
-juju deploy apptainer --base "ubuntu@26.04" --channel "latest/edge"
+juju deploy apptainer --channel latest/edge --base ubuntu@26.04
 :::
 
 Next, use `juju integrate`{l=shell} to integrate Apptainer with Slurm:
 
 :::{code-block} shell
 juju integrate apptainer slurmctld
-juju integrate apptainer sackd
-juju integrate apptainer tutorial-partition
+juju integrate apptainer login
+juju integrate apptainer compute
 :::
 
 After a few minutes, the output `juju status` will look similar to the following:
@@ -379,22 +379,22 @@ App                 Version  Status  Scale  Charm              Channel          
 apptainer           1.4.5    active      3  apptainer          latest/edge          32  no
 ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  449  no       Unit is ready
 microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
-sackd               25.11.2  active      1  sackd              latest/edge          89  no
+login               25.11.2  active      1  sackd              latest/edge          89  no
 scratch                      active      3  filesystem-client  latest/edge          37  no       Integrated with `cephfs` provider
 slurmctld           25.11.2  active      1  slurmctld          latest/edge         167  no       primary - UP
-tutorial-partition  25.11.2  active      2  slurmd             latest/edge         184  no
+compute             25.11.2  active      2  slurmd             latest/edge         184  no
 
 Unit                   Workload  Agent  Machine  Public address  Ports          Message
 ceph-fs/0*             active    idle   5        10.124.231.80                  Unit is ready
 microceph/0*           active    idle   4        10.124.231.83                  (workload) charm is ready
-sackd/0*               active    idle   3        10.124.231.58   6818/tcp
+login/0*               active    idle   3        10.124.231.58   6818/tcp
   apptainer/0          active    idle            10.124.231.58
   scratch/0*           active    idle            10.124.231.58                  Mounted filesystem at `/scratch`
 slurmctld/0*           active    idle   0        10.124.231.221  6817,9092/tcp  primary - UP
-tutorial-partition/0   active    idle   1        10.124.231.12   6818/tcp
+compute/0              active    idle   1        10.124.231.12   6818/tcp
   apptainer/1          active    idle            10.124.231.12
   scratch/1            active    idle            10.124.231.12                  Mounted filesystem at `/scratch`
-tutorial-partition/1*  active    idle   2        10.124.231.224  6818/tcp
+compute/1*             active    idle   2        10.124.231.224  6818/tcp
   apptainer/2*         active    idle            10.124.231.224
   scratch/2            active    idle            10.124.231.224                 Mounted filesystem at `/scratch`
 
@@ -414,11 +414,14 @@ you must build the container image from the build recipe. The build recipe file
 _workload.def_ defines the environment and libraries that will be in the container image.
 
 To build the image, log back into to the cluster login node, change to the
-example directory, and run `apptainer build`:
+example directory, set environment variables for the apptainer cache and temporary directories,
+and run `apptainer build`:
 
 :::{code-block} shell
-juju ssh sackd/0
+juju ssh login/0
 cd /scratch/apptainer_example
+export APPTAINER_CACHEDIR=/home/ubuntu/apptainer_cache
+export APPTAINER_TMPDIR=/home/ubuntu/apptainer_tmp
 apptainer build workload.sif workload.def
 :::
 
@@ -503,7 +506,7 @@ In this tutorial, you:
 - Deployed and integrated Slurm and a shared filesystem
 - Launched an MPI batch job and saw cross-node communication results
 - Built a container image with Apptainer and used it to run a batch job and
-- generate a bar plot
+- Generated a bar plot
 
 Now that you have completed the tutorial, if you would like to completely remove the
 virtual machine, return to your local terminal and `multipass delete` the virtual
