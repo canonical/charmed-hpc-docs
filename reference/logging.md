@@ -7,12 +7,11 @@ myst:
 # Logging
 
 This page lists the on-disk log locations and journald units for every service deployed as part
-of Charmed HPC, along with the command needed to read each one. Use it when troubleshooting a
-cluster directly over SSH. Some of these logs are also sent to {term}`Loki` when COS is
-integrated. For how to query them, see {ref}`reference-monitoring-loki-logs`.
+of Charmed HPC along with the command needed to read each one. Use it when troubleshooting a cluster from the controller node. Some of these logs are also sent to {term}`Loki` when COS is
+integrated. For info on how to query them, see {ref}`reference-monitoring-loki-logs`.
 
-Sections are grouped by the service that writes the logs, with the charm that provides each
-service named alongside it.
+Sections are grouped by the service that writes the logs. The charm that provides each service
+is named alongside it.
 
 (reference-log-locations-accessing)=
 ## Accessing logs
@@ -24,7 +23,7 @@ name and unit number. Substitute your own where your deployment differs:
 :header: >
 : task, command, notes
 
-Open a shell on a unit, `juju ssh <unit>`{l=shell}, "For example, `juju ssh slurmctld/0`{l=shell} opens a shell on the first `slurmctld` unit. Read logs from it with `cat`{l=shell} or `tail`{l=shell}."
+Open a shell on a unit, `juju ssh <unit>`{l=shell}, "For example, `juju ssh slurmctld/0`{l=shell} opens a shell on the first `slurmctld` unit."
 Read a log file without a shell, `juju ssh slurmctld/0 sudo cat /var/log/slurm/slurmctld.log`{l=shell}, Passes the read command to `juju ssh`{l=shell} rather than opening a shell.
 Follow a log live, `juju ssh slurmctld/0 sudo tail -f /var/log/slurm/slurmctld.log`{l=shell}, Streams new lines as they are written.
 List a unit's log directories, `juju ssh slurmctld/0 sudo ls -la /var/log/slurm /var/log/juju`{l=shell}, "Which directories exist depends on the services the unit runs, for example `/var/log/sssd` on an `sssd` unit. The sections below list them per service."
@@ -40,10 +39,10 @@ Unless stated otherwise, every charm also writes a Juju unit log. See
 
 Provided by [`slurm-charms`](https://github.com/canonical/slurm-charms).
 
-The `slurmctld` charm writes the service log paths into `slurm.conf`, and `slurmdbd` writes its
-own into `slurmdbd.conf`, at deployment time. All Slurm daemon logs live under `/var/log/slurm`.
-The directory is created by the Slurm packages rather than the charms, and the files are not
-world-readable, so read them with `sudo`:
+At deployment time the `slurmctld` charm writes the service log paths into `slurm.conf` and
+`slurmdbd` does the same in `slurmdbd.conf`. All Slurm daemon logs live under `/var/log/slurm`.
+The Slurm packages create this directory rather than the charms. Its files are not world-readable
+so read them with `sudo`:
 
 :::{csv-table}
 :header: >
@@ -59,7 +58,7 @@ slurmrestd, `sudo journalctl -u slurmrestd`{l=shell}, "No log file is configured
 :::{note}
 `slurmctld` and `slurmdbd` run as the `slurm` user, but `slurmd` runs as `root`, so
 `slurmd.log` is root-owned while the other two are owned by `slurm`. Ownership and permissions
-come from the Slurm packages, not the charms.
+come from the Slurm packages rather than the charms.
 :::
 
 To confirm the paths in effect, read them back from the running configuration:
@@ -70,8 +69,8 @@ juju ssh slurmctld/0 sudo scontrol show config | grep -i logfile
 
 None of the Slurm charms expose a dedicated option for log paths or verbosity. Set these
 through the general-purpose `slurm-conf-parameters` option on `slurmctld` and
-`slurmdbd-conf-parameters` on `slurmdbd`, which pass any `slurm.conf` or `slurmdbd.conf`
-setting through to the daemon. The sections below use both.
+`slurmdbd-conf-parameters` on `slurmdbd`. Both options pass any `slurm.conf` or `slurmdbd.conf`
+setting through to the daemon as seen in the sections below.
 
 ### Scheduler logging
 
@@ -105,7 +104,7 @@ juju ssh slurmctld/0 sudo cat /var/log/slurm/jobcomp.log
 ### Raising Slurm daemon verbosity
 
 The Slurm daemons log at `info` by default. Raise a daemon's verbosity through the same override
-option, for example:
+option:
 
 :::{code-block} shell
 juju config slurmctld slurm-conf-parameters="SlurmctldDebug=debug2 SlurmdDebug=debug2"
@@ -133,7 +132,7 @@ Both options are applied by the application leader only.
 ### Job accounting
 
 Job accounting is not written to a log file. When integrated with `slurmdbd`, the `slurmctld`
-charm sets `AccountingStorageType=accounting_storage/slurmdbd`, and `slurmdbd` stores the
+charm sets `AccountingStorageType=accounting_storage/slurmdbd` and `slurmdbd` stores the
 records in a MySQL database provided by the `mysql` charm. For how to deploy `slurmdbd` with
 MySQL, see {ref}`howto-deploy-deploy-slurm`.
 
@@ -156,7 +155,7 @@ filters, output fields and job state codes, see the
 
 :::{note}
 Each `sacct` call sends a remote procedure call to `slurmdbd`. Slurm advises against running it
-from loops or scripts, since enough concurrent calls can degrade the daemon. See
+from loops or scripts since enough concurrent calls can degrade the daemon. See
 [Performance {octicon}`link-external`](https://slurm.schedmd.com/sacct.html#SECTION_PERFORMANCE)
 in the sacct documentation.
 :::
@@ -204,7 +203,7 @@ section. To get debug output from both, set `verbose = true` under both
 
 :::{note}
 The charm rewrites the SMTP keys in `[slurm-send-mail]` on every configuration change and
-`smtp` integration event, but it leaves `verbose` alone, so a manual change to it survives.
+`smtp` integration event but leaves `verbose` alone. A manual change to it survives.
 :::
 
 (reference-log-locations-filesystems)=
@@ -237,9 +236,9 @@ juju ssh filesystem-client/0 sudo cat /etc/auto.master.d/filesystem-client-0.aut
 juju ssh filesystem-client/0 sudo cat /etc/auto.filesystem-client-0
 :::
 
-Both filenames are built from the Juju unit name with `/` replaced by `-`: the master drop-in
-adds a `.autofs` suffix, and the map file adds an `auto.` prefix. The application name is part
-of the unit name, so a renamed application changes both paths. Both files are readable only by
+Both filenames are built from the Juju unit name with `/` replaced by `-`. The master drop-in
+adds a `.autofs` suffix and the map file adds an `auto.` prefix. The application name is part
+of the unit name so a renamed application changes both paths. Both files are readable only by
 root. If you do not know the exact names, list the directory to find them:
 
 :::{code-block} shell
@@ -290,7 +289,7 @@ juju config lustre-server-proxy
 :::
 
 :::{caution}
-The `cephfs-server-proxy` charm holds a Cephx key in its `auth-info` option, which
+The `cephfs-server-proxy` charm holds a Cephx key in its `auth-info` option which
 `juju config cephfs-server-proxy`{l=shell} prints in plain text. Read it only where that is
 acceptable, or read the individual non-secret options instead:
 
@@ -325,10 +324,10 @@ Effective configuration, `sudo cat /etc/sssd/sssd.conf`{l=shell}, Charm-managed.
 Lookup test, `getent passwd <username>`{l=shell}, Confirms whether resolution works without reading logs.
 :::
 
-SSSD logs little at its default level, and the `sssd` charm exposes no configuration options at
-all, so there is no way to raise it through Juju. To diagnose LDAP binding or lookup failures,
-open `/etc/sssd/sssd.conf`, add `debug_level = 6` under the `[sssd]` section and any
-`[domain/<name>]` sections of interest, then restart the service:
+SSSD logs little at its default level and the `sssd` charm exposes no configuration options at
+all so there is no way to raise it through Juju. To diagnose LDAP binding or lookup failures,
+open `/etc/sssd/sssd.conf` and add `debug_level = 6` under the `[sssd]` section and any
+`[domain/<name>]` sections of interest. Then restart the service:
 
 :::{code-block} shell
 juju ssh sssd/0 sudo systemctl restart sssd
@@ -365,10 +364,10 @@ Effective configuration, `sudo sshd -T`{l=shell}, Prints the fully merged config
 :::
 
 The charm writes one drop-in per setting it manages. `99-charmed-openssh-log-level.conf` and
-`99-charmed-openssh-port.conf` come from charm configuration, and each `ssh-config` integration
+`99-charmed-openssh-port.conf` come from charm configuration and each `ssh-config` integration
 adds a `99-charmed-openssh-ssh-config-<integration-id>-<application>.conf` file. The charm
-validates the merged configuration with `sshd -t` after applying integration data, and removes
-the offending file and blocks the unit if validation fails.
+validates the merged configuration with `sshd -t` after applying integration data. If validation
+fails, it removes the offending file and blocks the unit.
 
 Unlike SSSD, the OpenSSH charm can raise daemon verbosity through Juju. Set the `log-level`
 option to any `LogLevel` value accepted by `sshd_config`:
@@ -402,9 +401,9 @@ production.
 Provided by the `apptainer` charm, from
 [`apptainer-operator`](https://github.com/canonical/apptainer-operator).
 
-Apptainer is not a daemon. It runs as the invoking user and writes diagnostics to stderr, so
+Apptainer is not a daemon. It runs as the invoking user and writes diagnostics to stderr so
 container failures land in the job's output files rather than a system log. The charm itself
-creates no service and no log file, and exposes no configuration options, so its Juju unit log
+does not create a service or log file and does not expose configuration options so its Juju unit log
 is the only record of what it did.
 
 :::{csv-table}
@@ -421,7 +420,7 @@ Installed version, `apptainer --version`{l=shell}, Confirms the charm installed 
 :::
 
 :::{note}
-`/etc/slurm/oci.conf` is written by the `slurmctld` charm, from configuration that the
+`/etc/slurm/oci.conf` is written by the `slurmctld` charm from configuration that the
 `apptainer` leader unit publishes over the `oci-runtime` integration. If the file is missing or
 stale, check the unit logs of both applications:
 
@@ -433,10 +432,10 @@ juju debug-log --replay --include apptainer --include slurmctld
 (reference-log-locations-juju)=
 ## Juju logs
 
-Every charm on this page also writes a Juju unit log, in addition to the workload logs above.
-These record what the charm did: which handlers ran, the configuration it rendered, and the
+Every charm on this page also writes a Juju unit log in addition to the workload logs above.
+These record what the charm did: which handlers ran, the configuration it rendered and the
 status each unit last reported. When a unit is in `error` or `blocked`, they usually hold the
-explanation. Each machine holds one file per unit and per agent under `/var/log/juju`, and the
+explanation. Each machine holds one file per unit and per agent under `/var/log/juju` and the
 controller retains the same logs for the whole model. For more, including how to forward these
 logs to an external syslog server, see the
 [upstream Juju documentation](https://documentation.ubuntu.com/juju/latest/howto/manage-logs/).
@@ -458,7 +457,7 @@ with `/` replaced by `-`. If you do not know the exact name, list the directory 
 
 ### Through the Juju CLI
 
-Prefer these over reading files directly, since they aggregate across the model and need no SSH
+Prefer these over reading files directly since they aggregate across the model and need no SSH
 access.
 
 :::{csv-table}
@@ -497,7 +496,7 @@ juju model-config --reset logging-config
 :::
 
 :::{caution}
-`DEBUG` logging on `slurmctld` is verbose in large clusters, since several handlers log the full
+`DEBUG` logging on `slurmctld` is verbose in large clusters since several handlers log the full
 Slurm configuration. Avoid leaving it enabled.
 :::
 
@@ -522,8 +521,8 @@ juju ssh 0 sudo cat /var/log/juju/machine-0.log
 
 The Slurm charms emit structured OWASP-format security events for authentication key lifecycle
 operations, such as setting and removing the Slurm auth and JWT keys. The events carry an OWASP
-severity in their own `level` field, but every one of them is emitted at Python `DEBUG` level,
-so raise unit logging to `DEBUG` first, then filter on the `type` field:
+severity in their own `level` field but every one of them is emitted at Python `DEBUG` level.
+Raise unit logging to `DEBUG` first, then filter on the `type` field:
 
 :::{code-block} shell
 juju model-config logging-config="<root>=WARNING;unit=DEBUG"
@@ -533,19 +532,19 @@ juju debug-log --replay --level DEBUG | grep '"type": "security"'
 Each event is a single JSON object with `datetime`, `level`, `type`, `appid`, `event` and
 `description` fields. The `event` field holds an OWASP event name and the key it applies to,
 such as `authn_token_created:slurm-auth` or `authn_token_deleted:slurm-jwt`. A key rotation
-appears as a `created` event followed later by a `deleted` event, rather than a single rotation
+appears as a `created` event followed later by a `deleted` event rather than a single rotation
 event.
 
 :::{note}
-Key handling lives in code shared by all the Slurm charms, so these events can appear on
+Key handling lives in code shared by all the Slurm charms so these events can appear on
 `sackd`, `slurmd`, `slurmdbd` and `slurmrestd` as well as `slurmctld`. Omit `--include` when
-searching, or filter per application once you know where to look.
+searching or filter per application once you know where to look.
 :::
 
 (reference-log-locations-retention)=
 ## Log retention
 
-Juju rotates its own unit and machine agent logs on each machine automatically, keeping a
+Juju rotates its own unit and machine agent logs on each machine automatically and keeps a
 number of compressed backups alongside the current file. The controller also retains model logs
 subject to its own size and backup limits, so `juju debug-log --replay` may not reach as far
 back as the on-disk logs on a given machine. Check the current limits with:
