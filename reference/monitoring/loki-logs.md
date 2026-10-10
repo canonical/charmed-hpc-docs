@@ -11,6 +11,9 @@ corresponding query to see the exported logs in Grafana.
 Follow the [Visualize log data](https://grafana.com/docs/loki/latest/visualize/grafana/#grafana-explore)
 tutorial from the Grafana documentation for instructions on where and how to query for Loki logs.
 
+For the on-disk location of these logs, and for services that do not export to Loki, see
+{ref}`reference-log-locations`.
+
 :::{csv-table}
 :header: >
 : charm, query
@@ -31,7 +34,7 @@ glauth-k8s, `{charm="glauth-k8s"}`{l=shell}
 
 ## Ignoring log files
 
-By default, every instance of the `opentelemtry-collector` charm will log all the files in the `/var/log` directory.
+By default, every instance of the `opentelemetry-collector` charm will log all the files in the `/var/log` directory.
 This is sometimes not ideal, since it increases the amount of logs stored by Loki which are unrelated
 to the running application. A solution for this is to set the `path_exclude` configuration for
 `opentelemetry-collector`, which will allow it to ignore such log files:
