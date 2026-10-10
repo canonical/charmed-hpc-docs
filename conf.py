@@ -3,6 +3,44 @@ import os
 import textwrap
 import yaml
 
+# === CHARMED HPC CUSTOM ===
+# FIXME: The upstream Pygments TerraformLexer does not handle Terraform `for`
+#   expressions (for example, `[for x in y : ... if ...]`), emitting error tokens that
+#   Sphinx surfaces as lexing warnings. Register a subclass that adds support for
+#   `for` expressions so Terraform code blocks keep their syntax highlighting.
+from pygments.lexers.configs import TerraformLexer
+from pygments.token import Comment, Keyword, Name, Number, Punctuation, String, Whitespace
+
+
+class TerraformForLexer(TerraformLexer):
+    tokens = dict(TerraformLexer.tokens)
+    tokens['root'] = [
+        (r'\bfor\b', Keyword, 'for-expr'),
+    ] + tokens['root']
+    tokens['for-expr'] = [
+        (r'[\]}]', Punctuation, '#pop'),
+        (r'\b(for|in|if)\b', Keyword),
+        (r'\b(var\.[0-9a-zA-Z-_\.\[\]]+)\b', Name.Variable),
+        (r'\b([0-9a-zA-Z-_\[\]]+\.[0-9a-zA-Z-_\.\[\]]+)\b', Name.Variable),
+        (r'[a-zA-Z_][0-9a-zA-Z_-]*', Name.Variable),
+        (r'[0-9]+', Number),
+        (r'[\[\]()\{\\},.?:!=]', Punctuation),
+        (r'\s+', Whitespace),
+        (r'\n', Whitespace),
+        (r'"', String.Double, 'for-string'),
+        (r'#.*\n', Comment.Single),
+    ]
+    tokens['for-string'] = [
+        (r'"', String.Double, '#pop'),
+        (r'[^"]+', String.Double),
+    ]
+
+
+def setup(app):
+    app.add_lexer('terraform', TerraformForLexer)
+    return {'parallel_read_safe': True}
+# === END CUSTOM ===
+
 # Configuration for the Sphinx documentation builder.
 # All configuration specific to your project should be done in this file.
 #

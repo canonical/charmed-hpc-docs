@@ -60,6 +60,7 @@ Charmed HPC is a platform for managing high-performance computing clusters. It a
 
 :::{slice} Identity and access
 {doc}`Deploy an identity provider <howto/deploy/deploy-identity-provider>`
+{doc}`Manage users and group <howto/manage/manage-users-and-groups>`
 :::
 
 :::{slice} Security and cryptography

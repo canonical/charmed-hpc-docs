@@ -23,6 +23,7 @@ yml
 apptainer
 alertmanager
 Apptainer
+Authentik
 catalogue
 Dockerhub
 Fortran

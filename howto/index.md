@@ -29,6 +29,7 @@ Connect your cluster to observability platforms and workload tools.
 ## Cluster management
 
 - {ref}`Manage compute nodes and partitions <howto-manage-compute-nodes>`
+- {ref}`Manage users and groups <howto-manage-manage-users-and-groups>`
 - {ref}`Rotate authentication keys <howto-manage-rotate-slurm-keys>`
 - {ref}`howto-manage-single-slurmctld-to-high-availability`
 
