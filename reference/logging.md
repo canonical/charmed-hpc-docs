@@ -7,7 +7,7 @@ myst:
 # Logging
 
 This page lists the on-disk log locations and journald units for every service deployed as part
-of Charmed HPC along with the command needed to read each one. Use it when troubleshooting a cluster from the controller node. Some of these logs are also sent to {term}`Loki` when COS is
+of Charmed HPC along with the command needed to read each one. Use it when troubleshooting a cluster from the controller node. Some of these logs are also sent to Loki when COS is
 integrated. For info on how to query them, see {ref}`reference-monitoring-loki-logs`.
 
 Sections are grouped by the service that writes the logs. The charm that provides each service
