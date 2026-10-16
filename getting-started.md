@@ -191,7 +191,7 @@ juju add-storage microceph/0 osd-standalone=loop,2G,3
 :::
 
 Then, use `juju integrate`{l=shell} to integrate the filesystem components
-together aqnd with Slurm:
+together and with Slurm:
 
 :::{code-block} shell
 juju integrate scratch ceph-fs
