@@ -5,7 +5,7 @@ Release notes for Charmed HPC. As a single product composed of a portfolio of ch
 
 ## Releases
 
-- {ref}`release-notes-1-0-rc`
+- {ref}`1.0-rc <release-notes-1-0-rc>`
 
 ## Release policy and schedule
 
@@ -32,5 +32,5 @@ Only the set of versions listed in a single release's release notes is tested to
 :maxdepth: 1
 :hidden:
 
-1.0-rc
+1.0-rc <1.0-rc>
 :::
