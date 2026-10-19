@@ -147,5 +147,6 @@ reference/index
 :hidden:
 :titlesonly:
 
+release-notes/index
 contributing/index
 :::
