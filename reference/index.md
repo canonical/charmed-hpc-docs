@@ -21,6 +21,12 @@ Dashboards, metrics, and log queries available when COS is integrated with a Cha
 - {ref}`reference-monitoring-prometheus-alerts`
 - {ref}`reference-monitoring-prometheus-metrics`
 
+## Troubleshooting
+
+Where logs are located, how to read them, and how to control verbosity and retention when inspecting a cluster directly rather than through COS.
+
+- {ref}`reference-log-locations`
+
 ## Performance
 
 Reference data for evaluating and tuning the performance of a Charmed HPC cluster, including benchmarks and hardware-specific metrics.
@@ -36,6 +42,7 @@ Underlying projects and dependencies <underlying-projects-and-dependencies>
 gpus
 interconnects
 monitoring/index
+logging
 Performance <performance>
 
 ```
