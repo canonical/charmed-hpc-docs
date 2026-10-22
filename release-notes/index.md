@@ -1,3 +1,9 @@
+---
+myst:
+  html_meta:
+    description: Release notes for Charmed HPC, including the release policy and schedule, Ubuntu base support, compatibility between releases, and guidance on mixed-version deployments.
+---
+
 (release-notes)=
 # Release notes
 

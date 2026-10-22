@@ -44,6 +44,8 @@ prometheus
 Multipass
 munge
 mungectl
+openssh
+OpenSSH
 OSU
 Postgres
 ReFrame
