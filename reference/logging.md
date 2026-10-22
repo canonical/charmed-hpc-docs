@@ -6,9 +6,12 @@ myst:
 (reference-log-locations)=
 # Logging
 
-This page lists the on-disk log locations and journald units for every service deployed as part
-of Charmed HPC along with the command needed to read each one. Use it when troubleshooting a cluster from the controller node. Some of these logs are also sent to Loki when COS is
-integrated. For info on how to query them, see {ref}`reference-monitoring-loki-logs`.
+This page lists the log locations and journald units for the services that make up a Charmed
+HPC deployment along with the command needed to read each one. Use it when troubleshooting a
+cluster from the controller node. Most services run on machines and log to disk or journald;
+the Authentik identity provider runs on Kubernetes and its logs are read from the containers
+instead. Some of these logs are also sent to Loki when COS is integrated. For info on how to
+query them, see {ref}`reference-monitoring-loki-logs`.
 
 Sections are grouped by the service that writes the logs. The charm that provides each service
 is named alongside it.
@@ -32,6 +35,11 @@ List a unit's log directories, `juju ssh slurmctld/0 sudo ls -la /var/log/slurm 
 :::{note}
 Unless stated otherwise, every charm also writes a Juju unit log. See
 {ref}`reference-log-locations-juju` for those locations, which apply to all charms on this page.
+:::
+
+:::{note}
+The Authentik identity provider runs on Kubernetes rather than on machines, so the commands
+above do not apply to it. See {ref}`reference-log-locations-authentik` for how to read its logs.
 :::
 
 (reference-log-locations-slurm)=
@@ -146,7 +154,7 @@ juju ssh sackd/0 sacct --allusers --starttime now-1days --format JobID,JobName,U
 To see everything recorded for one job:
 
 :::{code-block} shell
-juju ssh sackd/0 sacct -j 1234 --long
+juju ssh sackd/0 sacct -j <job-id> --long
 :::
 
 List the fields available to `--format` with `sacct --helpformat`{l=shell}. For the full set of
@@ -248,7 +256,9 @@ juju ssh filesystem-client/0 sudo ls /etc/auto.master.d/
 ### lustre-server
 
 Lustre servers log through the kernel. There is no `/var/log/lustre` directory. The charm
-formats its targets on ZFS, so ZFS faults are a common root cause of Lustre errors.
+formats its targets on ZFS, so ZFS faults are a common root cause of Lustre errors. For the
+roles a unit can take and the ZFS layout the charm creates for each, see {ref}`explanation-lustre`.
+For deployment, see {ref}`howto-deploy-deploy-lustre`.
 
 :::{csv-table}
 :header: >
@@ -260,10 +270,16 @@ Lustre debug log, `sudo lctl dk /tmp/lustre-debug.log`{l=shell}, "Dumps the in-k
 Target status, `sudo lctl dl`{l=shell}, Lists configured devices and their state.
 Mounted targets, `findmnt -t lustre`{l=shell}, "The combined MGT and MDT mounts at `/mnt/mgs_mdt`, and each OST at `/mnt/ost<index>`."
 LNet state, `sudo lnetctl net show -v`{l=shell}, Current network state rather than a log. Use alongside `lctl dk`.
-ZFS pool faults, `sudo zpool events -v`{l=shell}, The charm formats all targets with a ZFS backing filesystem.
+ZFS pool faults, `sudo zpool events -v`{l=shell}, "The charm formats all targets with a ZFS backing filesystem. Pools are named `lustrefs-mgsmdt0-pool` on the combined MGS+MDS unit and `lustrefs-ost<index>-pool` on each OSS unit."
 ZFS pool health, `sudo zpool status -v`{l=shell}, Point-in-time health rather than a log.
 ZFS kernel errors, `sudo dmesg -T | grep -i zfs`{l=shell}, Pool import and I/O errors.
 :::
+
+The charm runs health checks during its `update-status` hook that verify the peer integration
+data, that the `lustre` and `lnet` kernel modules are loaded, and that the target mount points
+under `/mnt` exist and are mounted. A unit stuck in `blocked` has usually failed one of these
+checks. The failure is recorded in the Juju unit log and shown as the unit's status message.
+See {ref}`reference-log-locations-juju`.
 
 ### Proxy charms
 
@@ -303,6 +319,58 @@ juju config cephfs-server-proxy monitor-hosts
 (reference-log-locations-identity)=
 ## Identity and access
 
+(reference-log-locations-authentik)=
+### Authentik
+
+Provided by the `authentik-server`, `authentik-worker` and `authentik-ldap-outpost` charms,
+from [`authentik-server-operator`](https://github.com/canonical/authentik-server-operator),
+[`authentik-worker-operator`](https://github.com/canonical/authentik-worker-operator) and
+[`authentik-ldap-outpost-operator`](https://github.com/canonical/authentik-ldap-outpost-operator).
+
+Deployed on Kubernetes rather than on the machine cloud: the three applications run in the
+`identity` model on the `charmed-hpc-k8s` cloud alongside `postgresql-k8s`, `traefik-k8s` and
+`self-signed-certificates`. For how to deploy them, see
+{ref}`howto-deploy-deploy-identity-provider-authentik-and-sssd`. These services write no log
+files on the machines of the `slurm` model. Each workload logs to its container's standard
+output, which Kubernetes captures. Before running the Juju commands, navigate to the Kubernetes
+controller where your Authentik deployment is instantiated and its `identity` model:
+
+:::{code-block} shell
+juju switch <k8s-controller>:identity
+:::
+
+:::{csv-table}
+:header: >
+: source, location or command, notes
+
+Charm logs, `juju debug-log --replay --include authentik-server`{l=shell}, "Charm-side events for any of the three applications. Works as for machine charms. See {ref}`reference-log-locations-juju`."
+Server workload, `kubectl -n identity logs pods/authentik-server-0 -c authentik`{l=shell}, "Web server and API output. Requires `kubectl` access to the `charmed-hpc-k8s` cloud. The unit's charm container is `-c charm`."
+Worker workload, `kubectl -n identity logs pods/authentik-worker-0 -c authentik`{l=shell}, Background task processing for the deployment.
+LDAP outpost workload, `kubectl -n identity logs pods/authentik-ldap-outpost-0 -c authentik-ldap`{l=shell}, "LDAP bind and search traffic from SSSD. Check here when lookups fail but SSSD itself is healthy."
+Pebble service logs, `juju ssh --container authentik authentik-server/0 /charm/bin/pebble logs authentik-server`{l=shell}, "Reads the same workload output through Pebble rather than `kubectl`. The Pebble services are `authentik-server`, `authentik-worker` and `authentik-ldap`."
+:::
+
+The supporting `postgresql-k8s`, `traefik-k8s` and `self-signed-certificates` applications run
+in the same model and their logs are read the same way.
+
+All three Authentik charms expose a `log_level` configuration option. Raise it to diagnose
+problems, for example on the LDAP outpost to see individual bind and search operations:
+
+:::{code-block} shell
+juju config authentik-ldap-outpost log_level=debug
+:::
+
+`authentik-worker` and `authentik-ldap-outpost` accept `debug`, `info`, `warning`, `error` and
+`critical`. `authentik-server` accepts the same levels and `trace`.
+
+:::{caution}
+`trace` on `authentik-server` may record sensitive data such as session cookies. Do not leave
+it enabled in production.
+:::
+
+All three charms can also forward their logs to Loki over their `logging` endpoint when the
+`identity` model is integrated with COS. See {ref}`reference-monitoring-loki-logs`.
+
 ### SSSD
 
 Provided by the `sssd` charm, from
@@ -318,7 +386,7 @@ Monitor process, `sudo cat /var/log/sssd/sssd.log`{l=shell}, Top-level SSSD proc
 NSS responder, `sudo cat /var/log/sssd/sssd_nss.log`{l=shell}, User and group lookup failures.
 PAM responder, `sudo cat /var/log/sssd/sssd_pam.log`{l=shell}, Authentication failures.
 LDAP child, `sudo cat /var/log/sssd/ldap_child.log`{l=shell}, LDAP bind and TLS handshake failures.
-Domain backend, `sudo ls /var/log/sssd/`{l=shell}, "The per-domain log is named `sssd_<domain>.log`. The charm names the domain after the application providing the `ldap` integration, so with GLAuth deployed as `glauth` the file is `sssd_glauth.log`. List the directory to confirm."
+Domain backend, `sudo ls /var/log/sssd/`{l=shell}, "The per-domain log is named `sssd_<domain>.log`. The charm names the domain after the application or offer providing the `ldap` integration: with the Authentik LDAP outpost offer consumed as `ldaps` the file is `sssd_ldaps.log`, and with ldap-integrator consumed as `ldap` it is `sssd_ldap.log`. List the directory to confirm."
 Login attempts, `sudo cat /var/log/auth.log`{l=shell}, PAM results for user logins.
 Effective configuration, `sudo cat /etc/sssd/sssd.conf`{l=shell}, Charm-managed. Shows the configured domains.
 Lookup test, `getent passwd <username>`{l=shell}, Confirms whether resolution works without reading logs.
@@ -334,8 +402,9 @@ juju ssh sssd/0 sudo systemctl restart sssd
 :::
 
 :::{caution}
-The charm rewrites `/etc/sssd/sssd.conf` on every `ldap` and `certificates` integration event,
-so a manual edit is lost the next time one fires. Treat this as a temporary diagnostic measure.
+The charm rewrites `/etc/sssd/sssd.conf` on every `ldap` and `receive-ca-cert` integration
+event, so a manual edit is lost the next time one fires. Treat this as a temporary diagnostic
+measure.
 :::
 
 TLS trust problems usually trace back to certificates the charm installs per integration. The
@@ -349,7 +418,10 @@ juju ssh sssd/0 sudo ls -R /usr/local/share/ca-certificates/
 ### OpenSSH
 
 Provided by the `openssh` charm, from
-[`openssh-operator`](https://github.com/canonical/openssh-operator).
+[`openssh-operator`](https://github.com/canonical/openssh-operator). Deployed on the login nodes
+to enable SSH key-based authentication. For deployment, see
+{ref}`howto-deploy-deploy-identity-provider`; for how users' public keys are set in Authentik,
+see {ref}`howto-manage-manage-users-and-groups-set-public-ssh-keys`.
 
 :::{csv-table}
 :header: >
@@ -408,11 +480,11 @@ is the only record of what it did.
 
 :::{csv-table}
 :header: >
-: source, location or command, notes
+: source, command, notes
 
-Job output path, `scontrol show job 1234 | grep -E 'StdOut|StdErr|WorkDir'`{l=shell}, Resolves the actual output paths for a running or recently completed job. Run from a login node.
-Job output path after completion, "`sacct -j 1234 --format JobID,WorkDir%80`{l=shell}", "`scontrol` drops job records after `MinJobAge`. Use `sacct` for older jobs, then look for `slurm-1234.out` in `WorkDir`. The `%80` suffix widens the column so long paths are not truncated. See the [`sacct` documentation {octicon}`link-external`](https://slurm.schedmd.com/sacct.html)."
-Default output file, `cat <WorkDir>/slurm-1234.out`{l=shell}, "Where `sbatch` was called without `--output`, substituting the `WorkDir` found above."
+Job output path, `scontrol show job <job-id> | grep -E 'StdOut|StdErr|WorkDir'`{l=shell}, Resolves the actual output paths for a running or recently completed job. Run from a login node.
+Job output path after completion, "`sacct -j <job-id> --format JobID,WorkDir%80`{l=shell}", "`scontrol` drops job records after `MinJobAge`. Use `sacct` for older jobs, then look for `slurm-<job-id>.out` in `WorkDir`. The `%80` suffix widens the column so long paths are not truncated. See the [`sacct` documentation {octicon}`link-external`](https://slurm.schedmd.com/sacct.html)."
+Default output file, `cat <WorkDir>/slurm-<job-id>.out`{l=shell}, "Where `sbatch` was called without `--output`, substituting the `WorkDir` found above."
 Container launch failures, `sudo cat /var/log/slurm/slurmd.log`{l=shell}, "The `oci.conf` run commands are invoked by `slurmd`, so OCI runtime failures are recorded on the compute node."
 Effective OCI configuration, `sudo cat /etc/slurm/oci.conf`{l=shell}, "Read this on a `slurmctld` unit. Check when `--container` jobs fail to launch."
 Verbose runtime output, `apptainer --debug exec docker://ubuntu:24.04 echo ok`{l=shell}, Run interactively on a compute node to diagnose image or namespace problems. Global flags must precede the subcommand.
@@ -434,7 +506,7 @@ juju debug-log --replay --include apptainer --include slurmctld
 
 Every charm on this page also writes a Juju unit log in addition to the workload logs above.
 These record what the charm did: which handlers ran, the configuration it rendered and the
-status each unit last reported. When a unit is in `error` or `blocked`, they usually hold the
+status each unit last reported. When a unit is in `error` or `blocked`, the unit logs usually hold the
 explanation. Each machine holds one file per unit and per agent under `/var/log/juju` and the
 controller retains the same logs for the whole model. For more, including how to forward these
 logs to an external syslog server, see the
@@ -457,7 +529,7 @@ with `/` replaced by `-`. If you do not know the exact name, list the directory 
 
 ### Through the Juju CLI
 
-Prefer these over reading files directly since they aggregate across the model and need no SSH
+Juju CLI commands are advised over reading files directly since they aggregate across the model and need no SSH
 access.
 
 :::{csv-table}
@@ -477,7 +549,7 @@ access.
 ### Raising charm log verbosity
 
 Charmed HPC charms log at `INFO` by default. Many handlers emit configuration diffs and service
-state at `DEBUG`:
+state at `DEBUG`. To increase the logging level:
 
 :::{code-block} shell
 juju model-config logging-config="<root>=WARNING;unit=DEBUG"
@@ -568,3 +640,7 @@ weekly and keeps five compressed backups. To see the policies in effect on any u
 :::{code-block} shell
 juju ssh <unit> "sudo ls /etc/logrotate.d/ && sudo grep -rl slurm /etc/logrotate.d/ | xargs sudo cat"
 :::
+
+None of this covers the Authentik containers on the Kubernetes cloud. Kubernetes rotates
+container logs on the Kubernetes nodes according to the container runtime's own limits, and
+`kubectl logs`{l=shell} only shows what is currently retained.
