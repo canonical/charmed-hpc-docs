@@ -156,6 +156,7 @@ dropdowns
 filesystem
 filesystems
 integrations
+interoperate
 lifecycle
 Performant
 performant
@@ -165,6 +166,7 @@ sif
 tos
 md
 txt
+unvalidated
 yml
 
 # Places

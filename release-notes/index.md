@@ -9,7 +9,7 @@ Release notes for Charmed HPC. As a single product composed of a portfolio of ch
 
 ## Release policy and schedule
 
-Releases are numbered `<major>.<minor>` and follow a six-month cycle with two scheduled release slots: one major release and one minor feature release, alternating approximately every three months. Minor patch releases are unschedule and cut as needed due to criticality. 
+Releases are numbered `<major>.<minor>` and follow a six-month cycle with two scheduled release slots: one major release and one minor feature release, alternating approximately every three months. Minor patch releases are not scheduled and cut as needed due to criticality. 
 
 Both minor feature and minor patch releases increment the same minor version number, so the version alone does not distinguish them. Each release's notes will clearly state which kind it is.
 
