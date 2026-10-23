@@ -30,6 +30,7 @@ data "juju_application" "slurmd" {
 module "sssd" {
   source     = "git::https://github.com/canonical/sssd-operator//terraform"
   model_uuid = data.juju_model.slurm.uuid
+  channel    = "2/stable"
 }
 
 resource "juju_integration" "sssd_to_sackd" {

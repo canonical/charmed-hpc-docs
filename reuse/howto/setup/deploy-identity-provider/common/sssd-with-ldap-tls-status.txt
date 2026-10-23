@@ -13,14 +13,14 @@ SAAS             Status  Store                   URL
 ldap             active  charmed-hpc-controller  admin/identity.ldap
 send-ldap-certs  active  charmed-hpc-controller  admin/identity.send-ldap-certs
 
-App         Version          Status  Scale  Charm       Channel      Rev  Exposed  Message
-mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable   444  no
-sackd       25.11.2          active      1  sackd       latest/edge   89  no
-slurmctld   25.11.2          active      1  slurmctld   latest/edge  167  no       primary - UP
-slurmd      25.11.2          active      1  slurmd      latest/edge  184  no
-slurmdbd    25.11.2          active      1  slurmdbd    latest/edge  161  no
-slurmrestd  25.11.2          active      1  slurmrestd  latest/edge  161  no
-sssd        2.12.0           active      3  sssd        latest/edge   34  no
+App         Version          Status  Scale  Charm       Channel       Rev  Exposed  Message
+mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable    541  no
+sackd       25.11.2          active      1  sackd       25.11/stable   89  no
+slurmctld   25.11.2          active      1  slurmctld   25.11/stable  167  no       primary - UP
+slurmd      25.11.2          active      1  slurmd      25.11/stable  184  no
+slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  161  no
+slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  161  no
+sssd        2.12.0           active      3  sssd        2/stable       52  no
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
 mysql/0*       active    idle   5        10.124.231.61   3306,33060/tcp  Primary

@@ -74,7 +74,7 @@ Now use `juju deploy`{l=shell} to deploy Authentik with:
 juju deploy authentik-server --channel latest/stable --trust
 juju deploy authentik-worker --channel latest/stable --trust
 juju deploy authentik-ldap-outpost --channel latest/stable --trust
-juju deploy postgresql-k8s --channel 14/stable --trust
+juju deploy postgresql-k8s --channel 16/stable --trust
 juju deploy traefik-k8s --channel latest/stable --base ubuntu@26.04 --trust
 juju deploy self-signed-certificates --channel 1/stable
 :::
@@ -175,11 +175,11 @@ identity  charmed-hpc-k8s  charmed-hpc-k8s  3.6.28   unsupported  17:12:15-04:00
 
 App                       Version   Status  Scale  Charm                     Channel        Rev  Address         Exposed  Message
 authentik-ldap-outpost    2026.5.3  active      1  authentik-ldap-outpost    latest/stable   23  10.152.183.225  no
-authentik-server          2026.5.3  active      1  authentik-server          latest/stable   30  10.152.183.164  no
+authentik-server          2026.5.3  active      1  authentik-server          latest/stable   31  10.152.183.164  no
 authentik-worker          2026.5.3  active      1  authentik-worker          latest/stable    7  10.152.183.134  no
-postgresql-k8s            14.24     active      1  postgresql-k8s            14/stable      960  10.152.183.88   no
-self-signed-certificates            active      1  self-signed-certificates  1/stable       586  10.152.183.68   no
-traefik-k8s               2.11.49   active      1  traefik-k8s               latest/stable  378  10.152.183.124  no       Serving at https://10.148.202.14
+postgresql-k8s            16.10     active      1  postgresql-k8s            16/stable      957  10.152.183.88   no
+self-signed-certificates            active      1  self-signed-certificates  1/stable       588  10.152.183.68   no
+traefik-k8s               2.11.49   active      1  traefik-k8s               latest/stable  480  10.152.183.124  no       Serving at https://10.148.202.14
 
 Unit                         Workload  Agent  Address     Ports  Message
 authentik-ldap-outpost/0*    active    idle   10.1.0.222
@@ -311,14 +311,14 @@ SAAS             Status  Store                   URL
 ldaps            active  charmed-hpc-controller  admin/identity.ldaps
 send-ca-certs    active  charmed-hpc-controller  admin/identity.send-ca-certs
 
-App         Version          Status  Scale  Charm       Channel      Rev  Exposed  Message
-mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable   444  no
-sackd       25.11.2          active      1  sackd       latest/edge   89  no
-slurmctld   25.11.2          active      1  slurmctld   latest/edge  167  no       primary - UP
-slurmd      25.11.2          active      1  slurmd      latest/edge  184  no
-slurmdbd    25.11.2          active      1  slurmdbd    latest/edge  161  no
-slurmrestd  25.11.2          active      1  slurmrestd  latest/edge  161  no
-sssd        2.12.0           active      3  sssd        latest/edge   34  no
+App         Version          Status  Scale  Charm       Channel       Rev  Exposed  Message
+mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable    541  no
+sackd       25.11.2          active      1  sackd       25.11/stable   89  no
+slurmctld   25.11.2          active      1  slurmctld   25.11/stable  167  no       primary - UP
+slurmd      25.11.2          active      1  slurmd      25.11/stable  184  no
+slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  161  no
+slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  161  no
+sssd        2.12.0           active      3  sssd        2/stable       52  no
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
 mysql/0*       active    idle   5        10.124.231.61   3306,33060/tcp  Primary
@@ -411,7 +411,7 @@ example, the external LDAP server's:
 For further customization, see [the full list of ldap-integrator's available configuration options](https://charmhub.io/ldap-integrator/configurations).
 
 :::{code-block} shell
-juju deploy ldap-integrator --channel edge \
+juju deploy ldap-integrator --channel latest/stable \
   --config base_dn="cn=testing,cn=ubuntu,cn=com" \
   --config bind_dn="cn=admin,dc=test,dc=ubuntu,dc=com" \
   --config bind_password="${secret_id}" \
@@ -529,8 +529,8 @@ juju status
 Model     Controller              Cloud/Region         Version  SLA          Timestamp
 identity  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  12:52:02-06:00
 
-App              Version  Status  Scale  Charm            Channel      Rev  Exposed  Message
-ldap-integrator           active      1  ldap-integrator  latest/edge   38  no
+App              Version  Status  Scale  Charm            Channel        Rev  Exposed  Message
+ldap-integrator           active      1  ldap-integrator  latest/stable   36  no
 
 Unit                Workload  Agent  Machine  Public address  Ports  Message
 ldap-integrator/0*  active    idle   0        10.124.231.240
@@ -729,7 +729,7 @@ module "ldap-integrator" {
     urls = "ldap://10.214.237.229"
   }
 
-  channel = "latest/edge"
+  channel = "latest/stable"
 }
 :::
 
@@ -765,7 +765,7 @@ example, the LDAP server's TLS certificate is stored in the file _bundle.pem_:
 :::{literalinclude} /reuse/howto/setup/deploy-identity-provider/ldap-integrator/manual-tls-certificates.tf
 :caption: {{ manual_tls_certificates_tf_file }}
 :language: terraform
-:lines: 25-32
+:lines: 25-34
 :::
 
 :::{include} /reuse/howto/setup/deploy-identity-provider/ldap-integrator/bundle-pem-tip.txt
@@ -776,7 +776,7 @@ Now create an offer from the manual-tls-certificates application in your `identi
 :::{literalinclude} /reuse/howto/setup/deploy-identity-provider/ldap-integrator/manual-tls-certificates.tf
 :caption: {{ manual_tls_certificates_tf_file }}
 :language: terraform
-:lines: 34-39
+:lines: 36-41
 :::
 
 After that, integrate SSSD with manual-tls-certificates:
@@ -784,7 +784,7 @@ After that, integrate SSSD with manual-tls-certificates:
 :::{literalinclude} /reuse/howto/setup/deploy-identity-provider/ldap-integrator/manual-tls-certificates.tf
 :caption: {{ manual_tls_certificates_tf_file }}
 :language: terraform
-:lines: 41-51
+:lines: 43-53
 :::
 
 Now use the `terraform`{l=shell} command to update the configuration of your
@@ -929,15 +929,15 @@ SAAS             Status  Store                   URL
 ldaps            active  charmed-hpc-controller  admin/identity.ldaps
 send-ca-certs    active  charmed-hpc-controller  admin/identity.send-ca-certs
 
-App         Version          Status  Scale  Charm       Channel      Rev  Exposed  Message
-openssh     10.2p1           active      1  openssh     10/stable      1  no
-mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable   444  no
-sackd       25.11.2          active      1  sackd       latest/edge   89  no
-slurmctld   25.11.2          active      1  slurmctld   latest/edge  167  no       primary - UP
-slurmd      25.11.2          active      1  slurmd      latest/edge  184  no
-slurmdbd    25.11.2          active      1  slurmdbd    latest/edge  161  no
-slurmrestd  25.11.2          active      1  slurmrestd  latest/edge  161  no
-sssd        2.12.0           active      3  sssd        latest/edge   34  no
+App         Version          Status  Scale  Charm       Channel       Rev  Exposed  Message
+openssh     10.2p1           active      1  openssh     10/stable       5  no
+mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable    541  no
+sackd       25.11.2          active      1  sackd       25.11/stable   89  no
+slurmctld   25.11.2          active      1  slurmctld   25.11/stable  167  no       primary - UP
+slurmd      25.11.2          active      1  slurmd      25.11/stable  184  no
+slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  161  no
+slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  161  no
+sssd        2.12.0           active      3  sssd        2/stable       52  no
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
 mysql/0*       active    idle   5        10.124.231.61   3306,33060/tcp  Primary

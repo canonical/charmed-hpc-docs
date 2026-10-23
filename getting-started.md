@@ -136,19 +136,19 @@ Then, use `juju deploy`{l=shell} to deploy `sackd`, `slurmctld`, and `slurmd`:
 :::{code-block} shell
 juju deploy slurmctld \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel 25.11/stable \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmd compute \
   --num-units 2 \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel 25.11/stable \
   --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 
 juju deploy sackd login \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel 25.11/stable \
   --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 :::
@@ -165,22 +165,22 @@ juju integrate slurmctld compute
 Next, use `juju deploy`{l=shell} to deploy the filesystem pieces, which are:
 
 - `microceph`, the distributed storage system
-- `ceph-fs` to expose the MicroCeph cluster as a shared filesystem using [CephFS](https://docs.ceph.com/en/tentacle/cephfs/)
+- `ceph-fs` to expose the MicroCeph cluster as a shared filesystem using [CephFS](https://docs.ceph.com/en/squid/cephfs/)
 - `filesystem-client` to mount the filesystem, named `scratch`
 
 :::{code-block} shell
 juju deploy microceph \
   --base ubuntu@26.04 \
-  --channel tentacle/stable \
+  --channel squid/stable \
   --constraints="virt-type=virtual-machine mem=4G root-disk=20G"
 
 juju deploy ceph-fs \
   --base ubuntu@26.04 \
-  --channel tentacle/candidate
+  --channel squid/stable
 
 juju deploy filesystem-client scratch \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel latest/stable \
   --config mountpoint=/scratch
 :::
 
@@ -214,13 +214,13 @@ juju status
 Model  Controller              Cloud/Region         Version  SLA          Timestamp
 slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  20:28:33-06:00
 
-App                 Version  Status  Scale  Charm              Channel             Rev  Exposed  Message
-ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  449  no       Unit is ready
-microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
-login               25.11.2  active      1  sackd              latest/edge          89  no
-scratch                      active      3  filesystem-client  latest/edge          37  no       Integrated with `cephfs` provider
-slurmctld           25.11.2  active      1  slurmctld          latest/edge         167  no       primary - UP
-compute             25.11.2  active      2  slurmd             latest/edge         184  no
+App                 Version  Status  Scale  Charm              Channel        Rev  Exposed  Message
+ceph-fs             19.2.0   active      1  ceph-fs            squid/stable   287  no       Unit is ready
+microceph                    active      1  microceph          squid/stable   331  no       (workload) charm is ready
+login               25.11.2  active      1  sackd              25.11/stable    89  no
+scratch                      active      3  filesystem-client  latest/stable   42  no       Integrated with `cephfs` provider
+slurmctld           25.11.2  active      1  slurmctld          25.11/stable   167  no       primary - UP
+compute             25.11.2  active      2  slurmd             25.11/stable   184  no
 
 Unit                   Workload  Agent  Machine  Public address  Ports          Message
 ceph-fs/0*             active    idle   5        10.124.231.80                  Unit is ready
@@ -352,7 +352,7 @@ return to that environment from within `login/0`, use the `exit`{l=shell} comman
 First, use `juju deploy`{l=shell} to deploy Apptainer:
 
 :::{code-block} shell
-juju deploy apptainer --channel latest/edge --base ubuntu@26.04
+juju deploy apptainer --channel 1/stable --base ubuntu@26.04
 :::
 
 Next, use `juju integrate`{l=shell} to integrate Apptainer with Slurm:
@@ -376,14 +376,14 @@ juju status
 Model  Controller              Cloud/Region         Version  SLA          Timestamp
 slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  21:13:47-06:00
 
-App                 Version  Status  Scale  Charm              Channel             Rev  Exposed  Message
-apptainer           1.4.5    active      3  apptainer          latest/edge          32  no
-ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  449  no       Unit is ready
-microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
-login               25.11.2  active      1  sackd              latest/edge          89  no
-scratch                      active      3  filesystem-client  latest/edge          37  no       Integrated with `cephfs` provider
-slurmctld           25.11.2  active      1  slurmctld          latest/edge         167  no       primary - UP
-compute             25.11.2  active      2  slurmd             latest/edge         184  no
+App                 Version  Status  Scale  Charm              Channel        Rev  Exposed  Message
+apptainer           1.4.5    active      3  apptainer          1/stable        39  no
+ceph-fs             19.2.0   active      1  ceph-fs            squid/stable   287  no       Unit is ready
+microceph                    active      1  microceph          squid/stable   331  no       (workload) charm is ready
+login               25.11.2  active      1  sackd              25.11/stable    89  no
+scratch                      active      3  filesystem-client  latest/stable   42  no       Integrated with `cephfs` provider
+slurmctld           25.11.2  active      1  slurmctld          25.11/stable   167  no       primary - UP
+compute             25.11.2  active      2  slurmd             25.11/stable   184  no
 
 Unit                   Workload  Agent  Machine  Public address  Ports          Message
 ceph-fs/0*             active    idle   5        10.124.231.80                  Unit is ready

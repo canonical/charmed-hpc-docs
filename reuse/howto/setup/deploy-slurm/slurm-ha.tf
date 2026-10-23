@@ -2,6 +2,7 @@ module "filesystem-client" {
   source      = "git::https://github.com/canonical/filesystem-charms//charms/filesystem-client/terraform"
   model_uuid  = juju_model.slurm.uuid
   base        = "ubuntu@26.04"
+  channel     = "latest/stable"
 }
 
 resource "juju_integration" "provider_to_filesystem" {
@@ -21,6 +22,7 @@ resource "juju_integration" "provider_to_filesystem" {
 module "slurmctld" {
   source      = "git::https://github.com/canonical/slurm-charms//charms/slurmctld/terraform"
   model_uuid  = juju_model.slurm.uuid
+  channel     = "25.11/stable"
   units       = 2
 }
 

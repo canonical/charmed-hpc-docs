@@ -7,7 +7,7 @@ myst:
 (release-notes)=
 # Release notes
 
-Release notes for Charmed HPC. As a single product composed of a portfolio of charms and supporting artifacts, the release notes summarise new features, bug and security fixes, and also contain the artifacts, upstream versions, and compatible third-party charm versions that were tested together for a given release, together with any breaking changes, deprecations, and known issues.
+Release notes for Charmed HPC, a single product composed of a portfolio of charms and supporting artifacts. The release notes summarise new features, bug and security fixes for the product, with artifacts, upstream versions, and compatible third-party charm versions that were tested together for a given release. Breaking changes, deprecations, and known issues are also reported.
 
 ## Releases
 
@@ -25,18 +25,18 @@ Each Charmed HPC major release is built against the latest Ubuntu LTS release at
 
 ### Compatibility between releases
 
-Within a major release, Charmed HPC components are **forward compatible**: a component from an older minor release can interact with and accept data from a newer minor release of the same major release. This includes the initial major release — for example, components from `1.0` can interoperate with components from `1.1` and later, although features introduced in a later release are not available to the older component. To use a new feature, every component that participates in it must be refreshed to the minor release that introduced it, or later.
+Within a major release, Charmed HPC components are **forward compatible**: a component from an older minor release can interact with and accept data from a newer minor release of the same major release. This includes the initial major release although features introduced in a later release are not available to the older component. For example, components from `1.0` can interoperate with components from `1.1` and later. To use a new feature, every component that participates in it must be refreshed to the minor release that introduced it, or later.
 
 Components from different major releases should not be used together.
 
 ### Mixed-version deployments
 
-Only the set of versions listed in a single release's release notes is tested together. Mismatched component versions within the same major release are intended to work by virtue of the forward compatibility design, but are not guaranteed. If you encounter an issue with an unvalidated combination, you may submit an issue on GitHub; however, the common resolution will be to update to a supported component version set.
+Only the set of versions listed in a single release's release notes is tested together. Mismatched component versions within the same major release are intended to work by virtue of the forward compatibility design, but are not guaranteed. If you encounter an issue with an unvalidated combination, you may submit an issue on GitHub, though the likely resolution will be to update to a supported component version set.
 
 :::{toctree}
 :titlesonly:
 :maxdepth: 1
 :hidden:
 
-1.0-rc <1.0-rc>
+1.0-rc1 <1.0-rc>
 :::

@@ -36,7 +36,7 @@ module "authentik_ldap_outpost" {
 module "postgresql_k8s" {
   source     = "git::https://github.com/canonical/postgresql-k8s-operator//terraform"
   model_uuid = juju_model.identity.uuid
-  channel    = "14/stable"
+  channel    = "16/stable"
 }
 
 module "traefik_k8s" {
