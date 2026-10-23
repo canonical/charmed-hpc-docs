@@ -54,11 +54,11 @@ the storage database for slurmdbd:
 :::
 
 :::{code-block} shell
-juju deploy sackd --base ubuntu@26.04 --channel latest/edge
-juju deploy slurmctld --base ubuntu@26.04 --channel latest/edge
-juju deploy slurmd --base ubuntu@26.04 --channel latest/edge
-juju deploy slurmdbd --base ubuntu@26.04 --channel latest/edge
-juju deploy slurmrestd --base ubuntu@26.04 --channel latest/edge
+juju deploy sackd --base ubuntu@26.04 --channel 25.11/stable
+juju deploy slurmctld --base ubuntu@26.04 --channel 25.11/stable
+juju deploy slurmd --base ubuntu@26.04 --channel 25.11/stable
+juju deploy slurmdbd --base ubuntu@26.04 --channel 25.11/stable
+juju deploy slurmrestd --base ubuntu@26.04 --channel 25.11/stable
 juju deploy mysql --channel 8.0/stable
 :::
 
@@ -114,7 +114,7 @@ Now deploy Slurm's services with MySQL as the storage database for slurmdbd:
 :::{literalinclude} /reuse/howto/setup/deploy-slurm/slurm.tf
 :caption: {{ slurm_tf_file }}
 :language: terraform
-:lines: 17-50
+:lines: 17-56
 :::
 
 After that, integrate all of Slurm's services together, and integrate slurmdbd with MySQL:
@@ -122,7 +122,7 @@ After that, integrate all of Slurm's services together, and integrate slurmdbd w
 :::{literalinclude} /reuse/howto/setup/deploy-slurm/slurm.tf
 :caption: {{ slurm_tf_file }}
 :language: terraform
-:lines: 52-120
+:lines: 58-126
 :::
 
 You can expand the dropdown below to view the full _{{ slurm_tf_file }}_ Terraform
@@ -156,13 +156,13 @@ juju status
 Model  Controller              Cloud/Region         Version  SLA          Timestamp
 slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  18:37:21-06:00
 
-App         Version          Status  Scale  Charm       Channel      Rev  Exposed  Message
-mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable   444  no
-sackd       25.11.2          active      1  sackd       latest/edge   89  no
-slurmctld   25.11.2          active      1  slurmctld   latest/edge  167  no       primary - UP
-slurmd      25.11.2          active      1  slurmd      latest/edge  184  no
-slurmdbd    25.11.2          active      1  slurmdbd    latest/edge  161  no
-slurmrestd  25.11.2          active      1  slurmrestd  latest/edge  161  no
+App         Version          Status  Scale  Charm       Channel       Rev  Exposed  Message
+mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable    541  no
+sackd       25.11.2          active      1  sackd       25.11/stable   89  no
+slurmctld   25.11.2          active      1  slurmctld   25.11/stable  167  no       primary - UP
+slurmd      25.11.2          active      1  slurmd      25.11/stable  184  no
+slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  161  no
+slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  161  no
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
 mysql/0*       active    idle   5        10.124.231.36   3306,33060/tcp  Primary
@@ -213,10 +213,10 @@ acts as the primary Slurm controller, and the other unit serves as the backup co
 :sync: cli
 
 :::{code-block} shell
-juju deploy filesystem-client --base ubuntu@26.04 --channel latest/edge
+juju deploy filesystem-client --base ubuntu@26.04 --channel latest/stable
 juju integrate filesystem-client:filesystem [filesystem-provider]:filesystem
 
-juju deploy slurmctld --base ubuntu@26.04 --channel latest/edge --num-units 2
+juju deploy slurmctld --base ubuntu@26.04 --channel 25.11/stable --num-units 2
 juju integrate slurmctld:mount filesystem-client:mount
 :::
 
@@ -247,14 +247,14 @@ Model  Controller              Cloud/Region         Version  SLA          Timest
 slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  17:35:38-06:00
 
 App                  Version          Status  Scale  Charm                Channel          Rev  Exposed  Message
-cephfs-server-proxy                   active      1  cephfs-server-proxy  latest/edge       44  no
-filesystem-client                     active      2  filesystem-client    latest/edge       37  no       Integrated with `cephfs` provider
-mysql                8.0.44-0ubun...  active      1  mysql                8.0/stable       444  no
-sackd                25.11.2          active      1  sackd                latest/edge       89  no
-slurmctld            25.11.2          active      2  slurmctld            latest/edge      167  no       primary - UP
-slurmd               25.11.2          active      1  slurmd               latest/edge      184  no
-slurmdbd             25.11.2          active      1  slurmdbd             latest/edge      161  no
-slurmrestd           25.11.2          active      1  slurmrestd           latest/edge      161  no
+cephfs-server-proxy                   active      1  cephfs-server-proxy  latest/stable     50  no
+filesystem-client                     active      2  filesystem-client    latest/stable     42  no       Integrated with `cephfs` provider
+mysql                8.0.44-0ubun...  active      1  mysql                8.0/stable       541  no
+sackd                25.11.2          active      1  sackd                25.11/stable      89  no
+slurmctld            25.11.2          active      2  slurmctld            25.11/stable     167  no       primary - UP
+slurmd               25.11.2          active      1  slurmd               25.11/stable     184  no
+slurmdbd             25.11.2          active      1  slurmdbd             25.11/stable     161  no
+slurmrestd           25.11.2          active      1  slurmrestd           25.11/stable     161  no
 
 Unit                    Workload  Agent  Machine  Public address  Ports           Message
 cephfs-server-proxy/0*  active    idle   6        10.124.231.117
@@ -297,27 +297,27 @@ Slurm on virtual machines instead of system containers:
 :::{code-block} shell
 juju deploy sackd \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel 25.11/stable \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmctld \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel 25.11/stable \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmd \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel 25.11/stable \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmdbd \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel 25.11/stable \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmrestd \
   --base ubuntu@26.04 \
-  --channel latest/edge \
+  --channel 25.11/stable \
   --constraints="virt-type=virtual-machine"
 
 juju deploy mysql \
@@ -367,8 +367,8 @@ juju status slurmd
 Model  Controller              Cloud/Region         Version  SLA          Timestamp
 slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  17:39:46-06:00
 
-App     Version  Status  Scale  Charm   Channel      Rev  Exposed  Message
-slurmd  25.11.2  active      1  slurmd  latest/edge  184  no
+App     Version  Status  Scale  Charm   Channel       Rev  Exposed  Message
+slurmd  25.11.2  active      1  slurmd  25.11/stable  184  no
 
 Unit       Workload  Agent  Machine  Public address  Ports     Message
 slurmd/0*  active    idle   2        10.124.231.113  6818/tcp

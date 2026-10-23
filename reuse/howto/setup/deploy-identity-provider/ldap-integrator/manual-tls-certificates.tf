@@ -29,6 +29,8 @@ module "manual_tls_certificates" {
   config = {
     trusted-certificate-bundle = file("bundle.pem")
   }
+
+  channel = "1/stable"
 }
 
 resource "juju_offer" "send_ldap_certs" {
