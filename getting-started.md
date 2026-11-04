@@ -149,7 +149,6 @@ juju deploy slurmd compute \
 juju deploy sackd login \
   --base ubuntu@26.04 \
   --channel latest/edge \
-  --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 :::
 
@@ -289,7 +288,7 @@ compiling, and then compile the _mpi_hello_world.c_ file by running the `mpicc` 
 
 :::{code-block} shell
 cd /scratch/mpi_example
-sudo apt install build-essential openmpi-bin libopenmpi-dev
+sudo apt -y install build-essential openmpi-bin libopenmpi-dev
 mpicc -o mpi_hello_world mpi_hello_world.c
 :::
 
