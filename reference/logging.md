@@ -496,8 +496,8 @@ juju debug-log --replay --include apptainer --include slurmctld
 
 Every charm on this page also writes a Juju unit log in addition to the logs above.
 These record what the charm did: which handlers ran, the configuration it rendered, and the
-status each unit last reported. When a unit is in `error` or `blocked`, they usually hold the
-explanation. Each machine holds one file per unit and per agent under `/var/log/juju` and the
+status each unit last reported. When a unit is in `error` or `blocked`, the unit log usually
+holds the explanation. Each machine holds one file per unit and per agent under `/var/log/juju` and the
 controller retains the same logs for the whole model. For more, including how to forward these
 logs to an external syslog server, see the
 [upstream Juju documentation](https://documentation.ubuntu.com/juju/latest/howto/manage-logs/).
@@ -519,7 +519,7 @@ with `/` replaced by `-`. If you do not know the exact name, list the directory 
 
 ### Through the Juju CLI
 
-Prefer these over reading files directly since they aggregate across the model and need no SSH
+Juju CLI commands are advised over reading files directly since they aggregate across the model and need no SSH
 access.
 
 :::{csv-table}
@@ -539,7 +539,7 @@ access.
 ### Raising charm log verbosity
 
 Charmed HPC charms log at `INFO` by default. Many handlers emit configuration diffs and daemon
-state at `DEBUG`:
+state at `DEBUG`. To increase the logging level:
 
 :::{code-block} shell
 juju model-config logging-config="<root>=WARNING;unit=DEBUG"
