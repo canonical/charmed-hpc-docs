@@ -1,25 +1,23 @@
 ---
 myst:
   html_meta:
-    description: Reference for the logs of the services that make up a Charmed HPC deployment, covering log locations, read commands, verbosity, and retention for Slurm, filesystem, identity, container runtime, and Juju services.
+    description: Reference for the logs of a Charmed HPC deployment, covering log locations, read commands, verbosity, and retention across Slurm, filesystem, identity, container runtime, and Juju.
 ---
-(reference-log-locations)=
+(reference-logging)=
 # Logging
 
-This page lists the log locations and journald units for the services that make up a Charmed
-HPC deployment along with the command needed to read each one. Use it when troubleshooting a
-cluster from the controller node. Most services run on machines and log to disk or journald;
-the Authentik identity provider runs on Kubernetes and its logs are read from the containers
-instead. Some of these logs are also sent to Loki when COS is integrated. For info on how to
-query them, see {ref}`reference-monitoring-loki-logs`.
+This page explains how to access all the logs for a Charmed HPC deployment, along with the command
+needed to read each one. Use it when troubleshooting a cluster from the Juju controller. Some of
+these logs are also sent to {term}`Loki` when COS is integrated. For info on how to query them,
+see {ref}`reference-monitoring-loki-logs`.
 
-Sections are grouped by the service that writes the logs. The charm that provides each service
-is named alongside it.
+Sections are grouped by the source of the logs. The charm that manages each source is named
+alongside it.
 
-(reference-log-locations-accessing)=
+(reference-logging-accessing)=
 ## Accessing logs
 
-Read logs over SSH with `juju ssh`{l=shell} from the juju controller. Unit names throughout this page, such as `slurmctld/0`, are the default application
+Read logs over SSH with `juju ssh`{l=shell} from the Juju controller. Unit names throughout this page, such as `slurmctld/0`, are the default application
 name and unit number. Substitute your own where your deployment differs:
 
 :::{csv-table}
@@ -29,35 +27,30 @@ name and unit number. Substitute your own where your deployment differs:
 Open a shell on a unit, `juju ssh <unit>`{l=shell}, "For example, `juju ssh slurmctld/0`{l=shell} opens a shell on the first `slurmctld` unit."
 Read a log file without a shell, `juju ssh slurmctld/0 sudo cat /var/log/slurm/slurmctld.log`{l=shell}, Passes the read command to `juju ssh`{l=shell} rather than opening a shell.
 Follow a log live, `juju ssh slurmctld/0 sudo tail -f /var/log/slurm/slurmctld.log`{l=shell}, Streams new lines as they are written.
-List a unit's log directories, `juju ssh slurmctld/0 sudo ls -la /var/log/slurm /var/log/juju`{l=shell}, "Which directories exist depends on the services the unit runs, for example `/var/log/sssd` on an `sssd` unit. The sections below list them per service."
+List a unit's log directories, `juju ssh slurmctld/0 sudo ls -la /var/log/slurm /var/log/juju`{l=shell}, "Which directories exist depends on the daemons the unit runs, for example `/var/log/sssd` on an `sssd` unit. The sections below list them per source."
 :::
 
 :::{note}
 Unless stated otherwise, every charm also writes a Juju unit log. See
-{ref}`reference-log-locations-juju` for those locations, which apply to all charms on this page.
+{ref}`reference-logging-juju` for those locations, which apply to all charms on this page.
 :::
 
-:::{note}
-The Authentik identity provider runs on Kubernetes rather than on machines, so the commands
-above do not apply to it. See {ref}`reference-log-locations-authentik` for how to read its logs.
-:::
-
-(reference-log-locations-slurm)=
+(reference-logging-slurm)=
 ## Slurm workload manager
 
 Provided by [`slurm-charms`](https://github.com/canonical/slurm-charms).
 
-At deployment time the `slurmctld` charm writes the service log paths into `slurm.conf` and
+At deployment time the `slurmctld` charm writes the daemon log paths into `slurm.conf` and
 `slurmdbd` does the same in `slurmdbd.conf`. All Slurm daemon logs live under `/var/log/slurm`.
-The Slurm packages create this directory rather than the charms. Its files are not world-readable
-so read them with `sudo`:
+The Slurm services create this directory rather than the charms, so its files are not world-readable
+and need to be read them with `sudo`:
 
 :::{csv-table}
 :header: >
-: service, location or command, notes
+: daemon, command, notes
 
 slurmctld, `sudo cat /var/log/slurm/slurmctld.log`{l=shell}, Path set by the `slurmctld` charm via the `SlurmctldLogFile` option.
-slurmd, `sudo cat /var/log/slurm/slurmd.log`{l=shell}, "Written on each compute node. The path is set via `SlurmdLogFile`, which the `slurmctld` charm writes into `slurm.conf`. The `slurmd` charm runs configless and takes the value from the controller."
+slurmd, `sudo cat /var/log/slurm/slurmd.log`{l=shell}, "Written on each compute node. The path is set via `SlurmdLogFile`, which the `slurmctld` charm writes into `slurm.conf`. The `slurmd` charm runs configless and takes the value from `slurmctld`."
 slurmdbd, `sudo cat /var/log/slurm/slurmdbd.log`{l=shell}, Path set by the `slurmdbd` charm via the `LogFile` option.
 sackd, `sudo journalctl -u sackd`{l=shell}, No log file is configured by the charm. Output goes to journald.
 slurmrestd, `sudo journalctl -u slurmrestd`{l=shell}, "No log file is configured. The charm runs the daemon with `-vv`, so output goes to journald."
@@ -66,19 +59,42 @@ slurmrestd, `sudo journalctl -u slurmrestd`{l=shell}, "No log file is configured
 :::{note}
 `slurmctld` and `slurmdbd` run as the `slurm` user, but `slurmd` runs as `root`, so
 `slurmd.log` is root-owned while the other two are owned by `slurm`. Ownership and permissions
-come from the Slurm packages rather than the charms.
+come from the Slurm services rather than the charms.
 :::
 
-To confirm the paths in effect, read them back from the running configuration:
+To confirm the log file paths, read them back from the running configuration:
 
 :::{code-block} shell
 juju ssh slurmctld/0 sudo scontrol show config | grep -i logfile
 :::
 
-None of the Slurm charms expose a dedicated option for log paths or verbosity. Set these
-through the general-purpose `slurm-conf-parameters` option on `slurmctld` and
+Set the log path or verbosity through the general-purpose `slurm-conf-parameters` option on `slurmctld` and
 `slurmdbd-conf-parameters` on `slurmdbd`. Both options pass any `slurm.conf` or `slurmdbd.conf`
 setting through to the daemon as seen in the sections below.
+
+:::{caution}
+Both `slurm-conf-parameters` and `slurmdbd-conf-parameters` replace the whole override block
+rather than merging into it. To add a setting, read the current value first and set the
+option to the existing entries plus the new one:
+
+```shell
+# Read the current override block
+juju config slurmctld slurm-conf-parameters
+
+# Set it again, keeping any existing entries and adding the new one
+juju config slurmctld slurm-conf-parameters="<existing entries> <NewOption>=<value>"
+```
+
+The same method can change `slurmdbd-conf-parameters` on the `slurmdbd` application.
+:::
+
+:::{note}
+Both options are Juju application-level config: you set them once per application, not per
+unit. The charm applies the resulting config changes on the leader unit only (for example,
+`juju config slurmctld ...` is enacted by whichever `slurmctld` unit is leader, and the
+`slurmdbd` leader does the same for `slurmdbd-conf-parameters`). Non-leader units do not
+write config from these options.
+:::
 
 ### Scheduler logging
 
@@ -124,19 +140,6 @@ juju config slurmctld slurm-conf-parameters="SlurmctldDebug=debug2 SlurmdDebug=d
 juju config slurmdbd slurmdbd-conf-parameters="DebugLevel=debug2"
 :::
 
-:::{caution}
-Both `slurm-conf-parameters` and `slurmdbd-conf-parameters` replace the whole override block
-rather than merging into it. Read the current value first and include any existing entries in
-the new value:
-
-```shell
-juju config slurmctld slurm-conf-parameters
-juju config slurmdbd slurmdbd-conf-parameters
-```
-
-Both options are applied by the application leader only.
-:::
-
 ### Job accounting
 
 Job accounting is not written to a log file. When integrated with `slurmdbd`, the `slurmctld`
@@ -154,7 +157,7 @@ juju ssh sackd/0 sacct --allusers --starttime now-1days --format JobID,JobName,U
 To see everything recorded for one job:
 
 :::{code-block} shell
-juju ssh sackd/0 sacct -j <job-id> --long
+juju ssh sackd/0 sacct -j <job-ID> --long
 :::
 
 List the fields available to `--format` with `sacct --helpformat`{l=shell}. For the full set of
@@ -169,20 +172,19 @@ in the sacct documentation.
 :::
 
 If `sacct` shows no recent records, or the `slurmdbd` log reports database connection errors,
-look at the database server next. The `mysql` charm runs MySQL from the `charmed-mysql` snap,
-so its logs are under `/var/snap` rather than `/var/log/mysql`. These logs are not part of the
-Slurm charms:
+look at the database server next. The `mysql` charm installs MySQL as the `charmed-mysql` snap,
+so its logs live under `/var/snap/charmed-mysql` rather than the Slurm log paths listed above:
 
 :::{csv-table}
 :header: >
-: source, location or command, notes
+: source, command, notes
 
 `mysqld` error log, `sudo cat /var/snap/charmed-mysql/common/var/log/mysql/error.log`{l=shell}, "Server startup, shutdown and runtime errors, including refused connections."
 `mysqld` service output, `sudo snap logs charmed-mysql.mysqld`{l=shell}, Service restarts and failures.
 Snap service state, `sudo snap services charmed-mysql`{l=shell}, Confirms whether `mysqld` is running and enabled.
 :::
 
-(reference-log-locations-slurm-mail)=
+(reference-logging-slurm-mail)=
 ### Slurm-Mail
 
 Deployed on `slurmctld` only when an `smtp` integration is present. For how to set up the
@@ -195,7 +197,7 @@ email directly, so `slurmctld` does not block on mail delivery. A cron job shipp
 
 :::{csv-table}
 :header: >
-: source, location or command, notes
+: source, command, notes
 
 `slurm-spool-mail`, `sudo cat /var/log/slurm-mail/slurm-spool-mail.log`{l=shell}, One entry per spooled job notification.
 `slurm-send-mail`, `sudo cat /var/log/slurm-mail/slurm-send-mail.log`{l=shell}, "SMTP delivery attempts and errors, including rejected or invalid addresses."
@@ -210,11 +212,11 @@ section. To get debug output from both, set `verbose = true` under both
 `[slurm-spool-mail]` and `[slurm-send-mail]`.
 
 :::{note}
-The charm rewrites the SMTP keys in `[slurm-send-mail]` on every configuration change and
-`smtp` integration event but leaves `verbose` alone. A manual change to it survives.
+On configuration changes and `smtp` integration events, the charm rewrites only the SMTP
+settings in `[slurm-send-mail]`. Manually set `verbose` values are not affected.
 :::
 
-(reference-log-locations-filesystems)=
+(reference-logging-filesystems)=
 ## Filesystems
 
 Provided by [`filesystem-charms`](https://github.com/canonical/filesystem-charms).
@@ -222,16 +224,16 @@ Provided by [`filesystem-charms`](https://github.com/canonical/filesystem-charms
 ### filesystem-client
 
 The client charm configures [`autofs`](https://man7.org/linux/man-pages/man5/autofs.5.html) to
-mount shares on demand. It does not run a service of its own, so mount failures appear in the
+mount shares on demand. It does not run a daemon of its own, so mount failures appear in the
 `autofs` journal and the kernel ring buffer rather than a dedicated log file.
 
 :::{csv-table}
 :header: >
-: source, location or command, notes
+: source, command, notes
 
-`autofs` service, `sudo journalctl -u autofs`{l=shell}, "Mount and unmount activity for all managed shares. The charm reloads or restarts this service when the generated map changes."
+`autofs` journal, `sudo journalctl -u autofs`{l=shell}, "Mount and unmount activity for all managed shares. The charm reloads or restarts this service when the generated map changes."
 Kernel mount errors, `sudo dmesg -T | grep -iE 'nfs|ceph|lustre'`{l=shell}, "NFS, CephFS and Lustre mounts fail in the kernel, so errors surface here rather than in userspace logs."
-Kernel log file, `sudo cat /var/log/kern.log`{l=shell}, Persistent copy of the above. Survives reboots.
+Kernel log file, `sudo cat /var/log/kern.log`{l=shell}, Persistent copy of the kernel ring buffer that `dmesg` prints. Survives reboots.
 LNet debug log, `sudo lctl dk`{l=shell}, "Lustre in-kernel debug buffer, only when `enable-lustre` is `true`."
 Current mounts, "`findmnt -t autofs,nfs,nfs4,ceph,lustre`{l=shell}", "Confirms what is actually mounted versus what the charm intended. CephFS mounts report the kernel type `ceph`, and NFSv4 mounts report `nfs4`."
 :::
@@ -256,40 +258,32 @@ juju ssh filesystem-client/0 sudo ls /etc/auto.master.d/
 ### lustre-server
 
 Lustre servers log through the kernel. There is no `/var/log/lustre` directory. The charm
-formats its targets on ZFS, so ZFS faults are a common root cause of Lustre errors. For the
-roles a unit can take and the ZFS layout the charm creates for each, see {ref}`explanation-lustre`.
-For deployment, see {ref}`howto-deploy-deploy-lustre`.
+formats its targets on ZFS, so ZFS faults are a common root cause of Lustre errors.
 
 :::{csv-table}
 :header: >
-: source, location or command, notes
+: source, command, notes
 
 Lustre target activity, `sudo dmesg -T | grep -i lustre`{l=shell}, "MGS, MDS and OSS activity is logged by the kernel."
-Kernel log file, `sudo cat /var/log/kern.log`{l=shell}, Persistent copy of the above.
+Kernel log file, `sudo cat /var/log/kern.log`{l=shell}, Persistent copy of Lustre target activity.
 Lustre debug log, `sudo lctl dk /tmp/lustre-debug.log`{l=shell}, "Dumps the in-kernel debug buffer to a file, which is the most detailed source for Lustre faults."
 Target status, `sudo lctl dl`{l=shell}, Lists configured devices and their state.
 Mounted targets, `findmnt -t lustre`{l=shell}, "The combined MGT and MDT mounts at `/mnt/mgs_mdt`, and each OST at `/mnt/ost<index>`."
 LNet state, `sudo lnetctl net show -v`{l=shell}, Current network state rather than a log. Use alongside `lctl dk`.
-ZFS pool faults, `sudo zpool events -v`{l=shell}, "The charm formats all targets with a ZFS backing filesystem. Pools are named `lustrefs-mgsmdt0-pool` on the combined MGS+MDS unit and `lustrefs-ost<index>-pool` on each OSS unit."
+ZFS pool faults, `sudo zpool events -v`{l=shell}, The charm formats all targets with a ZFS backing filesystem.
 ZFS pool health, `sudo zpool status -v`{l=shell}, Point-in-time health rather than a log.
 ZFS kernel errors, `sudo dmesg -T | grep -i zfs`{l=shell}, Pool import and I/O errors.
 :::
 
-The charm runs health checks during its `update-status` hook that verify the peer integration
-data, that the `lustre` and `lnet` kernel modules are loaded, and that the target mount points
-under `/mnt` exist and are mounted. A unit stuck in `blocked` has usually failed one of these
-checks. The failure is recorded in the Juju unit log and shown as the unit's status message.
-See {ref}`reference-log-locations-juju`.
-
 ### Proxy charms
 
-The `cephfs-server-proxy`, `lustre-server-proxy` and `nfs-server-proxy` charms are
+The `cephfs-server-proxy`, `lustre-server-proxy`, and `nfs-server-proxy` charms are
 integration-only. They relay connection details to `filesystem-client` and run no local
 workload, so the Juju unit log is the only log they produce.
 
 :::{csv-table}
 :header: >
-: charm, location or command
+: charm, command
 
 cephfs-server-proxy, `juju debug-log --replay --include cephfs-server-proxy`{l=shell}
 lustre-server-proxy, `juju debug-log --replay --include lustre-server-proxy`{l=shell}
@@ -316,7 +310,7 @@ juju config cephfs-server-proxy monitor-hosts
 ```
 :::
 
-(reference-log-locations-identity)=
+(reference-logging-identity)=
 ## Identity and access
 
 (reference-log-locations-authentik)=
@@ -379,21 +373,21 @@ Ubuntu archive, so the standard package paths apply.
 
 :::{csv-table}
 :header: >
-: source, location or command, notes
+: source, command, notes
 
-`sssd` service, `sudo journalctl -u sssd`{l=shell}, Service start and configuration errors.
+`sssd` journal, `sudo journalctl -u sssd`{l=shell}, Daemon start and configuration errors.
 Monitor process, `sudo cat /var/log/sssd/sssd.log`{l=shell}, Top-level SSSD process log.
 NSS responder, `sudo cat /var/log/sssd/sssd_nss.log`{l=shell}, User and group lookup failures.
 PAM responder, `sudo cat /var/log/sssd/sssd_pam.log`{l=shell}, Authentication failures.
 LDAP child, `sudo cat /var/log/sssd/ldap_child.log`{l=shell}, LDAP bind and TLS handshake failures.
-Domain backend, `sudo ls /var/log/sssd/`{l=shell}, "The per-domain log is named `sssd_<domain>.log`. The charm names the domain after the application or offer providing the `ldap` integration: with the Authentik LDAP outpost offer consumed as `ldaps` the file is `sssd_ldaps.log`, and with ldap-integrator consumed as `ldap` it is `sssd_ldap.log`. List the directory to confirm."
+Domain backend, `sudo ls /var/log/sssd/`{l=shell}, "The per-domain log is named `sssd_<domain>.log`. The charm names the domain after the application providing the `ldap` integration, so with GLAuth deployed as `glauth` the file is `sssd_glauth.log`. List the directory to confirm."
 Login attempts, `sudo cat /var/log/auth.log`{l=shell}, PAM results for user logins.
 Effective configuration, `sudo cat /etc/sssd/sssd.conf`{l=shell}, Charm-managed. Shows the configured domains.
 Lookup test, `getent passwd <username>`{l=shell}, Confirms whether resolution works without reading logs.
 :::
 
 SSSD logs little at its default level and the `sssd` charm exposes no configuration options at
-all so there is no way to raise it through Juju. To diagnose LDAP binding or lookup failures,
+all so there is no way to raise the verbosity through Juju. To diagnose LDAP binding or lookup failures,
 open `/etc/sssd/sssd.conf` and add `debug_level = 6` under the `[sssd]` section and any
 `[domain/<name>]` sections of interest. Then restart the service:
 
@@ -402,9 +396,8 @@ juju ssh sssd/0 sudo systemctl restart sssd
 :::
 
 :::{caution}
-The charm rewrites `/etc/sssd/sssd.conf` on every `ldap` and `receive-ca-cert` integration
-event, so a manual edit is lost the next time one fires. Treat this as a temporary diagnostic
-measure.
+The charm rewrites `/etc/sssd/sssd.conf` on every `ldap` and `certificates` integration event,
+so a manual edit is lost the next time one fires. Treat this as a temporary diagnostic measure.
 :::
 
 TLS trust problems usually trace back to certificates the charm installs per integration. The
@@ -418,16 +411,13 @@ juju ssh sssd/0 sudo ls -R /usr/local/share/ca-certificates/
 ### OpenSSH
 
 Provided by the `openssh` charm, from
-[`openssh-operator`](https://github.com/canonical/openssh-operator). Deployed on the login nodes
-to enable SSH key-based authentication. For deployment, see
-{ref}`howto-deploy-deploy-identity-provider`; for how users' public keys are set in Authentik,
-see {ref}`howto-manage-manage-users-and-groups-set-public-ssh-keys`.
+[`openssh-operator`](https://github.com/canonical/openssh-operator).
 
 :::{csv-table}
 :header: >
-: source, location or command, notes
+: source, command, notes
 
-`ssh` service, `sudo journalctl -u ssh`{l=shell}, Daemon start and configuration parse errors.
+`ssh` journal, `sudo journalctl -u ssh`{l=shell}, Daemon start and configuration parse errors.
 Login attempts, `sudo cat /var/log/auth.log`{l=shell}, Accepted and failed logins including public key and password attempts.
 Failed logins only, `sudo grep -iE 'failed|invalid' /var/log/auth.log`{l=shell}, Narrows `auth.log` to authentication failures.
 Charm-written drop-ins, `sudo ls /etc/ssh/ssh_config.d/`{l=shell}, "Every file the charm writes lives here and is named `99-charmed-openssh-<slug>.conf`. The charm leaves all other files in the directory untouched."
@@ -448,7 +438,7 @@ option to any `LogLevel` value accepted by `sshd_config`:
 juju config openssh log-level=debug
 :::
 
-Then read the new detail from `auth.log` and the service journal:
+Then read the new detail from `auth.log` and the `ssh` journal:
 
 :::{code-block} shell
 juju ssh openssh/0 sudo journalctl -u ssh --since '5 min ago'
@@ -465,7 +455,7 @@ juju config openssh --reset log-level
 production.
 :::
 
-(reference-log-locations-container-runtime)=
+(reference-logging-container-runtime)=
 ## Container runtime
 
 ### Apptainer
@@ -475,19 +465,19 @@ Provided by the `apptainer` charm, from
 
 Apptainer is not a daemon. It runs as the invoking user and writes diagnostics to stderr so
 container failures land in the job's output files rather than a system log. The charm itself
-does not create a service or log file and does not expose configuration options so its Juju unit log
-is the only record of what it did.
+does not run a daemon or write a log file and does not expose configuration options, so its Juju
+unit log is the only record of what it did.
 
 :::{csv-table}
 :header: >
 : source, command, notes
 
-Job output path, `scontrol show job <job-id> | grep -E 'StdOut|StdErr|WorkDir'`{l=shell}, Resolves the actual output paths for a running or recently completed job. Run from a login node.
-Job output path after completion, "`sacct -j <job-id> --format JobID,WorkDir%80`{l=shell}", "`scontrol` drops job records after `MinJobAge`. Use `sacct` for older jobs, then look for `slurm-<job-id>.out` in `WorkDir`. The `%80` suffix widens the column so long paths are not truncated. See the [`sacct` documentation {octicon}`link-external`](https://slurm.schedmd.com/sacct.html)."
-Default output file, `cat <WorkDir>/slurm-<job-id>.out`{l=shell}, "Where `sbatch` was called without `--output`, substituting the `WorkDir` found above."
+Job output path, `scontrol show job <job-ID> | grep -E 'StdOut|StdErr|WorkDir'`{l=shell}, Resolves the actual output paths for a running or recently completed job. Run from a login node.
+Job output path after completion, "`sacct -j <job-ID> --format JobID,WorkDir%80`{l=shell}", "`scontrol` drops job records after `MinJobAge`. Use `sacct` for older jobs, then look for `slurm-<job-ID>.out` in `WorkDir`. The `%80` suffix widens the column so long paths are not truncated. See the [`sacct` documentation {octicon}`link-external`](https://slurm.schedmd.com/sacct.html)."
+Default output file, `cat <WorkDir>/slurm-<job-ID>.out`{l=shell}, "Where `sbatch` was called without `--output`, substituting the `WorkDir` found above."
 Container launch failures, `sudo cat /var/log/slurm/slurmd.log`{l=shell}, "The `oci.conf` run commands are invoked by `slurmd`, so OCI runtime failures are recorded on the compute node."
 Effective OCI configuration, `sudo cat /etc/slurm/oci.conf`{l=shell}, "Read this on a `slurmctld` unit. Check when `--container` jobs fail to launch."
-Verbose runtime output, `apptainer --debug exec docker://ubuntu:24.04 echo ok`{l=shell}, Run interactively on a compute node to diagnose image or namespace problems. Global flags must precede the subcommand.
+Verbose runtime output, `apptainer --debug exec <container-name> echo ok`{l=shell}, Run interactively on a compute node to diagnose image or namespace problems. Global flags must precede the subcommand. Example container name: docker://ubuntu:24.04
 Installed version, `apptainer --version`{l=shell}, Confirms the charm installed the runtime.
 :::
 
@@ -501,12 +491,12 @@ juju debug-log --replay --include apptainer --include slurmctld
 ```
 :::
 
-(reference-log-locations-juju)=
+(reference-logging-juju)=
 ## Juju logs
 
-Every charm on this page also writes a Juju unit log in addition to the workload logs above.
-These record what the charm did: which handlers ran, the configuration it rendered and the
-status each unit last reported. When a unit is in `error` or `blocked`, the unit logs usually hold the
+Every charm on this page also writes a Juju unit log in addition to the logs above.
+These record what the charm did: which handlers ran, the configuration it rendered, and the
+status each unit last reported. When a unit is in `error` or `blocked`, they usually hold the
 explanation. Each machine holds one file per unit and per agent under `/var/log/juju` and the
 controller retains the same logs for the whole model. For more, including how to forward these
 logs to an external syslog server, see the
@@ -516,7 +506,7 @@ logs to an external syslog server, see the
 
 :::{csv-table}
 :header: >
-: source, location or command, notes
+: source, command, notes
 
 Unit log, `sudo cat /var/log/juju/unit-<application>-<unit-number>.log`{l=shell}, "Charm code output for a single unit. The first place to look when a unit is in `error` or `blocked`."
 Subordinate unit log, `sudo cat /var/log/juju/unit-apptainer-0.log`{l=shell}, "Subordinates such as `apptainer`, `sssd`, `openssh` and `filesystem-client` write their own unit log on the principal's machine."
@@ -529,7 +519,7 @@ with `/` replaced by `-`. If you do not know the exact name, list the directory 
 
 ### Through the Juju CLI
 
-Juju CLI commands are advised over reading files directly since they aggregate across the model and need no SSH
+Prefer these over reading files directly since they aggregate across the model and need no SSH
 access.
 
 :::{csv-table}
@@ -548,8 +538,8 @@ access.
 
 ### Raising charm log verbosity
 
-Charmed HPC charms log at `INFO` by default. Many handlers emit configuration diffs and service
-state at `DEBUG`. To increase the logging level:
+Charmed HPC charms log at `INFO` by default. Many handlers emit configuration diffs and daemon
+state at `DEBUG`:
 
 :::{code-block} shell
 juju model-config logging-config="<root>=WARNING;unit=DEBUG"
@@ -568,8 +558,8 @@ juju model-config --reset logging-config
 :::
 
 :::{caution}
-`DEBUG` logging on `slurmctld` is verbose in large clusters since several handlers log the full
-Slurm configuration. Avoid leaving it enabled.
+`DEBUG` logging on `slurmctld` generates a high volume of log output in large clusters since
+several handlers log the full Slurm configuration. Avoid leaving it enabled.
 :::
 
 ### Juju controller logs
@@ -613,7 +603,7 @@ Key handling lives in code shared by all the Slurm charms so these events can ap
 searching or filter per application once you know where to look.
 :::
 
-(reference-log-locations-retention)=
+(reference-logging-retention)=
 ## Log retention
 
 Juju rotates its own unit and machine agent logs on each machine automatically and keeps a
@@ -640,7 +630,3 @@ weekly and keeps five compressed backups. To see the policies in effect on any u
 :::{code-block} shell
 juju ssh <unit> "sudo ls /etc/logrotate.d/ && sudo grep -rl slurm /etc/logrotate.d/ | xargs sudo cat"
 :::
-
-None of this covers the Authentik containers on the Kubernetes cloud. Kubernetes rotates
-container logs on the Kubernetes nodes according to the container runtime's own limits, and
-`kubectl logs`{l=shell} only shows what is currently retained.
