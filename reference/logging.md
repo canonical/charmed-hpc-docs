@@ -8,7 +8,7 @@ myst:
 
 This page explains how to access all the logs for a Charmed HPC deployment, along with the command
 needed to read each one. Use it when troubleshooting a cluster from the Juju controller. Some of
-these logs are also sent to {term}`Loki` when COS is integrated. For info on how to query them,
+these logs are also sent to Loki when COS is integrated. For info on how to query them,
 see {ref}`reference-monitoring-loki-logs`.
 
 Sections are grouped by the source of the logs. The charm that manages each source is named
@@ -337,7 +337,7 @@ juju switch <k8s-controller>:identity
 :header: >
 : source, location or command, notes
 
-Charm logs, `juju debug-log --replay --include authentik-server`{l=shell}, "Charm-side events for any of the three applications. Works as for machine charms. See {ref}`reference-log-locations-juju`."
+Charm logs, `juju debug-log --replay --include authentik-server`{l=shell}, "Charm-side events for any of the three applications. Works as for machine charms. See {ref}`reference-logging-juju`."
 Server workload, `kubectl -n identity logs pods/authentik-server-0 -c authentik`{l=shell}, "Web server and API output. Requires `kubectl` access to the `charmed-hpc-k8s` cloud. The unit's charm container is `-c charm`."
 Worker workload, `kubectl -n identity logs pods/authentik-worker-0 -c authentik`{l=shell}, Background task processing for the deployment.
 LDAP outpost workload, `kubectl -n identity logs pods/authentik-ldap-outpost-0 -c authentik-ldap`{l=shell}, "LDAP bind and search traffic from SSSD. Check here when lookups fail but SSSD itself is healthy."

@@ -12,7 +12,7 @@ Follow the [Visualize log data](https://grafana.com/docs/loki/latest/visualize/g
 tutorial from the Grafana documentation for instructions on where and how to query for Loki logs.
 
 For the on-disk location of these logs, and for services that do not export to Loki, see
-{ref}`reference-log-locations`.
+{ref}`reference-logging`.
 
 :::{csv-table}
 :header: >
