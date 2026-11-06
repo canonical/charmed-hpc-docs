@@ -28,3 +28,5 @@ howto/manage/manage-slurm/ howto/manage/manage-compute-nodes/
 reference/glossary/ reference/index/
 
 reference/hardening/ explanation/hardening/
+
+reference/log-locations/ reference/logging/
