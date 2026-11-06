@@ -6,7 +6,7 @@
 First, use `juju deploy`{l=shell} to deploy SSSD in your `slurm` model:
 
 :::{code-block} shell
-juju deploy sssd --base ubuntu@26.04 --channel latest/edge
+juju deploy sssd --base ubuntu@26.04 --channel 2/stable
 :::
 
 :::{include} /reuse/common/tip-determine-current-juju-model.txt
@@ -56,7 +56,7 @@ Now deploy SSSD:
 :::{literalinclude} /reuse/howto/setup/deploy-identity-provider/common/sssd.tf
 :caption: {{ sssd_tf_file }}
 :language: terraform
-:lines: 30-34
+:lines: 30-35
 :::
 
 Now connect SSSD to the sackd, slurmd, and slurmctld applications in your `slurm` model:
@@ -64,7 +64,7 @@ Now connect SSSD to the sackd, slurmd, and slurmctld applications in your `slurm
 :::{literalinclude} /reuse/howto/setup/deploy-identity-provider/common/sssd.tf
 :caption: {{ sssd_tf_file }}
 :language: terraform
-:lines: 35-69
+:lines: 36-70
 :::
 
 You can expand the dropdown below to see the full _{{ sssd_tf_file }}_ Terraform configuration file. Now use the `terraform`{l=shell} command to apply your configuration.
@@ -97,14 +97,14 @@ juju status
 Model  Controller              Cloud/Region         Version  SLA          Timestamp
 slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  12:52:01-06:00
 
-App         Version          Status   Scale  Charm       Channel      Rev  Exposed  Message
-mysql       8.0.44-0ubun...  active       1  mysql       8.0/stable   444  no
-sackd       25.11.2          active       1  sackd       latest/edge   89  no
-slurmctld   25.11.2          active       1  slurmctld   latest/edge  167  no       primary - UP
-slurmd      25.11.2          active       1  slurmd      latest/edge  184  no
-slurmdbd    25.11.2          active       1  slurmdbd    latest/edge  161  no
-slurmrestd  25.11.2          active       1  slurmrestd  latest/edge  161  no
-sssd        2.12.0           waiting      3  sssd        latest/edge   34  no       Waiting for integrations: [`ldap`]
+App         Version          Status   Scale  Charm       Channel       Rev  Exposed  Message
+mysql       8.0.44-0ubun...  active       1  mysql       8.0/stable    541  no
+sackd       25.11.2          active       1  sackd       25.11/stable   89  no
+slurmctld   25.11.2          active       1  slurmctld   25.11/stable  167  no       primary - UP
+slurmd      25.11.2          active       1  slurmd      25.11/stable  184  no
+slurmdbd    25.11.2          active       1  slurmdbd    25.11/stable  161  no
+slurmrestd  25.11.2          active       1  slurmrestd  25.11/stable  161  no
+sssd        2.12.0           waiting      3  sssd        2/stable       52  no       Waiting for integrations: [`ldap`]
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
 mysql/0*       active    idle   5        10.124.231.70   3306,33060/tcp  Primary

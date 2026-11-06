@@ -32,7 +32,7 @@ This is a one-time cluster downtime. Once the data migration is complete, no fur
 :sync: cli
 
 :::{code-block} shell
-juju deploy filesystem-client --base ubuntu@26.04 --channel latest/edge
+juju deploy filesystem-client --base ubuntu@26.04 --channel latest/stable
 juju integrate filesystem-client:filesystem [filesystem-provider]:filesystem
 
 juju integrate slurmctld:mount filesystem-client:mount
@@ -103,14 +103,14 @@ Model  Controller              Cloud/Region         Version  SLA          Timest
 slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  17:35:38-06:00
 
 App                  Version          Status  Scale  Charm                Channel          Rev  Exposed  Message
-cephfs-server-proxy                   active      1  cephfs-server-proxy  latest/edge       44  no
-filesystem-client                     active      2  filesystem-client    latest/edge       37  no       Integrated with `cephfs` provider
-mysql                8.0.44-0ubun...  active      1  mysql                8.0/stable       444  no
-sackd                25.11.2          active      1  sackd                latest/edge       89  no
-slurmctld            25.11.2          active      2  slurmctld            latest/edge      167  no       primary - UP
-slurmd               25.11.2          active      1  slurmd               latest/edge      184  no
-slurmdbd             25.11.2          active      1  slurmdbd             latest/edge      161  no
-slurmrestd           25.11.2          active      1  slurmrestd           latest/edge      161  no
+cephfs-server-proxy                   active      1  cephfs-server-proxy  latest/stable     50  no
+filesystem-client                     active      2  filesystem-client    latest/stable     42  no       Integrated with `cephfs` provider
+mysql                8.0.44-0ubun...  active      1  mysql                8.0/stable       541  no
+sackd                25.11.2          active      1  sackd                25.11/stable      89  no
+slurmctld            25.11.2          active      2  slurmctld            25.11/stable     167  no       primary - UP
+slurmd               25.11.2          active      1  slurmd               25.11/stable     184  no
+slurmdbd             25.11.2          active      1  slurmdbd             25.11/stable     161  no
+slurmrestd           25.11.2          active      1  slurmrestd           25.11/stable     161  no
 
 Unit                    Workload  Agent  Machine  Public address  Ports           Message
 cephfs-server-proxy/0*  active    idle   6        10.124.231.117

@@ -35,7 +35,7 @@ SMTP server, then integrate with the cluster `slurmctld` controller on the `smtp
 :sync: cli
 
 :::{code-block} shell
-juju deploy smtp-integrator --config host=smtp.example.com --config port=587
+juju deploy smtp-integrator --channel latest/stable --config host=smtp.example.com --config port=587
 juju integrate slurmctld smtp-integrator:smtp
 :::
 
