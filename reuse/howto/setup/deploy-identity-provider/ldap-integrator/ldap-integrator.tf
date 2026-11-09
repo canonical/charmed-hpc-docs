@@ -34,7 +34,7 @@ module "ldap_integrator" {
     urls          = "ldap://10.214.237.229"
   }
 
-  channel = "latest/stable"
+  channel = "latest/edge"
 }
 
 resource "juju_access_secret" "grant_external_ldap_password_secret" {
