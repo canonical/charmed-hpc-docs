@@ -9,6 +9,7 @@ hpc
 HPC's
 InfiniBand
 init
+journald
 Juju's
 MPI
 mpi
@@ -59,6 +60,7 @@ slurmdbd
 Slurmdbd
 slurmrestd
 slurmutils
+configless
 sssd
 Terraform
 terraform
@@ -128,12 +130,16 @@ GPG
 rebase
 runtime
 runtimes
+appid
+datetime
+OWASP
 
 # Filesystem jargon
 Ceph
 CephFS
 cephfs
 cephx
+Cephx
 fsid
 ldiskfs
 LNDs
@@ -144,8 +150,16 @@ nfs
 OSSes
 OSTs
 userinfo
+autofs
+MDS
+MDT
+MGS
+MGT
+OSS
+OST
 vdev
 vdevs
+ZFS
 zpool
 
 # Words that are oddly not valid to the spelling checker
