@@ -136,19 +136,19 @@ Then, use `juju deploy`{l=shell} to deploy `sackd`, `slurmctld`, and `slurmd`:
 :::{code-block} shell
 juju deploy slurmctld \
   --base ubuntu@26.04 \
-  --channel 25.11/candidate \
+  --channel 25.11/stable \
   --constraints="virt-type=virtual-machine"
 
 juju deploy slurmd compute \
   --num-units 2 \
   --base ubuntu@26.04 \
-  --channel 25.11/candidate \
+  --channel 25.11/stable \
   --config default-node-state=idle \
   --constraints="virt-type=virtual-machine"
 
 juju deploy sackd login \
   --base ubuntu@26.04 \
-  --channel 25.11/candidate \
+  --channel 25.11/stable \
   --constraints="virt-type=virtual-machine"
 :::
 
@@ -179,7 +179,7 @@ juju deploy ceph-fs \
 
 juju deploy filesystem-client scratch \
   --base ubuntu@26.04 \
-  --channel latest/candidate \
+  --channel latest/stable \
   --config mountpoint=/scratch
 :::
 
@@ -216,10 +216,10 @@ slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  20:28:
 App                 Version  Status  Scale  Charm              Channel             Rev  Exposed  Message
 ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  495  no       Unit is ready
 microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
-login               25.11.2  active      1  sackd              25.11/candidate      90  no
-scratch                      active      3  filesystem-client  latest/candidate     42  no       Integrated with `cephfs` provider
-slurmctld           25.11.2  active      1  slurmctld          25.11/candidate     168  no       primary - UP
-compute             25.11.2  active      2  slurmd             25.11/candidate     185  no
+login               25.11.2  active      1  sackd              25.11/stable         90  no
+scratch                      active      3  filesystem-client  latest/stable        42  no       Integrated with `cephfs` provider
+slurmctld           25.11.2  active      1  slurmctld          25.11/stable        168  no       primary - UP
+compute             25.11.2  active      2  slurmd             25.11/stable        185  no
 
 Unit                   Workload  Agent  Machine  Public address  Ports          Message
 ceph-fs/0*             active    idle   5        10.124.231.80                  Unit is ready
@@ -379,10 +379,10 @@ App                 Version  Status  Scale  Charm              Channel          
 apptainer           1.4.5    active      3  apptainer          1/candidate          39  no
 ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  495  no       Unit is ready
 microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
-login               25.11.2  active      1  sackd              25.11/candidate      90  no
-scratch                      active      3  filesystem-client  latest/candidate     42  no       Integrated with `cephfs` provider
-slurmctld           25.11.2  active      1  slurmctld          25.11/candidate     168  no       primary - UP
-compute             25.11.2  active      2  slurmd             25.11/candidate     185  no
+login               25.11.2  active      1  sackd              25.11/stable         90  no
+scratch                      active      3  filesystem-client  latest/stable        42  no       Integrated with `cephfs` provider
+slurmctld           25.11.2  active      1  slurmctld          25.11/stable        168  no       primary - UP
+compute             25.11.2  active      2  slurmd             25.11/stable        185  no
 
 Unit                   Workload  Agent  Machine  Public address  Ports          Message
 ceph-fs/0*             active    idle   5        10.124.231.80                  Unit is ready

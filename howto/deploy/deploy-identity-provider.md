@@ -311,14 +311,14 @@ SAAS             Status  Store                   URL
 ldaps            active  charmed-hpc-controller  admin/identity.ldaps
 send-ca-certs    active  charmed-hpc-controller  admin/identity.send-ca-certs
 
-App         Version          Status  Scale  Charm       Channel          Rev  Exposed  Message
-mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable       541  no
-sackd       25.11.2          active      1  sackd       25.11/candidate   90  no
-slurmctld   25.11.2          active      1  slurmctld   25.11/candidate  168  no       primary - UP
-slurmd      25.11.2          active      1  slurmd      25.11/candidate  185  no
-slurmdbd    25.11.2          active      1  slurmdbd    25.11/candidate  162  no
-slurmrestd  25.11.2          active      1  slurmrestd  25.11/candidate  162  no
-sssd        2.12.0           active      3  sssd        2/candidate       52  no
+App         Version          Status  Scale  Charm       Channel       Rev  Exposed  Message
+mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable    541  no
+sackd       25.11.2          active      1  sackd       25.11/stable   90  no
+slurmctld   25.11.2          active      1  slurmctld   25.11/stable  168  no       primary - UP
+slurmd      25.11.2          active      1  slurmd      25.11/stable  185  no
+slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  162  no
+slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  162  no
+sssd        2.12.0           active      3  sssd        2/candidate    52  no
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
 mysql/0*       active    idle   5        10.124.231.61   3306,33060/tcp  Primary
@@ -837,7 +837,7 @@ for your cluster's users.
 First, use `juju deploy`{l=shell} to deploy OpenSSH in your `slurm` model:
 
 :::{code-block} shell
-juju deploy openssh --channel 10/candidate --base ubuntu@26.04
+juju deploy openssh --channel 10/stable --base ubuntu@26.04
 :::
 
 Next, use `juju integrate`{l=shell} to integrate OpenSSH with SSSD and sackd:
@@ -929,15 +929,15 @@ SAAS             Status  Store                   URL
 ldaps            active  charmed-hpc-controller  admin/identity.ldaps
 send-ca-certs    active  charmed-hpc-controller  admin/identity.send-ca-certs
 
-App         Version          Status  Scale  Charm       Channel          Rev  Exposed  Message
-openssh     10.2p1           active      1  openssh     10/candidate       5  no
-mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable       541  no
-sackd       25.11.2          active      1  sackd       25.11/candidate   90  no
-slurmctld   25.11.2          active      1  slurmctld   25.11/candidate  168  no       primary - UP
-slurmd      25.11.2          active      1  slurmd      25.11/candidate  185  no
-slurmdbd    25.11.2          active      1  slurmdbd    25.11/candidate  162  no
-slurmrestd  25.11.2          active      1  slurmrestd  25.11/candidate  162  no
-sssd        2.12.0           active      3  sssd        2/candidate       52  no
+App         Version          Status  Scale  Charm       Channel       Rev  Exposed  Message
+openssh     10.2p1           active      1  openssh     10/stable       5  no
+mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable    541  no
+sackd       25.11.2          active      1  sackd       25.11/stable   90  no
+slurmctld   25.11.2          active      1  slurmctld   25.11/stable  168  no       primary - UP
+slurmd      25.11.2          active      1  slurmd      25.11/stable  185  no
+slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  162  no
+slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  162  no
+sssd        2.12.0           active      3  sssd        2/candidate    52  no
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
 mysql/0*       active    idle   5        10.124.231.61   3306,33060/tcp  Primary

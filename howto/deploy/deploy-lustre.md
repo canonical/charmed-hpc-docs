@@ -31,7 +31,7 @@ Deploy `lustre-server` with the total number of units (MGS+MDS and OSS):
 
 :::{code-block} shell
 juju deploy lustre-server \
-  --channel 2.17/candidate \
+  --channel 2.17/stable \
   --num-units <number-of-units>
 :::
 
@@ -68,7 +68,7 @@ The option accepts semicolon-separated network definitions in the format `<name>
 
 :::{code-block} shell
 juju deploy lustre-server \
-  --channel 2.17/candidate \
+  --channel 2.17/stable \
   --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1" \
   --num-units <number-of-units>
 :::
@@ -83,7 +83,7 @@ Note, if `lustre-server` was deployed with a
 
 :::{code-block} shell
 juju deploy filesystem-client \
-  --channel latest/candidate \
+  --channel latest/stable \
   --config mountpoint="/mnt/lustre" \
   --config enable-lustre=true
 :::
@@ -111,11 +111,11 @@ juju status
 Model   Controller    Cloud/Region         Version  SLA          Timestamp
 lustre  charmed-hpc   charmed-hpc/default  3.6.27   unsupported  15:51:22+01:00
 
-App                Version  Status  Scale  Charm              Channel           Rev  Exposed  Message
-filesystem-client           active      1  filesystem-client  latest/candidate   42  no       Integrated with `lustre` provider
-lustre-server               active      2  lustre-server      2.17/candidate     13  no       MGS+MDS ready
-slurmctld          25.11.2  active      1  slurmctld          25.11/candidate   168  no       primary - UP
-slurmd             25.11.2  active      1  slurmd             25.11/candidate   185  no
+App                Version  Status  Scale  Charm              Channel        Rev  Exposed  Message
+filesystem-client           active      1  filesystem-client  latest/stable   42  no       Integrated with `lustre` provider
+lustre-server               active      2  lustre-server      2.17/stable     13  no       MGS+MDS ready
+slurmctld          25.11.2  active      1  slurmctld          25.11/stable   168  no       primary - UP
+slurmd             25.11.2  active      1  slurmd             25.11/stable   185  no
 
 Unit                    Workload  Agent  Machine  Public address  Ports          Message
 lustre-server/0*        active    idle   2        10.200.245.163                 MGS+MDS ready

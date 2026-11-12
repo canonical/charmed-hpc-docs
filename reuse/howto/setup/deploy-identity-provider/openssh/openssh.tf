@@ -28,7 +28,7 @@ module "openssh" {
   model_uuid = data.juju_model.slurm.uuid
 
   base    = "ubuntu@26.04"
-  channel = "10/candidate"
+  channel = "10/stable"
 }
 
 resource "juju_application" "openssh_to_sackd" {
