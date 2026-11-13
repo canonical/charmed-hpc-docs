@@ -114,8 +114,8 @@ lustre  charmed-hpc   charmed-hpc/default  3.6.27   unsupported  15:51:22+01:00
 App                Version  Status  Scale  Charm              Channel         Rev  Exposed  Message
 filesystem-client           active      1  filesystem-client  latest/stable    42  no       Integrated with `lustre` provider
 lustre-server               active      2  lustre-server      2.17/candidate   13  no       MGS+MDS ready
-slurmctld          25.11.2  active      1  slurmctld          25.11/stable    167  no       primary - UP
-slurmd             25.11.2  active      1  slurmd             25.11/stable    184  no
+slurmctld          25.11.2  active      1  slurmctld          25.11/stable    168  no       primary - UP
+slurmd             25.11.2  active      1  slurmd             25.11/stable    185  no
 
 Unit                    Workload  Agent  Machine  Public address  Ports          Message
 lustre-server/0*        active    idle   2        10.200.245.163                 MGS+MDS ready
