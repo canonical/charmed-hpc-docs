@@ -11,7 +11,7 @@ Release notes for Charmed HPC, a single product composed of a portfolio of charm
 
 ## Releases
 
-- {ref}`1.0-rc <release-notes-1-0-rc>`
+- {ref}`1.0-rc1 <release-notes-1-0-rc1>`
 
 ## Release policy and schedule
 
@@ -21,7 +21,9 @@ Both minor feature and minor patch releases increment the same minor version num
 
 ### Ubuntu base support
 
-Each Charmed HPC major release is built against the latest Ubuntu LTS release at the time it is cut, and all minor releases within that major release use the same base. A given Charmed HPC release supports a single Ubuntu base; running a release on any other base is not supported. Moving to a new Ubuntu base is a breaking change and only occurs in a new major release.
+Each Charmed HPC major release is built against the latest Ubuntu LTS release at the time it is cut, and all minor releases within that major release use the same base. A given Charmed HPC release supports a single Ubuntu base for its own artifacts; running those artifacts on any other base is not supported. Moving to a new Ubuntu base is a breaking change and only occurs in a new major release.
+
+This does not extend to the third-party charms a deployment integrates with. Those are published by other teams on their own release cadences and bases, and each release's notes list the channel to use for them.
 
 ### Compatibility between releases
 
@@ -38,5 +40,5 @@ Only the set of versions listed in a single release's release notes is tested to
 :maxdepth: 1
 :hidden:
 
-1.0-rc1 <1.0-rc>
+1.0-rc1 <1.0-rc1>
 :::
