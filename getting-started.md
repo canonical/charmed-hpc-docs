@@ -351,7 +351,7 @@ return to that environment from within `login/0`, use the `exit`{l=shell} comman
 First, use `juju deploy`{l=shell} to deploy Apptainer:
 
 :::{code-block} shell
-juju deploy apptainer --channel 1/candidate --base ubuntu@26.04
+juju deploy apptainer --channel 1/stable --base ubuntu@26.04
 :::
 
 Next, use `juju integrate`{l=shell} to integrate Apptainer with Slurm:
@@ -376,7 +376,7 @@ Model  Controller              Cloud/Region         Version  SLA          Timest
 slurm  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  21:13:47-06:00
 
 App                 Version  Status  Scale  Charm              Channel             Rev  Exposed  Message
-apptainer           1.4.5    active      3  apptainer          1/candidate          39  no
+apptainer           1.4.5    active      3  apptainer          1/stable             39  no
 ceph-fs             20.2.0   active      1  ceph-fs            tentacle/candidate  495  no       Unit is ready
 microceph                    active      1  microceph          tentacle/stable     327  no       (workload) charm is ready
 login               25.11.2  active      1  sackd              25.11/stable         90  no

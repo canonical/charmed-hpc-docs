@@ -6,7 +6,7 @@
 First, use `juju deploy`{l=shell} to deploy SSSD in your `slurm` model:
 
 :::{code-block} shell
-juju deploy sssd --base ubuntu@26.04 --channel 2/candidate
+juju deploy sssd --base ubuntu@26.04 --channel 2/stable
 :::
 
 :::{include} /reuse/common/tip-determine-current-juju-model.txt
@@ -104,7 +104,7 @@ slurmctld   25.11.2          active       1  slurmctld   25.11/stable  168  no  
 slurmd      25.11.2          active       1  slurmd      25.11/stable  185  no
 slurmdbd    25.11.2          active       1  slurmdbd    25.11/stable  162  no
 slurmrestd  25.11.2          active       1  slurmrestd  25.11/stable  162  no
-sssd        2.12.0           waiting      3  sssd        2/candidate    52  no       Waiting for integrations: [`ldap`]
+sssd        2.12.0           waiting      3  sssd        2/stable       52  no       Waiting for integrations: [`ldap`]
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
 mysql/0*       active    idle   5        10.124.231.70   3306,33060/tcp  Primary
