@@ -1,5 +1,14 @@
 # Charmed HPC
 
+:::{admonition} Charmed HPC 1.0-rc1 is a release candidate
+:class: warning
+
+This documentation covers Charmed HPC `1.0-rc1`, a release candidate. The `1.0` stable release is currently undergoing final verification. Upgrading in place from `1.0-rc1` to `1.0` is not guaranteed.
+
+See the {ref}`1.0-rc1 release notes <release-notes-1-0-rc1>` for the artifact, upstream, and
+third-party charm versions that were tested together for this release.
+:::
+
 Charmed HPC is a platform for managing high-performance computing clusters. It automates the lifecycle of essential cluster software and processes, such as workload management, shared storage, GPU access, and high-bandwidth networking. This allows operations teams and systems administrators to focus on running workloads rather than maintaining infrastructure.
 
 ---

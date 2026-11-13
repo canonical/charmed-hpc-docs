@@ -74,7 +74,7 @@ Now use `juju deploy`{l=shell} to deploy Authentik with:
 juju deploy authentik-server --channel latest/stable --trust
 juju deploy authentik-worker --channel latest/stable --trust
 juju deploy authentik-ldap-outpost --channel latest/stable --trust
-juju deploy postgresql-k8s --channel 16/stable --trust
+juju deploy postgresql-k8s --channel 14/stable --trust
 juju deploy traefik-k8s --channel latest/stable --base ubuntu@26.04 --trust
 juju deploy self-signed-certificates --channel 1/stable
 :::
@@ -175,11 +175,11 @@ identity  charmed-hpc-k8s  charmed-hpc-k8s  3.6.28   unsupported  17:12:15-04:00
 
 App                       Version   Status  Scale  Charm                     Channel        Rev  Address         Exposed  Message
 authentik-ldap-outpost    2026.5.3  active      1  authentik-ldap-outpost    latest/stable   23  10.152.183.225  no
-authentik-server          2026.5.3  active      1  authentik-server          latest/stable   31  10.152.183.164  no
+authentik-server          2026.5.3  active      1  authentik-server          latest/stable   30  10.152.183.164  no
 authentik-worker          2026.5.3  active      1  authentik-worker          latest/stable    7  10.152.183.134  no
-postgresql-k8s            16.10     active      1  postgresql-k8s            16/stable      957  10.152.183.88   no
-self-signed-certificates            active      1  self-signed-certificates  1/stable       588  10.152.183.68   no
-traefik-k8s               2.11.49   active      1  traefik-k8s               latest/stable  480  10.152.183.124  no       Serving at https://10.148.202.14
+postgresql-k8s            14.19     active      1  postgresql-k8s            14/stable      960  10.152.183.88   no
+self-signed-certificates            active      1  self-signed-certificates  1/stable       710  10.152.183.68   no
+traefik-k8s               2.11.49   active      1  traefik-k8s               latest/stable  503  10.152.183.124  no       Serving at https://10.148.202.14
 
 Unit                         Workload  Agent  Address     Ports  Message
 authentik-ldap-outpost/0*    active    idle   10.1.0.222
@@ -313,11 +313,11 @@ send-ca-certs    active  charmed-hpc-controller  admin/identity.send-ca-certs
 
 App         Version          Status  Scale  Charm       Channel       Rev  Exposed  Message
 mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable    541  no
-sackd       25.11.2          active      1  sackd       25.11/stable   89  no
-slurmctld   25.11.2          active      1  slurmctld   25.11/stable  167  no       primary - UP
-slurmd      25.11.2          active      1  slurmd      25.11/stable  184  no
-slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  161  no
-slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  161  no
+sackd       25.11.2          active      1  sackd       25.11/stable   90  no
+slurmctld   25.11.2          active      1  slurmctld   25.11/stable  168  no       primary - UP
+slurmd      25.11.2          active      1  slurmd      25.11/stable  185  no
+slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  162  no
+slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  162  no
 sssd        2.12.0           active      3  sssd        2/stable       52  no
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
@@ -411,7 +411,7 @@ example, the external LDAP server's:
 For further customization, see [the full list of ldap-integrator's available configuration options](https://charmhub.io/ldap-integrator/configurations).
 
 :::{code-block} shell
-juju deploy ldap-integrator --channel latest/stable \
+juju deploy ldap-integrator --channel latest/edge \
   --config base_dn="cn=testing,cn=ubuntu,cn=com" \
   --config bind_dn="cn=admin,dc=test,dc=ubuntu,dc=com" \
   --config bind_password="${secret_id}" \
@@ -530,7 +530,7 @@ Model     Controller              Cloud/Region         Version  SLA          Tim
 identity  charmed-hpc-controller  localhost/localhost  3.6.28   unsupported  12:52:02-06:00
 
 App              Version  Status  Scale  Charm            Channel        Rev  Exposed  Message
-ldap-integrator           active      1  ldap-integrator  latest/stable   36  no
+ldap-integrator           active      1  ldap-integrator  latest/edge     38  no
 
 Unit                Workload  Agent  Machine  Public address  Ports  Message
 ldap-integrator/0*  active    idle   0        10.124.231.240
@@ -729,7 +729,7 @@ module "ldap-integrator" {
     urls = "ldap://10.214.237.229"
   }
 
-  channel = "latest/stable"
+  channel = "latest/edge"
 }
 :::
 
@@ -932,11 +932,11 @@ send-ca-certs    active  charmed-hpc-controller  admin/identity.send-ca-certs
 App         Version          Status  Scale  Charm       Channel       Rev  Exposed  Message
 openssh     10.2p1           active      1  openssh     10/stable       5  no
 mysql       8.0.44-0ubun...  active      1  mysql       8.0/stable    541  no
-sackd       25.11.2          active      1  sackd       25.11/stable   89  no
-slurmctld   25.11.2          active      1  slurmctld   25.11/stable  167  no       primary - UP
-slurmd      25.11.2          active      1  slurmd      25.11/stable  184  no
-slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  161  no
-slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  161  no
+sackd       25.11.2          active      1  sackd       25.11/stable   90  no
+slurmctld   25.11.2          active      1  slurmctld   25.11/stable  168  no       primary - UP
+slurmd      25.11.2          active      1  slurmd      25.11/stable  185  no
+slurmdbd    25.11.2          active      1  slurmdbd    25.11/stable  162  no
+slurmrestd  25.11.2          active      1  slurmrestd  25.11/stable  162  no
 sssd        2.12.0           active      3  sssd        2/stable       52  no
 
 Unit           Workload  Agent  Machine  Public address  Ports           Message
