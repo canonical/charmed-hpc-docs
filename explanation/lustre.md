@@ -54,13 +54,13 @@ By default, the `lustre-server` and `filesystem-client` charms perform network a
 Auto-detection can be overridden by setting the `lnet-networks` charm configuration value. Set this option when Lustre traffic must use specific interfaces or when an automatically detected interface must be excluded. The option uses format:
 
 ```
-<name>=<iface>[,<iface>...]
+<name>(<iface>[,<iface>...])
 ```
 
-where `<name>` is the LNet network name and `<iface>` is the network interface. For example:
+Separate network entries with commas. Each entry starts with the LNet network name and lists one or more comma-separated interfaces in parentheses. For example:
 
 ```shell
---config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
+--config lnet-networks="tcp(eth0),o2ib0(ib0,ib1)"
 ```
 
 configures LNet with a network name of `tcp` using the `eth0` interface, and a network name of `o2ib0` using the `ib0` and `ib1` interfaces.
@@ -68,15 +68,15 @@ configures LNet with a network name of `tcp` using the `eth0` interface, and a n
 The `lustre-server` and `filesystem-client` charms must share LNet configurations (compatible `lnet-networks` values) otherwise they will not be able to communicate and the Lustre filesystem will not mount. A compatible configuration defines a common network between client and server. For example, if networking is identical on client and server, the following configuration is compatible:
 
 ```shell
-juju deploy lustre-server --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
-juju deploy filesystem-client --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
+juju deploy lustre-server --config lnet-networks="tcp(eth0),o2ib0(ib0,ib1)"
+juju deploy filesystem-client --config lnet-networks="tcp(eth0),o2ib0(ib0,ib1)"
 ```
 
 If `eth1` is the client node’s only network interface and provides connectivity to the server nodes, the following configuration is compatible:
 
 ```
-juju deploy lustre-server --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1"
-juju deploy filesystem-client --config lnet-networks="tcp=eth1"
+juju deploy lustre-server --config lnet-networks="tcp(eth0),o2ib0(ib0,ib1)"
+juju deploy filesystem-client --config lnet-networks="tcp(eth1)"
 ```
 
 ### Service placement
