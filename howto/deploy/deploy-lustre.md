@@ -27,6 +27,13 @@ A Lustre deployment requires at least two `lustre-server` units:
 - One combined Management Server and Metadata Server (MGS+MDS).
 - One or more Object Storage Servers (OSS).
 
+The role of each unit is determined by the storage attached to it. How storage is attached depends on your cloud.
+
+:::::{tab-set}
+
+::::{tab-item} LXD and public clouds
+:sync: default
+
 Deploy `lustre-server` with the total number of units (MGS+MDS and OSS):
 
 :::{code-block} shell
@@ -54,6 +61,48 @@ juju add-storage lustre-server/1 ost=loop,6,1G
 creating six 1GB volumes for `ost`.
 
 Repeat the `juju add-storage` command for each additional unit that should act as an OSS.
+
+::::
+
+::::{tab-item} MAAS
+:sync: maas
+
+MAAS does not support `juju add-storage`{l=shell}. Instead, deploy the MGS+MDS unit first, then change the application's storage directives and constraints before adding OSS units.
+
+The following commands assume machines are [tagged in MAAS](https://canonical.com/maas/docs/stable/uncategorized/maas-glossary/#tags) as `lustre-mgs-mds` or `lustre-oss`, and disks are tagged as `ssd` or `hdd`. Adjust the tags, disk counts, and sizes to match your hardware.
+
+Create a storage pool for each role:
+
+:::{code-block} shell
+juju create-storage-pool lustre-mgt-mdt maas tags=ssd
+juju create-storage-pool lustre-ost maas tags=hdd
+:::
+
+Deploy the MGS+MDS unit. The `mgt-mdt` volume count must be even:
+
+:::{code-block} shell
+juju deploy lustre-server \
+  --channel 2.17/candidate \
+  --constraints tags=lustre-mgs-mds \
+  --storage mgt-mdt=lustre-mgt-mdt,4,500G
+:::
+
+Switch the application's storage directives and constraints to the OSS role. The `ost` volume count must be at least three:
+
+:::{code-block} shell
+juju application-storage lustre-server mgt-mdt=0 ost=lustre-ost,6,4T
+juju set-constraints lustre-server tags=lustre-oss
+:::
+
+Add the OSS units:
+
+:::{code-block} shell
+juju add-unit lustre-server --num-units <number-of-oss-units>
+:::
+
+::::
+
+:::::
 
 (howto-deploy-deploy-lustre-custom-lnet)=
 ### Deploy with custom LNet configuration
