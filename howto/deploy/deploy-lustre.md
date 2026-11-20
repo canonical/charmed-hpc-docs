@@ -64,12 +64,12 @@ Deploy `lustre-server` with the `lnet-networks` configuration option set when yo
 
 Set this option only during the initial deployment. Changes to `lnet-networks` after deployment are not applied.
 
-The option accepts semicolon-separated network definitions in the format `<name>=<iface>[,<iface>...]`. For example, the following command configures `tcp` on `eth0` and a multi-rail `o2ib0` network on `ib0` and `ib1`:
+The option accepts comma-separated network definitions in the format `<name>(<iface>[,<iface>...])`. For example, the following command configures `tcp` on `eth0` and a multi-rail `o2ib0` network on `ib0` and `ib1`:
 
 :::{code-block} shell
 juju deploy lustre-server \
   --channel 2.17/candidate \
-  --config lnet-networks="tcp=eth0; o2ib0=ib0,ib1" \
+  --config lnet-networks="tcp(eth0),o2ib0(ib0,ib1)" \
   --num-units <number-of-units>
 :::
 
