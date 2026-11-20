@@ -62,6 +62,12 @@ juju deploy slurmrestd --base ubuntu@26.04 --channel 25.11/stable
 juju deploy mysql --channel 8.0/stable
 :::
 
+Compute nodes start in the `down` state by default. To start new nodes in the `idle`
+state, add `--config default-node-state=idle` to the `juju deploy slurmd` command,
+as in the Getting Started tutorial. See
+[Modify the default state and reason of new compute nodes](#howto-manage-default-node-state)
+for more options.
+
 After that, use `juju integrate`{l=shell} to integrate all of Slurm's services together,
 and integrate slurmdbd with MySQL:
 
